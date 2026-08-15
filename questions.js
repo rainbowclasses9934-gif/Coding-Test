@@ -20,7 +20,7 @@ window.quizDatabase = {
 // =========================================================
 // 👇👇 यहाँ से नीचे अपना AI द्वारा जनरेट किया गया क्वेश्चन कोड पेस्ट करते जाएँ 👇👇
 // ========================================================= 
-window.quizDatabase[5].ch_5 = window.quizDatabase[5].ch_1 || {};
+window.quizDatabase[5].ch_1 = window.quizDatabase[5].ch_1 || {};
 window.quizDatabase[5].ch_1.set_1 = [
   {
     question: "'बातचीत' शीर्षक निबंध के निबंधकार कौन हैं?",
