@@ -75,6 +75,9 @@
         .options-glass { padding: 25px !important; max-height: 80vh; }
         .options-list { overflow-y: auto; max-height: 55vh; text-align: left; padding-right: 8px; margin-bottom: 15px; }
         
+        /* खाली लिस्ट का मेसेज */
+        .empty-msg { text-align: center; color: #ffffff; padding: 20px; }
+
         /* स्क्रॉलबार */
         .options-list::-webkit-scrollbar { width: 5px; }
         .options-list::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
@@ -104,12 +107,24 @@
         }
 
         /* ========================================================= */
-        /* लाइट-मोड CSS ओवरराइड्स (हल्का वाइट/ग्रे कॉम्बिनेशन) */
+        /* लाइट-मोड CSS ओवरराइड्स (हल्का वाइट/ग्रे कॉम्बिनेशन + 100% ब्लैक टेक्स्ट फिक्स) */
         /* ========================================================= */
         body.light-mode { background: linear-gradient(135deg, #e2e8f0 0%, #f8fafc 100%); color: #0f172a; }
-        .light-mode .card, .light-mode .modal-glass { background: rgba(255, 255, 255, 0.85); border-color: rgba(0, 0, 0, 0.1); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1); }
-        .light-mode .input-group label, .light-mode .question-text, .light-mode #res-name, .light-mode #res-id-display, .light-mode .modal-glass p, .light-mode #q-counter, .light-mode #options-title { color: #0f172a !important; }
+        .light-mode .card, .light-mode .modal-glass { background: rgba(255, 255, 255, 0.95) !important; border-color: rgba(0, 0, 0, 0.1); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1); }
+        
+        /* मोडल, पॉपअप और कार्ड के सभी टेक्स्ट को ज़बरदस्ती डार्क (Black/Grey) करने की कमांड */
+        .light-mode .input-group label, .light-mode .question-text, .light-mode #res-name, 
+        .light-mode #res-id-display, .light-mode .modal-glass p, .light-mode .modal-glass span, 
+        .light-mode #q-counter, .light-mode #options-title, .light-mode .empty-msg { 
+            color: #0f172a !important; 
+        }
+
         .light-mode h2 { color: #2563eb !important; }
+        
+        /* लाइट मोड में स्कोर के रंग को बेहतर विजिबिलिटी के लिए थोड़ा डार्क किया गया है */
+        .light-mode .score-badge { color: #ea580c !important; text-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .light-mode #res-percent { color: #059669 !important; }
+
         .light-mode .input-group input, .light-mode .glass-select-box { background: rgba(255, 255, 255, 0.6); border-color: rgba(0, 0, 0, 0.15); color: #0f172a; }
         .light-mode .input-group input:focus, .light-mode .glass-select-box:hover { border-color: #2563eb; background: rgba(255, 255, 255, 0.9); box-shadow: 0 0 12px rgba(37, 99, 235, 0.2); }
         .light-mode .input-group input::placeholder { color: rgba(0, 0, 0, 0.5); }
@@ -207,8 +222,8 @@
 
         <div id="result-screen" class="card score-card hidden">
             <h2 style="color: #38bdf8; font-size: 1.6rem; letter-spacing: 0.5px;">🧾Your Result🫣</h2>
-            <p id="res-name" style="margin-top: 15px; color: #ffffff; font-weight: 500; font-size: 1.15rem;"></p>
-            <p id="res-id-display" style="color: #ffffff; font-size: 0.95rem; margin-top: 5px;"></p>
+            <p id="res-name" style="margin-top: 15px; font-weight: 500; font-size: 1.15rem;"></p>
+            <p id="res-id-display" style="font-size: 0.95rem; margin-top: 5px;"></p>
             <div class="score-badge" id="res-score">0 / 0</div>
             <!-- रिजल्ट परसेंट सक्सेस (हरा) कलर में -->
             <p id="res-percent" style="font-size: 1.3rem; font-weight: 600; color: #10b981;"></p>
@@ -237,11 +252,11 @@
         </div>
     </div>
 
-    <!-- Dynamic Loading UI Spinner -->
+    <!-- Dynamic Loading UI Spinner (इनलाइन कलर्स हटाए गए) -->
     <div id="loading-overlay" class="modal-overlay hidden" style="z-index: 2000;">
-        <div class="modal-glass" style="text-align: center; padding: 45px 30px; background: rgba(30, 40, 50, 0.95);">
+        <div class="modal-glass" style="text-align: center; padding: 45px 30px;">
             <div class="spinner"></div>
-            <p style="color: #ffffff; font-size: 1.15rem; margin-bottom: 0; font-weight: 500;">कृपया प्रतीक्षा करें,<br><span style="font-size:0.9rem; color:#ffffff; font-weight: 400; display: inline-block; margin-top: 8px;">सवाल सर्वर से लोड हो रहे हैं...</span></p>
+            <p style="font-size: 1.15rem; margin-bottom: 0; font-weight: 500;">कृपया प्रतीक्षा करें,<br><span style="font-size:0.9rem; font-weight: 400; display: inline-block; margin-top: 8px;">सवाल सर्वर से लोड हो रहे हैं...</span></p>
         </div>
     </div>
 
@@ -501,7 +516,8 @@
             }
 
             if (!hasQuizzes) {
-                list.innerHTML = `<div style="text-align:center; color:#ffffff; padding: 20px;">अभी इस अध्याय में कोई SET नहीं डाला गया है।<br><br>कृपया बाद में प्रयास करें।</div>`;
+                // (FIX) - यहाँ से इनलाइन वाइट कलर हटाकर CSS क्लास 'empty-msg' सेट कर दी है
+                list.innerHTML = `<div class="empty-msg">अभी इस अध्याय में कोई SET नहीं डाला गया है।<br><br>कृपया बाद में प्रयास करें।</div>`;
             }
 
             document.getElementById("options-modal").classList.remove("hidden");
