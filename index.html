@@ -467,6 +467,9 @@
             showScreen('login-screen');
         }
 
+        // ==========================================
+        // अपडेटेड आईडी वेरिफिकेशन और पर्सनल मैसेज लॉजिक
+        // ==========================================
         function verifyStudent() {
             let name = document.getElementById("student-name").value.trim();
             let studentId = document.getElementById("student-id").value.trim(); 
@@ -477,6 +480,7 @@
             let isIdValid = false;
             let enteredIdLower = studentId.toLowerCase(); 
 
+            // 1. आईडी चेक करें
             if (window.validStudentIDs) {
                 isIdValid = window.validStudentIDs.some(function(savedId) {
                     return savedId.toLowerCase() === enteredIdLower;
@@ -488,14 +492,44 @@
                 return;
             }
 
-            // 5 घंटे के लिए लोकल स्टोरेज में सेव करना
+            // 2. 5 घंटे के लिए लोकल स्टोरेज में सेव करना
             localStorage.setItem('dpp_student_name', name);
             localStorage.setItem('dpp_student_id', studentId);
             localStorage.setItem('dpp_login_time', Date.now().toString());
 
+            // 3. नया लॉजिक: क्या इस छात्र के लिए कोई खास मैसेज है?
+            if (window.studentMessages && window.studentMessages[enteredIdLower]) {
+                // यदि मैसेज है, तो स्पेशल पॉप-अप दिखाएं
+                showPersonalMessage(window.studentMessages[enteredIdLower]);
+            } else {
+                // यदि कोई मैसेज नहीं है, तो सीधे सेटअप स्क्रीन पर भेजें
+                goToSelectionScreen();
+            }
+        }
+
+        // अगले पेज पर जाने का फंक्शन
+        function goToSelectionScreen() {
             history.pushState({ screen: 'selection' }, '');
             showScreen('selection-screen');
         }
+
+        // नया मोडल (पॉप-अप) फंक्शन जो OK दबाने पर आगे ले जाएगा
+        function showPersonalMessage(msg) {
+            document.getElementById("modal-text").innerText = msg;
+            document.getElementById("custom-modal").classList.remove("hidden");
+            
+            let okBtn = document.querySelector("#custom-modal .btn");
+            
+            // OK बटन का काम बदलें 
+            okBtn.onclick = function() {
+                document.getElementById("custom-modal").classList.add("hidden");
+                goToSelectionScreen(); // OK दबाते ही अगले पेज पर भेजें
+                
+                // काम होने के बाद बटन को वापस नॉर्मल कर दें
+                okBtn.onclick = closeModal; 
+            };
+        }
+        // ==========================================
 
         function openSubjectSelect() {
             let list = document.getElementById("options-list");
@@ -675,7 +709,7 @@
 
             if (!sub) { showModal("कृपया विषय चुनें!"); return; }
             if (!ch) { showModal("कृपया अध्याय चुनें!"); return; }
-            if (!qKey) { showModal("कोई DPP चुना नहीं गया है। यदि उपलब्ध नहीं है, तो बाद में प्रयास करें।"); return; }
+            if (!qKey) { showModal("कोई DPP चुना नहीं गया है। यदि उपलब्ध नहीं है, तो बाद晚में प्रयास करें।"); return; }
 
             const chKey = `ch_${ch}`;
 
