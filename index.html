@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAINBOW CLASSES - Quiz</title>
+    <title>RAINBOW CLASSES - DPP Portal</title>
     <style>
         /* CSS: न्यू डार्क ब्लू-ग्रे थीम (Rainbow Classes Custom Theme) */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; }
@@ -12,11 +12,7 @@
         /* 1. बैकग्राउंड: डार्क ब्लू-ग्रे ग्रेडिएंट */
         body { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; background-attachment: fixed; }
         
-        /* स्मूथ ट्रांजिशन (डार्क से लाइट मोड के लिए 1.2s स्मूथ इफ़ेक्ट) */
-        body, .card, .modal-glass, .input-group input, .glass-select-box, .option-item, .option-card, .btn {
-            transition: background 1.2s ease, background-color 1.2s ease, color 1.2s ease, border-color 1.2s ease, box-shadow 1.2s ease, transform 0.2s ease;
-        }
-
+        /* टॉप में फिट करने के लिए margin-top: 0 किया गया है */
         .container { width: 100%; max-width: 600px; padding: 15px 15px 20px 15px; margin-top: 0; }
         
         /* 2. मेन कंटेनर (Glass Panel): सेमी-ट्रांसपेरेंट डार्क ब्लू विद हल्का वाइट बॉर्डर */
@@ -27,17 +23,17 @@
         .input-group label { display: block; font-weight: 500; margin-bottom: 10px; color: #ffffff; font-size: 0.95rem; }
         
         /* 3. इनपुट फील्ड्स: पारदर्शी काला */
-        .input-group input { width: 100%; padding: 14px 18px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; font-size: 1rem; color: #ffffff; outline: none; backdrop-filter: blur(8px); }
+        .input-group input { width: 100%; padding: 14px 18px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; font-size: 1rem; color: #ffffff; outline: none; backdrop-filter: blur(8px); transition: all 0.3s ease; }
         .input-group input::placeholder { color: rgba(255, 255, 255, 0.6); }
         .input-group input:focus { border-color: #38bdf8; box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); background: rgba(0, 0, 0, 0.5); }
         
         /* डार्क ग्लास सेलेक्ट बॉक्स */
-        .glass-select-box { width: 100%; padding: 14px 18px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; font-size: 1rem; color: #ffffff; cursor: pointer; backdrop-filter: blur(8px); display: flex; justify-content: space-between; align-items: center; }
+        .glass-select-box { width: 100%; padding: 14px 18px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; font-size: 1rem; color: #ffffff; cursor: pointer; backdrop-filter: blur(8px); transition: all 0.3s ease; display: flex; justify-content: space-between; align-items: center; }
         .glass-select-box:hover { border-color: #38bdf8; background: rgba(0, 0, 0, 0.5); box-shadow: 0 0 12px rgba(56, 189, 248, 0.2); }
         .select-icon { font-size: 0.8rem; color: #ffffff; }
         
         /* 4. बटन्स: प्राइमरी (ब्लू), सक्सेस (ग्रीन), सेकेंडरी (ग्रे) */
-        .btn { width: 100%; background: linear-gradient(135deg, #3b82f6, #2563eb); color: #ffffff; border: none; padding: 15px; border-radius: 12px; font-size: 1rem; font-weight: 600; letter-spacing: 0.5px; cursor: pointer; box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35); }
+        .btn { width: 100%; background: linear-gradient(135deg, #3b82f6, #2563eb); color: #ffffff; border: none; padding: 15px; border-radius: 12px; font-size: 1rem; font-weight: 600; letter-spacing: 0.5px; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35); }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5); filter: brightness(1.1); }
         .btn:active { transform: scale(0.92); box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3); }
 
@@ -48,12 +44,24 @@
         .btn-secondary:hover { box-shadow: 0 8px 25px rgba(71, 85, 105, 0.5); }
         
         /* टाइमर बॉक्स: हल्का नीला */
-        .timer-box { font-size: 1rem; font-weight: 600; color: #38bdf8; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.25); padding: 6px 14px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px; float: right; backdrop-filter: blur(8px); box-shadow: 0 0 15px rgba(56, 189, 248, 0.15); }
+        .timer-box { font-size: 1rem; font-weight: 600; color: #38bdf8; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.25); padding: 6px 14px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px; float: right; backdrop-filter: blur(8px); box-shadow: 0 0 15px rgba(56, 189, 248, 0.15); transition: all 0.3s ease; }
         
+        /* टाइमर का 10 मिनट वाला वार्निंग इफेक्ट */
+        @keyframes alertPulse {
+            0% { box-shadow: 0 0 8px rgba(255, 76, 76, 0.4); border-color: rgba(255, 76, 76, 0.4); }
+            50% { box-shadow: 0 0 20px rgba(255, 76, 76, 0.8); border-color: rgba(255, 76, 76, 1); }
+            100% { box-shadow: 0 0 8px rgba(255, 76, 76, 0.4); border-color: rgba(255, 76, 76, 0.4); }
+        }
+        .timer-warning {
+            animation: alertPulse 1s infinite !important;
+            color: #ff4c4c !important;
+            background: rgba(255, 76, 76, 0.15) !important;
+        }
+
         .question-text { font-size: 1.15rem; font-weight: 500; margin-top: 45px; margin-bottom: 25px; clear: both; line-height: 1.7; color: #ffffff; }
         
         /* 5. क्विज़ ऑप्शंस: ट्रांसपेरेंट डार्क -> सेलेक्ट होने पर ब्लू */
-        .option-item { background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.1); padding: 15px 18px; border-radius: 12px; margin-bottom: 14px; cursor: pointer; font-size: 1rem; color: #ffffff; backdrop-filter: blur(8px); }
+        .option-item { background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.1); padding: 15px 18px; border-radius: 12px; margin-bottom: 14px; cursor: pointer; font-size: 1rem; color: #ffffff; transition: all 0.3s ease; backdrop-filter: blur(8px); }
         .option-item:hover { background: rgba(59, 130, 246, 0.1); border-color: #3b82f6; transform: translateX(5px); }
         
         .option-item.selected { background: rgba(59, 130, 246, 0.2); border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); font-weight: 600; color: #ffffff; transform: scale(1.01); }
@@ -75,9 +83,6 @@
         .options-glass { padding: 25px !important; max-height: 80vh; }
         .options-list { overflow-y: auto; max-height: 55vh; text-align: left; padding-right: 8px; margin-bottom: 15px; }
         
-        /* खाली लिस्ट का मेसेज */
-        .empty-msg { text-align: center; color: #ffffff; padding: 20px; }
-
         /* स्क्रॉलबार */
         .options-list::-webkit-scrollbar { width: 5px; }
         .options-list::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
@@ -85,7 +90,7 @@
         .options-list::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.6); }
         
         /* लिस्ट ऑप्शन कार्ड्स (मोडल के अंदर) */
-        .option-card { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); padding: 14px 18px; border-radius: 12px; margin-bottom: 10px; cursor: pointer; font-size: 0.95rem; color: #ffffff; }
+        .option-card { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); padding: 14px 18px; border-radius: 12px; margin-bottom: 10px; cursor: pointer; font-size: 0.95rem; color: #ffffff; transition: all 0.25s ease; }
         .option-card:hover { background: rgba(59, 130, 246, 0.2); border-color: #3b82f6; color: #ffffff; transform: translateX(5px); }
         
         .modal-icon { font-size: 2.8rem; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3)); }
@@ -93,89 +98,73 @@
         
         @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
         @keyframes modalScale { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        
-        /* डायनेमिक लोडिंग स्पिनर के लिए CSS */
-        .spinner { width: 45px; height: 45px; border: 4px solid rgba(255, 255, 255, 0.1); border-top-color: #38bdf8; border-radius: 50%; margin: 0 auto 20px auto; animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
 
+        /* ========================================================= */
         /* RAINBOW CLASSES टॉप सेंटर बैज (एनवेलप स्टाइल) */
+        /* ========================================================= */
         .card::before, .modal-glass::before {
-            content: "RAINBOW CLASSES"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-            background: #0f172a; color: #38bdf8; font-size: 0.65rem; font-weight: 700; letter-spacing: 1px;
-            padding: 4px 14px; border: 1px solid rgba(56, 189, 248, 0.5); border-radius: 6px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); white-space: nowrap; z-index: 100;
+            content: "RAINBOW CLASSES";
+            position: absolute;
+            top: -12px; 
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0f172a; 
+            color: #38bdf8; 
+            font-size: 0.65rem; 
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 4px 14px;
+            border: 1px solid rgba(56, 189, 248, 0.5); 
+            border-radius: 6px; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            white-space: nowrap;
+            z-index: 100;
         }
-
-        /* ========================================================= */
-        /* लाइट-मोड CSS ओवरराइड्स (हल्का वाइट/ग्रे कॉम्बिनेशन + 100% ब्लैक टेक्स्ट फिक्स) */
-        /* ========================================================= */
-        body.light-mode { background: linear-gradient(135deg, #e2e8f0 0%, #f8fafc 100%); color: #0f172a; }
-        .light-mode .card, .light-mode .modal-glass { background: rgba(255, 255, 255, 0.95) !important; border-color: rgba(0, 0, 0, 0.1); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1); }
-        
-        /* मोडल, पॉपअप और कार्ड के सभी टेक्स्ट को ज़बरदस्ती डार्क (Black/Grey) करने की कमांड */
-        .light-mode .input-group label, .light-mode .question-text, .light-mode #res-name, 
-        .light-mode #res-id-display, .light-mode .modal-glass p, .light-mode .modal-glass span, 
-        .light-mode #q-counter, .light-mode #options-title, .light-mode .empty-msg { 
-            color: #0f172a !important; 
-        }
-
-        .light-mode h2 { color: #2563eb !important; }
-        
-        /* लाइट मोड में स्कोर के रंग को बेहतर विजिबिलिटी के लिए थोड़ा डार्क किया गया है */
-        .light-mode .score-badge { color: #ea580c !important; text-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .light-mode #res-percent { color: #059669 !important; }
-
-        .light-mode .input-group input, .light-mode .glass-select-box { background: rgba(255, 255, 255, 0.6); border-color: rgba(0, 0, 0, 0.15); color: #0f172a; }
-        .light-mode .input-group input:focus, .light-mode .glass-select-box:hover { border-color: #2563eb; background: rgba(255, 255, 255, 0.9); box-shadow: 0 0 12px rgba(37, 99, 235, 0.2); }
-        .light-mode .input-group input::placeholder { color: rgba(0, 0, 0, 0.5); }
-        .light-mode .select-icon { color: #0f172a; }
-        .light-mode .option-item, .light-mode .option-card { background: rgba(255, 255, 255, 0.7); border-color: rgba(0, 0, 0, 0.15); color: #0f172a; }
-        .light-mode .option-item:hover, .light-mode .option-card:hover { background: rgba(37, 99, 235, 0.1); border-color: #2563eb; }
-        .light-mode .option-item.selected { background: rgba(37, 99, 235, 0.2); border-color: #2563eb; font-weight: 600; color: #0f172a; box-shadow: 0 0 12px rgba(37, 99, 235, 0.2); }
-        .light-mode .card::before, .light-mode .modal-glass::before { background: #e2e8f0; color: #2563eb; border-color: rgba(37, 99, 235, 0.3); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); }
-
-        /* थीम चयन के पॉपअप के लिए CSS (बिना ब्लर के, कार्ड के अंदर फिक्स्ड) */
-        .theme-popup-box { position: absolute; top: 100%; left: 0; width: 100%; margin-top: 8px; background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 12px; display: flex; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 50; }
-        .light-mode .theme-popup-box { background: rgba(255, 255, 255, 0.95); border-color: rgba(0,0,0,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
-        .theme-opt { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.95rem; transition: all 0.2s; }
-        .light-opt { background: #f1f5f9; color: #0f172a; border: 1px solid #cbd5e1; }
-        .dark-opt { background: #0f172a; color: #f8fafc; border: 1px solid #334155; }
-        .light-opt:hover { background: #e2e8f0; }
-        .dark-opt:hover { border-color: #38bdf8; }
     </style>
 </head>
 <body>
 
+    <!-- टॉप हेडर पट्टी हटा दी गई है, सीधे कंटेनर लोड होगा -->
     <div class="container">
-        
-        <div id="login-screen" class="card">
-            <!-- मुख्य हेडिंग: हल्का नीला (#38bdf8) -->
+
+        <!-- ========================================== -->
+        <!-- नया जोड़ा गया INSTRUCTION SCREEN -->
+        <!-- ========================================== -->
+        <div id="instruction-screen" class="card">
+            <h2 style="margin-bottom: 20px; text-align: center; color: #ef4444; font-size: 1.6rem; letter-spacing: 0.5px; font-weight: bold;">🚨 पढ़ने वाले छात्र ध्यान दें 🚨</h2>
+            <div style="font-size: 1.05rem; color: #ffffff; line-height: 1.7; margin-bottom: 25px; background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <p style="margin-bottom: 15px; color: #cbd5e1; text-align: justify;">
+                    प्रिय छात्रों, आपके शिक्षक आपके उज्ज्वल भविष्य के लिए निरंतर प्रयासरत हैं। आपको प्रतिदिन पढ़ाने, यह <strong>DPP (Daily Practice Problem)</strong> तैयार करने और महत्वपूर्ण प्रश्नों को संकलित करने में उनका बहुत समय और मेहनत लगता है। यह सब केवल आपकी सफलता के लिए किया जा रहा है।
+                </p>
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 15px 0;">
+                <p style="color: #38bdf8; margin-bottom: 8px;"><strong>आपसे आग्रह और निर्देश:</strong></p>
+                <ul style="margin-left: 25px; margin-top: 10px; color: #cbd5e1; list-style-type: disc;">
+                    <li style="margin-bottom: 8px;">पढ़ाई पर पूरा ध्यान केंद्रित करें। आपके शिक्षक द्वारा दिए गए निर्देशों का पालन 100% करें।</li>
+                    <li style="margin-bottom: 8px;">प्रतिदिन के <strong>DPP और Tests</strong> में अनिवार्य रूप से भाग लें। इन्हें नजरअंदाज न करें।</li>
+                    <li style="margin-bottom: 8px;">पहले टॉपिक से लेकर अब तक के सभी <strong>ऑब्जेक्टिव प्रश्नों (Objective Questions)</strong> को अच्छे से याद कर लें।</li>
+                    <li style="margin-bottom: 8px;">शिक्षक आपको राह दिखा सकते हैं, लेकिन उस राह पर चलकर मंजिल पाना आपकी जिम्मेदारी है। मेहनत करें और अपना भविष्य संवारें।</li>
+                </ul>
+            </div>
+            <button class="btn btn-success" onclick="proceedToLogin()">मैंने निर्देश पढ़ लिए हैं (Next)</button>
+        </div>
+        <!-- ========================================== -->
+
+        <!-- लॉगिन स्क्रीन को बाय-डिफ़ॉल्ट hidden कर दिया गया है -->
+        <div id="login-screen" class="card hidden">
             <h2 style="margin-bottom: 25px; text-align: center; color: #38bdf8; font-size: 1.4rem; letter-spacing: 0.5px;">Student's identification</h2>
             <div class="input-group">
                 <label>Student Name(विद्यार्थी का नाम):</label>
-                <input type="text" id="student-name" placeholder="ex-'Chandramani'">
+                <input type="text" id="student-name" placeholder="ex-'Chandramani'...">
             </div>
             <div class="input-group">
-                <label>Student id(विद्यार्थी की आईडी):</label>
+                <label>विद्यार्थी की आईडी:</label>
                 <input type="text" id="student-id" placeholder="ex-'cm1217'">
             </div>
             <button class="btn" onclick="verifyStudent()">Next</button>
-            
-            <!-- थीम (Screen Mode) बटन (Next बटन के ठीक नीचे, केवल शुरुआती सेटअप के लिए) -->
-            <div style="position: relative; margin-top: 15px;">
-                <button class="btn btn-secondary" style="display: flex; justify-content: center; align-items: center; gap: 8px;" onclick="toggleThemeMenu()">
-                    🎨 Screen Mode
-                </button>
-                <!-- डार्क/लाइट पॉपअप -->
-                <div id="theme-popup" class="theme-popup-box hidden">
-                     <button class="theme-opt light-opt" onclick="setTheme('light')">☀️ Light</button>
-                     <button class="theme-opt dark-opt" onclick="setTheme('dark')">🌙 Dark</button>
-                </div>
-            </div>
         </div>
 
         <div id="selection-screen" class="card hidden">
-            <h2 style="margin-bottom: 25px; text-align: center; color: #38bdf8; font-size: 1.4rem; letter-spacing: 0.5px;">Quiz Setup</h2>
+            <h2 style="margin-bottom: 25px; text-align: center; color: #38bdf8; font-size: 1.4rem; letter-spacing: 0.5px;">DPP Setup</h2>
             <div class="input-group">
                 <label>विषय चुनें (Class 12th):</label>
                 <div class="glass-select-box" onclick="openSubjectSelect()">
@@ -193,39 +182,42 @@
                 <input type="hidden" id="chapter-select" value="">
             </div>
             <div class="input-group">
-                <label>SET चुनें:</label>
+                <label>DPP चुनें:</label>
                 <div class="glass-select-box" onclick="openQuizSelect()">
                     <span id="quiz-text">-- पहले अध्याय चुनें --</span>
                     <span class="select-icon">▼</span>
                 </div>
                 <input type="hidden" id="quiz-select" value="">
             </div>
-            <button class="btn" onclick="startQuiz()">Start Quiz</button>
+            <button class="btn" onclick="startQuiz()">Start DPP</button>
         </div>
 
         <div id="quiz-screen" class="card hidden">
             <div>
                 <span id="q-counter" style="font-weight: 500; color: #38bdf8; font-size: 0.95rem;">प्रश्न 1 / 10</span>
-                <div class="timer-box">⏱️ <span id="time-left">10:00</span></div>
+                <div class="timer-box" id="timer-ui">⏱️ <span id="time-left">30:00</span></div>
             </div>
+            
+            <!-- 10 Minute Warning Message -->
+            <div id="time-warning" style="display: none; clear: both; margin-top: 50px; margin-bottom: -15px; color: #ff4c4c; background: rgba(255,0,0,0.1); border: 1px solid #ff4c4c; padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; animation: alertPulse 1s infinite;">
+                ⚠️ आपके पास सिर्फ 10 मिनट शेष हैं! कृपया जल्दी करें।
+            </div>
+
             <div class="question-text" id="q-text">प्रश्न लोड हो रहा है...</div>
             <div id="options-container"></div>
             
             <div class="nav-btns">
-                <!-- पिछला बटन: सेकेंडरी ग्रे कलर -->
                 <button class="btn btn-secondary" id="btn-prev" onclick="prevQuestion()">◄ Previous</button>
                 <button class="btn" id="btn-next" onclick="nextQuestion()">Next ►</button>
             </div>
-            <!-- सबमिट बटन: सक्सेस ग्रीन कलर -->
             <button class="btn btn-success" id="btn-submit" style="margin-top: 15px; display: none;" onclick="submitQuiz()">Submit🧐</button>
         </div>
 
         <div id="result-screen" class="card score-card hidden">
             <h2 style="color: #38bdf8; font-size: 1.6rem; letter-spacing: 0.5px;">🧾Your Result🫣</h2>
-            <p id="res-name" style="margin-top: 15px; font-weight: 500; font-size: 1.15rem;"></p>
-            <p id="res-id-display" style="font-size: 0.95rem; margin-top: 5px;"></p>
+            <p id="res-name" style="margin-top: 15px; color: #ffffff; font-weight: 500; font-size: 1.15rem;"></p>
+            <p id="res-id-display" style="color: #ffffff; font-size: 0.95rem; margin-top: 5px;"></p>
             <div class="score-badge" id="res-score">0 / 0</div>
-            <!-- रिजल्ट परसेंट सक्सेस (हरा) कलर में -->
             <p id="res-percent" style="font-size: 1.3rem; font-weight: 600; color: #10b981;"></p>
             <br>
             <button class="btn" onclick="location.reload()" style="margin-top: 10px;">Home 🏠</button>
@@ -247,44 +239,15 @@
         <div class="modal-glass options-glass">
             <h3 id="options-title" style="margin-bottom: 20px; color: #38bdf8; font-size: 1.2rem; font-weight: 500;">चुनें</h3>
             <div id="options-list" class="options-list"></div>
-            <!-- रद्द करें बटन: सेकेंडरी ग्रे कलर -->
             <button class="btn btn-secondary" style="padding: 12px;" onclick="closeOptionsModal()">रद्द करें</button>
         </div>
     </div>
 
-    <!-- Dynamic Loading UI Spinner (इनलाइन कलर्स हटाए गए) -->
-    <div id="loading-overlay" class="modal-overlay hidden" style="z-index: 2000;">
-        <div class="modal-glass" style="text-align: center; padding: 45px 30px;">
-            <div class="spinner"></div>
-            <p style="font-size: 1.15rem; margin-bottom: 0; font-weight: 500;">कृपया प्रतीक्षा करें,<br><span style="font-size:0.9rem; font-weight: 400; display: inline-block; margin-top: 8px;">सवाल सर्वर से लोड हो रहे हैं...</span></p>
-        </div>
-    </div>
+    <!-- Script File Reference -->
+    <script src="questions.js"></script>
 
-    <!-- 100% STATIC ID VERIFICATION (वेबसाइट खुलते ही तुरंत लोड होगा) -->
-    <script src="studentid.js"></script>
-
+    <!-- Main JS Logic -->
     <script>
-        // Themes (डार्क और लाइट मोड का लॉजिक)
-        function toggleThemeMenu() {
-            const popup = document.getElementById('theme-popup');
-            if (popup.classList.contains('hidden')) {
-                popup.classList.remove('hidden');
-            } else {
-                popup.classList.add('hidden');
-            }
-        }
-
-        function setTheme(mode) {
-            if (mode === 'light') {
-                document.body.classList.add('light-mode');
-            } else {
-                document.body.classList.remove('light-mode');
-            }
-            // थीम चुनने के बाद पॉपअप बंद कर दें
-            toggleThemeMenu();
-        }
-
-        // Subjects & Chapters List (UI के लिए स्थिर डेटा)
         const subjectsList = {
             1: "भौतिक विज्ञान (Physics)",
             2: "रसायन विज्ञान (Chemistry)",
@@ -303,17 +266,15 @@
             6: ["Indian Civilization and Culture", "Bharat is My Home", "A Pinch of Snuff", "I Have a Dream", "Ideas That Have Helped Mankind", "The Artist", "A Child is Born", "How Free is the Press", "The Earth", "India Through a Traveler's Eyes", "A Marriage Proposal", "Sweetest Love I Do Not Goe", "Song of Myself", "Now the Leaves Are Falling Fast", "Ode to Autumn", "An Epitaph", "The Soldier", "Macavity: The Mystery Cat", "Fire-Hymn", "Snake", "My Grandmother's House"]
         };
 
-        const subPrefixes = { 1: "physics", 2: "chemistry", 3: "mathematics", 4: "biology", 5: "hindi", 6: "english" };
-        const loadedScripts = {}; 
-
         let currentQuestions = [];
         let currentQIndex = 0;
         let userAnswers = [];
         let timerInterval;
-        let timeLeft = 600;
+        let timeLeft = 1800; // 30 minutes in seconds
 
+        // शुरुआत में इंस्ट्रक्शन स्क्रीन सेट किया गया 
         window.onload = function() {
-            history.replaceState({ screen: 'login' }, '');
+            history.replaceState({ screen: 'instruction' }, '');
         };
 
         window.addEventListener('popstate', function(event) {
@@ -321,15 +282,23 @@
             document.getElementById("custom-modal").classList.add("hidden");
             document.getElementById("options-modal").classList.add("hidden");
 
-            if (!state) { showScreen('login-screen'); return; }
+            if (!state) {
+                showScreen('instruction-screen');
+                return;
+            }
 
             if (state.modal) document.getElementById("custom-modal").classList.remove("hidden");
             if (state.optionsModal) document.getElementById("options-modal").classList.remove("hidden");
 
-            if (state.screen === 'login') {
-                showScreen('login-screen'); clearInterval(timerInterval);
+            if (state.screen === 'instruction') {
+                showScreen('instruction-screen');
+                clearInterval(timerInterval);
+            } else if (state.screen === 'login') {
+                showScreen('login-screen');
+                clearInterval(timerInterval);
             } else if (state.screen === 'selection') {
-                showScreen('selection-screen'); clearInterval(timerInterval);
+                showScreen('selection-screen');
+                clearInterval(timerInterval);
             } else if (state.screen === 'quiz') {
                 showScreen('quiz-screen');
             } else if (state.screen === 'result') {
@@ -337,20 +306,29 @@
             }
         });
 
+        // स्क्रीन को show/hide करने का फंक्शन अपडेट किया गया 
         function showScreen(screenId) {
+            document.getElementById("instruction-screen").classList.add("hidden");
             document.getElementById("login-screen").classList.add("hidden");
             document.getElementById("selection-screen").classList.add("hidden");
             document.getElementById("quiz-screen").classList.add("hidden");
             document.getElementById("result-screen").classList.add("hidden");
+            
             document.getElementById(screenId).classList.remove("hidden");
+        }
+
+        // इंस्ट्रक्शन से लॉगिन स्क्रीन पर जाने का नया फंक्शन 
+        function proceedToLogin() {
+            history.pushState({ screen: 'login' }, '');
+            showScreen('login-screen');
         }
 
         function verifyStudent() {
             let name = document.getElementById("student-name").value.trim();
             let studentId = document.getElementById("student-id").value.trim(); 
 
-            if (!name) { showModal("Please🥺,Enter Your Name!"); return; }
-            if (!studentId) { showModal("Please🥺,Enter Your id!"); return; }
+            if (!name) { showModal("Please, 👉 Enter Your Name "); return; }
+            if (!studentId) { showModal("Please, 👉 Enter Your id "); return; }
 
             let isIdValid = false;
             let enteredIdLower = studentId.toLowerCase(); 
@@ -359,9 +337,6 @@
                 isIdValid = window.validStudentIDs.some(function(savedId) {
                     return savedId.toLowerCase() === enteredIdLower;
                 });
-            } else {
-                showModal("आईडी डेटाबेस (studentid.js) नहीं मिला। कृपया एडमिन से संपर्क करें।");
-                return;
             }
 
             if (!isIdValid) {
@@ -400,7 +375,10 @@
 
         function openChapterSelect() {
             let sub = document.getElementById("subject-select").value;
-            if(!sub) { showModal("कृपया पहले विषय चुनें!"); return; }
+            if(!sub) {
+                showModal("कृपया पहले विषय चुनें!");
+                return;
+            }
 
             let list = document.getElementById("options-list");
             list.innerHTML = "";
@@ -416,58 +394,11 @@
             history.pushState({ screen: history.state ? history.state.screen : 'selection', optionsModal: true }, '');
         }
 
-        function getFileName(subjectId, chapterNum) {
-            let prefix = subPrefixes[subjectId];
-            let chNum = parseInt(chapterNum, 10);
-            let fileIndex = Math.ceil(chNum / 5); 
-            return `${prefix}${fileIndex}.js`;
-        }
-
-        function toggleLoading(show) {
-            if(show) document.getElementById("loading-overlay").classList.remove("hidden");
-            else document.getElementById("loading-overlay").classList.add("hidden");
-        }
-
-        function loadQuestionsScript(fileName, callback) {
-            if (loadedScripts[fileName]) { callback(true); return; }
-
-            toggleLoading(true);
-            let script = document.createElement('script');
-            script.src = fileName;
-            
-            script.onload = function() {
-                loadedScripts[fileName] = true;
-                toggleLoading(false);
-                callback(true);
-            };
-            
-            script.onerror = function() {
-                toggleLoading(false);
-                callback(false);
-            };
-            
-            document.body.appendChild(script);
-        }
-
         function selectChapter(val, text) {
             document.getElementById("chapter-select").value = val;
             document.getElementById("chapter-text").innerText = text;
-            history.back(); 
-
-            let subjectId = document.getElementById("subject-select").value;
-            let dynamicFileName = getFileName(subjectId, val);
-
-            document.getElementById("quiz-select").value = "";
-            document.getElementById("quiz-text").innerText = "लुकअप जारी है...";
-
-            loadQuestionsScript(dynamicFileName, function(success) {
-                if(success) {
-                    loadQuizzesCustom(); 
-                } else {
-                    showModal("यह अध्याय उपलब्ध नहीं है");
-                    document.getElementById("quiz-text").innerText = "सेट उपलब्ध नहीं है";
-                }
-            });
+            history.back();
+            loadQuizzesCustom();
         }
 
         function loadQuizzesCustom() {
@@ -484,9 +415,9 @@
             }
 
             if (hasQuizzes) {
-                qText.innerText = "-- SET चुनें --";
+                qText.innerText = "-- DPP चुनें --";
             } else {
-                qText.innerText = "-- अभी कोई SET उपलब्ध नहीं है --";
+                qText.innerText = "-- अभी कोई DPP उपलब्ध नहीं है --";
             }
         }
 
@@ -499,7 +430,7 @@
 
             let list = document.getElementById("options-list");
             list.innerHTML = "";
-            document.getElementById("options-title").innerText = "SET चुनें";
+            document.getElementById("options-title").innerText = "DPP चुनें";
 
             let hasQuizzes = false;
 
@@ -509,15 +440,14 @@
                 if(Object.keys(quizzes).length > 0) {
                     hasQuizzes = true;
                     for (let qKey in quizzes) {
-                        let qNum = qKey.replace("set_", "");
-                        list.innerHTML += `<div class="option-card" onclick="selectQuiz('${qKey}', 'SET-${qNum}')">SET-${qNum}</div>`;
+                        let qNum = qKey.replace("dpp_", "");
+                        list.innerHTML += `<div class="option-card" onclick="selectQuiz('${qKey}', 'DPP-${qNum}')">DPP-${qNum}</div>`;
                     }
                 }
             }
 
             if (!hasQuizzes) {
-                // (FIX) - यहाँ से इनलाइन वाइट कलर हटाकर CSS क्लास 'empty-msg' सेट कर दी है
-                list.innerHTML = `<div class="empty-msg">अभी इस अध्याय में कोई SET नहीं डाला गया है।<br><br>कृपया बाद में प्रयास करें।</div>`;
+                list.innerHTML = `<div style="text-align:center; color:#ffffff; padding: 20px;">अभी इस अध्याय में कोई DPP नहीं डाला गया है।<br><br>कृपया बाद में प्रयास करें।</div>`;
             }
 
             document.getElementById("options-modal").classList.remove("hidden");
@@ -531,8 +461,11 @@
         }
 
         function closeOptionsModal() {
-            if (history.state && history.state.optionsModal) history.back();
-            else document.getElementById("options-modal").classList.add("hidden");
+            if (history.state && history.state.optionsModal) {
+                history.back();
+            } else {
+                document.getElementById("options-modal").classList.add("hidden");
+            }
         }
 
         function showModal(msg) {
@@ -542,8 +475,11 @@
         }
 
         function closeModal() {
-            if (history.state && history.state.modal) history.back();
-            else document.getElementById("custom-modal").classList.add("hidden");
+            if (history.state && history.state.modal) {
+                history.back();
+            } else {
+                document.getElementById("custom-modal").classList.add("hidden");
+            }
         }
 
         function startQuiz() {
@@ -553,7 +489,7 @@
 
             if (!sub) { showModal("कृपया विषय चुनें!"); return; }
             if (!ch) { showModal("कृपया अध्याय चुनें!"); return; }
-            if (!qKey) { showModal("कोई SET चुना नहीं गया है। यदि उपलब्ध नहीं है, तो बाद में प्रयास करें।"); return; }
+            if (!qKey) { showModal("कोई DPP चुना नहीं गया है। यदि उपलब्ध नहीं है, तो बाद में प्रयास करें।"); return; }
 
             const chKey = `ch_${ch}`;
 
@@ -568,22 +504,33 @@
                 startOverallTimer();
                 loadQuestion();
             } else {
-                showModal("इस SET के सवाल अभी जोड़े नहीं गए हैं!");
+                showModal("इस DPP के सवाल अभी जोड़े नहीं गए हैं!");
             }
         }
 
         function startOverallTimer() {
             clearInterval(timerInterval);
-            timeLeft = 600; 
+            timeLeft = 1800; // 30 Minutes
+            
+            // नया टेस्ट शुरू होने पर वार्निंग इफ़ेक्ट और मैसेज को छुपा देना
+            document.getElementById("time-warning").style.display = "none";
+            document.getElementById("timer-ui").classList.remove('timer-warning');
+
             updateTimerDisplay();
 
             timerInterval = setInterval(() => {
                 timeLeft--;
                 updateTimerDisplay();
 
+                // जब 10 मिनट (600 सेकंड) बचेंगे तो मैसेज और इफ़ेक्ट चालू होगा
+                if (timeLeft === 600) {
+                    document.getElementById("time-warning").style.display = "block";
+                    document.getElementById("timer-ui").classList.add('timer-warning');
+                }
+
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
-                    showModal("समय समाप्त! आपका SET स्वचालित रूप से सबमिट किया जा रहा है।");
+                    showModal("समय समाप्त! आपका DPP स्वचालित रूप से सबमिट किया जा रहा है।");
                     submitQuiz();
                 }
             }, 1000);
@@ -597,8 +544,8 @@
 
         function loadQuestion() {
             let q = currentQuestions[currentQIndex];
-            document.getElementById("q-counter").innerText = `प्रश्न ${currentQIndex + 1} / ${currentQuestions.length}`;
-            document.getElementById("q-text").innerText = `${currentQIndex + 1}. ${q.question}`;
+            document.getElementById("q-counter").innerHTML = `प्रश्न ${currentQIndex + 1} / ${currentQuestions.length}`;
+            document.getElementById("q-text").innerHTML = `${currentQIndex + 1}. ${q.question}`;
 
             let optsContainer = document.getElementById("options-container");
             optsContainer.innerHTML = "";
@@ -624,13 +571,22 @@
         }
 
         function nextQuestion() {
-            if (currentQIndex < currentQuestions.length - 1) { currentQIndex++; loadQuestion(); }
+            if (currentQIndex < currentQuestions.length - 1) {
+                currentQIndex++;
+                loadQuestion();
+            }
         }
 
         function prevQuestion() {
-            if (currentQIndex > 0) { currentQIndex--; loadQuestion(); }
+            if (currentQIndex > 0) {
+                currentQIndex--;
+                loadQuestion();
+            }
         }
 
+        // ==========================================
+        // SUBMIT QUIZ फंक्शन 
+        // ==========================================
         function submitQuiz() {
             clearInterval(timerInterval);
             let score = 0;
@@ -641,11 +597,44 @@
             let total = currentQuestions.length;
             let percent = Math.round((score / total) * 100);
 
+            // गूगल शीट के लिए डाटा इकठ्ठा करना
+            let studentName = document.getElementById("student-name").value;
+            let studentId = document.getElementById("student-id").value;
+            let subjectCode = document.getElementById("subject-select").value;
+            let subjectName = document.getElementById("subject-text").innerText;
+            let chapterName = document.getElementById("chapter-text").innerText;
+            let dppName = document.getElementById("quiz-text").innerText;
+
+            let sheetData = {
+                name: studentName,
+                id: studentId,
+                score: `${score} / ${total}`,
+                subjectCode: subjectCode,
+                subjectName: subjectName,
+                chapterName: chapterName,
+                dppName: dppName
+            };
+
+            // =========================================================
+            // आपका GOOGLE APPS SCRIPT का लिंक 
+            // =========================================================
+            const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxZVqprhQ_Y4pdg0xwRixDZUHavrTVDkdbMlprX6hCsqvAboITOaOVHBZYfCZO1O2yySw/exec'; 
+
+            // keepalive: true का इस्तेमाल किया गया है ताकि टैब बंद होने पर भी डाटा चला जाए
+            if(GOOGLE_SHEET_URL) {
+                fetch(GOOGLE_SHEET_URL, {
+                    method: 'POST',
+                    keepalive: true, 
+                    body: JSON.stringify(sheetData)
+                }).catch(e => console.log("डेटा भेजने में त्रुटि: ", e));
+            }
+
+            // स्क्रीन पर रिजल्ट दिखाना
             history.replaceState({ screen: 'result' }, '');
             showScreen('result-screen');
 
-            document.getElementById("res-name").innerText = `विद्यार्थी: ${document.getElementById("student-name").value}`;
-            document.getElementById("res-id-display").innerText = `ID: ${document.getElementById("student-id").value}`;
+            document.getElementById("res-name").innerText = `विद्यार्थी: ${studentName}`;
+            document.getElementById("res-id-display").innerText = `ID: ${studentId}`;
             document.getElementById("res-score").innerText = `${score} / ${total}`;
             document.getElementById("res-percent").innerText = `कुल प्राप्तांक: ${percent}%`;
         }
