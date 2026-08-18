@@ -194,52 +194,55 @@
         .timer-anim { animation: pulseTimer 1s infinite ease-in-out; }
 
         /* ========================================================= */
-        /* NEW: Dog & Message Bell Styles */
+        /* APPLE DOCK & BELL ICON */
         /* ========================================================= */
-        .dog-message-wrapper {
-            position: fixed;
-            bottom: 25px;
-            right: 20px;
-            z-index: 999;
-            display: none; /* Login से पहले छुपा रहेगा */
-            align-items: flex-end;
-            justify-content: center;
-            transition: all 0.3s ease;
+        .dock-card {
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px; 
+            padding: 10px 25px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+            margin-bottom: 20px;
+            animation: fadeIn 0.4s ease-out;
+            display: flex;
+            justify-content: space-between; 
+            align-items: center;
+            height: 65px; 
         }
-        .dog-icon {
-            font-size: 3rem;
+        
+        .bell-wrapper {
+            font-size: 1.8rem;
             position: relative;
-            user-select: none;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
-        }
-        .bell-icon {
-            font-size: 1.6rem;
-            position: absolute;
-            top: -12px;
-            right: -15px;
             cursor: pointer;
-            animation: bellRing 1.5s infinite ease-in-out;
-            display: none; /* डिफ़ॉल्ट रूप से छुपा रहेगा (मैसेज होने पर ही दिखेगा) */
-            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.4));
+            animation: bellRing 2.5s infinite ease-in-out;
+            display: none; 
+            transition: transform 0.2s;
         }
+        
+        .bell-wrapper:hover {
+            transform: scale(1.1);
+        }
+
         .red-dot {
             position: absolute;
             top: 2px;
             right: 2px;
             width: 12px;
             height: 12px;
-            background-color: #ef4444;
-            border: 2px solid #ffffff;
+            background: #ef4444;
             border-radius: 50%;
-            box-shadow: 0 0 8px rgba(239, 68, 68, 0.8);
+            box-shadow: 0 0 8px #ef4444;
+            border: 2px solid #0f172a;
         }
+
         @keyframes bellRing {
-            0%, 100% { transform: rotate(0deg); }
-            10% { transform: rotate(20deg); }
+            0% { transform: rotate(0); }
+            10% { transform: rotate(15deg); }
             20% { transform: rotate(-15deg); }
             30% { transform: rotate(10deg); }
-            40% { transform: rotate(-5deg); }
-            50% { transform: rotate(0deg); }
+            40% { transform: rotate(-10deg); }
+            50%, 100% { transform: rotate(0); }
         }
     </style>
 </head>
@@ -262,12 +265,11 @@
                     <li style="margin-bottom: 8px;">पढ़ाई पर पूरा ध्यान केंद्रित करें। आपके शिक्षक द्वारा दिए गए निर्देशों का पालन 100% करें। शिक्षक टेस्ट देने के लिए कहते है तो समय से टेस्ट दीजिये </li>
                     <li style="margin-bottom: 8px;">प्रतिदिन के <strong>DPP और और होने वाले Tests</strong> में अनिवार्य रूप से भाग लें। इन्हें नजरअंदाज न करें।</li>
                     <li style="margin-bottom: 8px;">DPP मे दिए जाने वाले टॉपिक को घर पर अच्छे से याद करे।</li>
-                    <li style="margin-bottom: 8px;">शिक्षक आपको राह दिखा सकते हैं, लेकिन उस राह पर चलकर मंजिल पाना आपकी जिम्मेदारी है। एग्जाम अब आपका निकट आ रहा है। आप ईमानदारी से हमारे साथ सारा वर्क कीजिए वरना बाद में पछतावा होगा कि कास हम पढ़ लिए होते और ईमानदारी और मेहनत से पढ़ने वाले बच्चो से मेरा स्पेशल रिक्वेस्ट 🙏 है की please आप सीरियस होकर पढ़िए अभी आपको पता नहीं चलेगा की इतने सारे चीजों को करने से क्या होगा,लेकिन जब आप एग्जाम दीजियेगा तब पता चलेगा की मैंने सही समय पर सही कदम उठाया👍।</li>
+                    <li style="margin-bottom: 8px;">शिक्षक आपको राह दिखा सकते हैं, लेकिन उस राह पर चलकर मंजिल पाना आपकी जिम्मेदारी है। एग्जाम अब आपका निकट आ रहा है। आप ईमानदारी से हमारे साथ सारा वर्क कीजिए वरना बाद में पछतावा होगा कि कास हम पढ़ लिए होते और ईमानदारी और मेहनत से पढ़ने वाले बच्चो से मेरा स्पेशल रिक्वेस्ट 🙏 है की please आप सीरियस होकर पढ़िए अभी आपको पता नहीं चलेगा की इतने सारे चीजों को करने से क्या होगा,लेकिन जब বাধ में एग्जाम दीजियेगा तब पता चलेगा की मैंने सही समय पर सही कदम उठाया👍।</li>
                 </ul>
             </div>
             <button class="btn btn-success" onclick="proceedToLogin()">Yes, मै अब मेहनत करूँगा🥺(Next)</button>
         </div>
-        <!-- ========================================== -->
 
         <!-- लॉगिन स्क्रीन -->
         <div id="login-screen" class="card hidden">
@@ -283,6 +285,9 @@
             <button class="btn" onclick="verifyStudent()">Next</button>
         </div>
 
+        <!-- ========================================== -->
+        <!-- DPP SETUP SCREEN -->
+        <!-- ========================================== -->
         <div id="selection-screen" class="card hidden">
             <h2 style="margin-bottom: 25px; text-align: center; color: #38bdf8; font-size: 1.4rem; letter-spacing: 0.5px;">DPP Setup</h2>
             <div class="input-group">
@@ -312,6 +317,22 @@
             <button class="btn" onclick="startQuiz()">Start DPP</button>
         </div>
 
+        <!-- ========================================== -->
+        <!-- DOCK CONTAINER (Shows with Setup)     -->
+        <!-- ========================================== -->
+        <div id="dock-container" class="dock-card hidden">
+            <div style="flex-grow: 1; color: rgba(255,255,255,0.4); font-size: 0.8rem; font-weight: 500;">
+                <!-- खाली जगह ताकि बेल राइट साइड में रहे -->
+            </div>
+            
+            <!-- नोटिफिकेशन बेल -->
+            <div id="notification-bell" class="bell-wrapper" onclick="openNotificationModal()">
+                🔔
+                <span class="red-dot"></span>
+            </div>
+        </div>
+
+        <!-- क्विज स्क्रीन -->
         <div id="quiz-screen" class="card hidden">
             <div>
                 <span id="q-counter" style="font-weight: 500; color: #38bdf8; font-size: 0.95rem;">प्रश्न 1 / 10</span>
@@ -333,7 +354,7 @@
             <button class="btn btn-success" id="btn-submit" style="margin-top: 15px; display: none;" onclick="submitQuiz()">Submit🧐</button>
         </div>
 
-        <!-- NEW: प्री-सबमिट स्क्रीन -->
+        <!-- प्री-सबमिट स्क्रीन -->
         <div id="pre-submit-screen" class="card hidden">
             <h2 style="margin-bottom: 25px; text-align: center; color: #38bdf8; font-size: 1.4rem; letter-spacing: 0.5px;"> DPP Submition Details </h2>
             <div id="pre-submit-details" style="font-size: 1.05rem; line-height: 1.9; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
@@ -348,6 +369,7 @@
             <button class="btn btn-success" id="btn-final-submit" onclick="startFinalSubmit()">OK (सबमिट करें)</button>
         </div>
 
+        <!-- रिजल्ट स्क्रीन -->
         <div id="result-screen" class="card score-card hidden">
             <h2 style="color: #38bdf8; font-size: 1.6rem; letter-spacing: 0.5px;">🧾Your Result🫣</h2>
             <p id="res-name" style="margin-top: 15px; color: #ffffff; font-weight: 500; font-size: 1.15rem;"></p>
@@ -368,25 +390,9 @@
 
     </div>
 
-    <!-- NEW: Dog Message Icon (Right Bottom Floating) -->
-    <div id="dog-message-container" class="dog-message-wrapper">
-        <div class="dog-icon" id="dog-icon">
-            🐶
-            <div class="bell-icon" id="bell-icon" onclick="openStudentMessageModal()">
-                🔔
-                <div class="red-dot"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- NEW: Student Message Modal -->
-    <div id="student-message-modal" class="modal-overlay hidden">
-        <div class="modal-glass">
-            <h2 style="margin-bottom: 20px; color: #38bdf8; font-size: 1.5rem; letter-spacing: 0.5px; font-weight: bold;">Message</h2>
-            <p id="student-personal-msg-text" style="font-size: 1.1rem; color: #ffffff; line-height: 1.7; text-align: left; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);"></p>
-            <button class="btn" style="margin-top: 25px; padding: 12px;" onclick="closeStudentMessageModal()">Close</button>
-        </div>
-    </div>
+    <!-- ========================================== -->
+    <!-- MODALS SECTION -->
+    <!-- ========================================== -->
 
     <!-- Error/Message Modal -->
     <div id="custom-modal" class="modal-overlay hidden">
@@ -406,7 +412,7 @@
         </div>
     </div>
 
-    <!-- NEW: Animated Summary Modal -->
+    <!-- Animated Summary Modal -->
     <div id="summary-modal" class="modal-overlay hidden">
         <div class="summary-glass">
             <h3 style="text-align:center; color:#38bdf8; margin-bottom:20px; font-size:1.4rem;">विस्तृत परिणाम</h3>
@@ -417,20 +423,23 @@
         </div>
     </div>
 
+    <!-- NEW: Student Notification Modal -->
+    <div id="notification-modal" class="modal-overlay hidden">
+        <div class="modal-glass">
+            <div style="font-size: 3rem; margin-bottom: 10px; animation: bellRing 2s infinite;">🔔</div>
+            <h3 style="margin-bottom: 20px; color: #38bdf8; font-size: 1.3rem; font-weight: 600;">आपके लिए खास संदेश</h3>
+            <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; margin-bottom: 25px;">
+                <p id="student-msg-text" style="color: #ffffff; font-size: 1.05rem; line-height: 1.6; margin: 0;"></p>
+            </div>
+            <button class="btn btn-secondary" style="padding: 12px;" onclick="closeNotificationModal()">बंद करें</button>
+        </div>
+    </div>
+
     <!-- Script File Reference -->
     <script src="questions.js"></script>
 
     <!-- Main JS Logic -->
     <script>
-        /* 
-           NOTE: questions.js फाइल में आपको इस प्रकार से मैसेज सेट करना होगा:
-           window.studentMessages = {
-               "cm1217": "आपका पिछले टेस्ट का प्रदर्शन बहुत अच्छा रहा। इसी तरह मेहनत करते रहें!",
-               "ab1010": "कृपया अपने पिछले पेंडिंग DPP को पूरा करें।"
-           };
-        */
-        window.studentMessages = window.studentMessages || {}; // Fallback in case not defined
-
         const subjectsList = {
             1: "भौतिक विज्ञान (Physics)",
             2: "रसायन विज्ञान (Chemistry)",
@@ -467,10 +476,14 @@
 
         window.onload = function() {
             if (checkSession()) {
+                let savedId = localStorage.getItem('dpp_student_id');
                 document.getElementById('student-name').value = localStorage.getItem('dpp_student_name');
-                document.getElementById('student-id').value = localStorage.getItem('dpp_student_id');
+                document.getElementById('student-id').value = savedId;
                 history.replaceState({ screen: 'selection' }, '');
                 showScreen('selection-screen');
+                
+                // सेशन चालू होने पर भी नोटिफिकेशन चेक करें
+                checkAndShowNotification(savedId);
             } else {
                 history.replaceState({ screen: 'instruction' }, '');
                 showScreen('instruction-screen');
@@ -482,7 +495,7 @@
             document.getElementById("custom-modal").classList.add("hidden");
             document.getElementById("options-modal").classList.add("hidden");
             document.getElementById("summary-modal").classList.add("hidden");
-            document.getElementById("student-message-modal").classList.add("hidden");
+            document.getElementById("notification-modal").classList.add("hidden");
 
             if (!state) {
                 if (checkSession()) { showScreen('selection-screen'); }
@@ -493,7 +506,7 @@
             if (state.modal) document.getElementById("custom-modal").classList.remove("hidden");
             if (state.optionsModal) document.getElementById("options-modal").classList.remove("hidden");
             if (state.summaryModal) document.getElementById("summary-modal").classList.remove("hidden");
-            if (state.studentMsgModal) document.getElementById("student-message-modal").classList.remove("hidden");
+            if (state.notifModal) document.getElementById("notification-modal").classList.remove("hidden");
 
             // यदि 5 घंटे का सेशन एक्टिव है, तो लॉगिन/इंस्ट्रक्शन पर जाने से रोकें
             if (state.screen === 'instruction' || state.screen === 'login') {
@@ -531,44 +544,7 @@
             }
         });
 
-        // NEW: Message Check & Display Logic
-        function checkAndShowMessageIcon(studentId) {
-            let dogContainer = document.getElementById("dog-message-container");
-            let bellIcon = document.getElementById("bell-icon");
-            let sId = studentId.toLowerCase();
-
-            dogContainer.style.display = "flex"; // Show Dog always after login
-
-            if (window.studentMessages && window.studentMessages[sId]) {
-                bellIcon.style.display = "block"; // Show bell and make clickable
-            } else {
-                bellIcon.style.display = "none"; // No message -> Empty Dog
-            }
-        }
-
-        // NEW: Message Modal Open/Close Logic
-        function openStudentMessageModal() {
-            let sId = localStorage.getItem('dpp_student_id');
-            if (sId && window.studentMessages && window.studentMessages[sId.toLowerCase()]) {
-                document.getElementById("student-personal-msg-text").innerText = window.studentMessages[sId.toLowerCase()];
-                document.getElementById("student-message-modal").classList.remove("hidden");
-                
-                // Optional: घंटी का एनीमेशन मैसेज देखने के बाद रोक दें
-                document.getElementById("bell-icon").style.animation = "none";
-                document.querySelector(".red-dot").style.display = "none";
-                
-                history.pushState({ screen: history.state ? history.state.screen : 'selection', studentMsgModal: true }, '');
-            }
-        }
-
-        function closeStudentMessageModal() {
-            if (history.state && history.state.studentMsgModal) {
-                history.back();
-            } else {
-                document.getElementById("student-message-modal").classList.add("hidden");
-            }
-        }
-
+        // स्क्रीन बदलने का फंक्शन (डॉक को भी मैनेज करता है)
         function showScreen(screenId) {
             document.getElementById("instruction-screen").classList.add("hidden");
             document.getElementById("login-screen").classList.add("hidden");
@@ -576,16 +552,58 @@
             document.getElementById("quiz-screen").classList.add("hidden");
             document.getElementById("pre-submit-screen").classList.add("hidden");
             document.getElementById("result-screen").classList.add("hidden");
+            document.getElementById("dock-container").classList.add("hidden");
             
             document.getElementById(screenId).classList.remove("hidden");
+            
+            // अगर क्विज सेटअप स्क्रीन है, तो डॉक भी दिखाएं
+            if(screenId === 'selection-screen') {
+                document.getElementById("dock-container").classList.remove("hidden");
+            }
+        }
 
-            // Dog Icon Visibility logic
-            let dogContainer = document.getElementById("dog-message-container");
-            if (screenId === 'instruction-screen' || screenId === 'login-screen') {
-                dogContainer.style.display = "none"; // Hide on login and instruction page
+        // ==========================================
+        // NEW: स्मार्ट नोटिफिकेशन चेक करने का फंक्शन (Case-Insensitive)
+        // ==========================================
+        function checkAndShowNotification(studentId) {
+            let bell = document.getElementById("notification-bell");
+            let enteredIdLower = studentId.toLowerCase(); // छात्र ने जो डाला उसे छोटा किया
+            let foundMessage = null;
+
+            // चेक करें कि questions.js में window.studentMessages है या नहीं
+            if (window.studentMessages) {
+                // teacher ने questions.js में आईडी जैसे भी लिखी हो (Capital/Small), सबको चेक करेगा
+                for (let savedId in window.studentMessages) {
+                    if (savedId.toLowerCase() === enteredIdLower) {
+                        foundMessage = window.studentMessages[savedId];
+                        break; // जैसे ही आईडी मिल जाए, खोजना बंद कर दे
+                    }
+                }
+            }
+
+            if (foundMessage) {
+                bell.style.display = "block"; // बेल दिखाएं
+                bell.dataset.message = foundMessage; // मैसेज को सेट करें
             } else {
-                let savedId = localStorage.getItem('dpp_student_id');
-                if (savedId) { checkAndShowMessageIcon(savedId); }
+                bell.style.display = "none"; // बेल छिपाएं
+            }
+        }
+
+        function openNotificationModal() {
+            let bell = document.getElementById("notification-bell");
+            let msg = bell.dataset.message;
+            if(msg) {
+                document.getElementById("student-msg-text").innerText = msg;
+                document.getElementById("notification-modal").classList.remove("hidden");
+                history.pushState({ screen: history.state ? history.state.screen : 'selection', notifModal: true }, '');
+            }
+        }
+
+        function closeNotificationModal() {
+            if (history.state && history.state.notifModal) {
+                history.back();
+            } else {
+                document.getElementById("notification-modal").classList.add("hidden");
             }
         }
 
@@ -620,8 +638,8 @@
             localStorage.setItem('dpp_student_id', studentId);
             localStorage.setItem('dpp_login_time', Date.now().toString());
 
-            // Check if there is any message for this student
-            checkAndShowMessageIcon(studentId);
+            // यहाँ पर नोटिफिकेशन चेक करें
+            checkAndShowNotification(studentId);
 
             history.pushState({ screen: 'selection' }, '');
             showScreen('selection-screen');
