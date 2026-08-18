@@ -84,10 +84,10 @@
         .options-list { overflow-y: auto; max-height: 55vh; text-align: left; padding-right: 8px; margin-bottom: 15px; }
         
         /* स्क्रॉलबार */
-        .options-list::-webkit-scrollbar { width: 5px; }
-        .options-list::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
-        .options-list::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 10px; }
-        .options-list::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.6); }
+        .options-list::-webkit-scrollbar, .summary-box::-webkit-scrollbar { width: 5px; }
+        .options-list::-webkit-scrollbar-track, .summary-box::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
+        .options-list::-webkit-scrollbar-thumb, .summary-box::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 10px; }
+        .options-list::-webkit-scrollbar-thumb:hover, .summary-box::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.6); }
         
         /* लिस्ट ऑप्शन कार्ड्स (मोडल के अंदर) */
         .option-card { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); padding: 14px 18px; border-radius: 12px; margin-bottom: 10px; cursor: pointer; font-size: 0.95rem; color: #ffffff; transition: all 0.25s ease; }
@@ -120,6 +120,21 @@
             white-space: nowrap;
             z-index: 100;
         }
+
+        /* न्यू ऐडेड स्टाइल्स (Summary Box) */
+        .summary-box { background: rgba(0, 0, 0, 0.3); padding: 20px; border-radius: 12px; margin-top: 20px; text-align: left; max-height: 450px; overflow-y: auto; border: 1px solid rgba(255,255,255,0.1); }
+        .summary-item { border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 15px; }
+        .summary-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .ans-correct { color: #10b981; font-weight: bold; }
+        .ans-wrong { color: #ef4444; font-weight: bold; }
+        
+        /* 5 सेकंड टाइमर एनीमेशन */
+        @keyframes pulseTimer {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.8; color: #38bdf8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .timer-anim { animation: pulseTimer 1s infinite ease-in-out; }
     </style>
 </head>
 <body>
@@ -213,6 +228,21 @@
             <button class="btn btn-success" id="btn-submit" style="margin-top: 15px; display: none;" onclick="submitQuiz()">Submit🧐</button>
         </div>
 
+        <!-- NEW: प्री-सबमिट स्क्रीन -->
+        <div id="pre-submit-screen" class="card hidden">
+            <h2 style="margin-bottom: 25px; text-align: center; color: #38bdf8; font-size: 1.4rem; letter-spacing: 0.5px;">तैयार हैं? (Submission Details)</h2>
+            <div id="pre-submit-details" style="font-size: 1.05rem; line-height: 1.9; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                <!-- यहाँ डेटा डायनामिकली लोड होगा -->
+            </div>
+            
+            <div id="submit-loader" class="hidden" style="text-align: center; margin-top: 20px; padding: 15px;">
+                <h3 style="color: #fbbf24; font-size: 1.2rem;">आपका रिजल्ट सबमिट हो रहा है...</h3>
+                <div class="timer-anim" style="font-size: 3.5rem; font-weight: 800; margin-top: 15px; color: #ffffff;" id="submit-timer-text">5</div>
+            </div>
+            
+            <button class="btn btn-success" id="btn-final-submit" onclick="startFinalSubmit()">OK (सबमिट करें)</button>
+        </div>
+
         <div id="result-screen" class="card score-card hidden">
             <h2 style="color: #38bdf8; font-size: 1.6rem; letter-spacing: 0.5px;">🧾Your Result🫣</h2>
             <p id="res-name" style="margin-top: 15px; color: #ffffff; font-weight: 500; font-size: 1.15rem;"></p>
@@ -220,7 +250,15 @@
             <div class="score-badge" id="res-score">0 / 0</div>
             <p id="res-percent" style="font-size: 1.3rem; font-weight: 600; color: #10b981;"></p>
             <br>
+            
+            <!-- व्यू समरी और होम बटन -->
+            <button class="btn btn-secondary" onclick="toggleSummary()" style="margin-top: 15px; margin-bottom: 10px;">View Summary / Answer 📝</button>
             <button class="btn" onclick="location.reload()" style="margin-top: 10px;">Home 🏠</button>
+
+            <!-- समरी बॉक्स -->
+            <div id="summary-container" class="summary-box hidden">
+                <!-- समरी यहाँ लोड होगी -->
+            </div>
         </div>
 
     </div>
@@ -301,6 +339,8 @@
                 clearInterval(timerInterval);
             } else if (state.screen === 'quiz') {
                 showScreen('quiz-screen');
+            } else if (state.screen === 'pre-submit') {
+                showScreen('pre-submit-screen');
             } else if (state.screen === 'result') {
                 showScreen('result-screen');
             }
@@ -312,6 +352,7 @@
             document.getElementById("login-screen").classList.add("hidden");
             document.getElementById("selection-screen").classList.add("hidden");
             document.getElementById("quiz-screen").classList.add("hidden");
+            document.getElementById("pre-submit-screen").classList.add("hidden");
             document.getElementById("result-screen").classList.add("hidden");
             
             document.getElementById(screenId).classList.remove("hidden");
@@ -408,14 +449,29 @@
             document.getElementById("quiz-select").value = ""; 
 
             let hasQuizzes = false;
+            let hiddenDueToCooldown = false;
+
             if (window.quizDatabase && window.quizDatabase[sub] && window.quizDatabase[sub][`ch_${chNum}`]) {
-                if(Object.keys(window.quizDatabase[sub][`ch_${chNum}`]).length > 0) {
-                    hasQuizzes = true;
+                let quizzes = window.quizDatabase[sub][`ch_${chNum}`];
+                for (let qKey in quizzes) {
+                    // Check localstorage
+                    let cooldownKey = `dpp_cooldown_${sub}_${chNum}_${qKey}`;
+                    let savedTime = localStorage.getItem(cooldownKey);
+                    let hide = false;
+                    
+                    if (savedTime) {
+                        let elapsed = Date.now() - parseInt(savedTime);
+                        if (elapsed < 5 * 60 * 60 * 1000) { hide = true; hiddenDueToCooldown = true; } 
+                        else { localStorage.removeItem(cooldownKey); }
+                    }
+                    if (!hide) { hasQuizzes = true; break; }
                 }
             }
 
             if (hasQuizzes) {
                 qText.innerText = "-- DPP चुनें --";
+            } else if (hiddenDueToCooldown) {
+                qText.innerText = "-- आपने सभी DPP बना लिए (5 घंटे बाद देखें) --";
             } else {
                 qText.innerText = "-- अभी कोई DPP उपलब्ध नहीं है --";
             }
@@ -433,21 +489,46 @@
             document.getElementById("options-title").innerText = "DPP चुनें";
 
             let hasQuizzes = false;
+            let totalQuizzes = 0;
+            let hiddenQuizzesCount = 0;
 
             if (window.quizDatabase && window.quizDatabase[sub] && window.quizDatabase[sub][`ch_${chNum}`]) {
                 let quizzes = window.quizDatabase[sub][`ch_${chNum}`];
                 
                 if(Object.keys(quizzes).length > 0) {
-                    hasQuizzes = true;
                     for (let qKey in quizzes) {
-                        let qNum = qKey.replace("dpp_", "");
-                        list.innerHTML += `<div class="option-card" onclick="selectQuiz('${qKey}', 'DPP-${qNum}')">DPP-${qNum}</div>`;
+                        totalQuizzes++;
+                        
+                        // 5 Hour Cooldown Logic
+                        let cooldownKey = `dpp_cooldown_${sub}_${chNum}_${qKey}`;
+                        let savedTime = localStorage.getItem(cooldownKey);
+                        let hideQuiz = false;
+                        
+                        if (savedTime) {
+                            let elapsed = Date.now() - parseInt(savedTime);
+                            if (elapsed < 5 * 60 * 60 * 1000) { // 5 घंटे = 5 * 60 * 60 * 1000 ms
+                                hideQuiz = true;
+                                hiddenQuizzesCount++;
+                            } else {
+                                localStorage.removeItem(cooldownKey); // 5 घंटे बाद रिमूव कर दो
+                            }
+                        }
+
+                        if (!hideQuiz) {
+                            hasQuizzes = true;
+                            let qNum = qKey.replace("dpp_", "");
+                            list.innerHTML += `<div class="option-card" onclick="selectQuiz('${qKey}', 'DPP-${qNum}')">DPP-${qNum}</div>`;
+                        }
                     }
                 }
             }
 
             if (!hasQuizzes) {
-                list.innerHTML = `<div style="text-align:center; color:#ffffff; padding: 20px;">अभी इस अध्याय में कोई DPP नहीं डाला गया है।<br><br>कृपया बाद में प्रयास करें।</div>`;
+                if (totalQuizzes > 0 && hiddenQuizzesCount === totalQuizzes) {
+                    list.innerHTML = `<div style="text-align:center; color:#ffffff; padding: 20px;">आपने इस अध्याय के सभी DPP हाल ही में बना लिए हैं।<br><br><span style="color:#fbbf24;">कृपया 5 घंटे बाद पुनः प्रयास करें।</span></div>`;
+                } else {
+                    list.innerHTML = `<div style="text-align:center; color:#ffffff; padding: 20px;">अभी इस अध्याय में कोई DPP नहीं डाला गया है।<br><br>कृपया बाद में प्रयास करें।</div>`;
+                }
             }
 
             document.getElementById("options-modal").classList.remove("hidden");
@@ -585,10 +666,63 @@
         }
 
         // ==========================================
-        // SUBMIT QUIZ फंक्शन 
+        // STEP 1: SUBMIT QUIZ (Pre-Submit Interface)
         // ==========================================
         function submitQuiz() {
             clearInterval(timerInterval);
+            
+            let studentName = document.getElementById("student-name").value;
+            let studentId = document.getElementById("student-id").value;
+            let total = currentQuestions.length;
+            let attempted = userAnswers.filter(ans => ans !== null).length;
+            
+            // समय गणना
+            let timeTakenSec = 1800 - timeLeft;
+            let m = Math.floor(timeTakenSec / 60);
+            let s = timeTakenSec % 60;
+            let timeTakenStr = `${m} मिनट ${s} सेकंड`;
+
+            // डेटा प्री-सबमिट स्क्रीन पर सेट करना
+            document.getElementById("pre-submit-details").innerHTML = `
+                <div style="margin-bottom: 8px;"><strong style="color: #cbd5e1;">नाम:</strong> ${studentName}</div>
+                <div style="margin-bottom: 8px;"><strong style="color: #cbd5e1;">ID:</strong> ${studentId}</div>
+                <div style="margin-bottom: 8px;"><strong style="color: #cbd5e1;">इस DPP में कुल प्रश्न:</strong> ${total}</div>
+                <div style="margin-bottom: 8px;"><strong style="color: #cbd5e1;">आपने अटेम्प्ट किये:</strong> <span style="color:#38bdf8; font-weight:bold;">${attempted}</span></div>
+                <div style="margin-bottom: 8px;"><strong style="color: #cbd5e1;">कुल लिया गया समय:</strong> ${timeTakenStr}</div>
+            `;
+
+            // लोडर छुपाना और OK बटन दिखाना
+            document.getElementById("submit-loader").classList.add("hidden");
+            document.getElementById("btn-final-submit").classList.remove("hidden");
+
+            history.pushState({ screen: 'pre-submit' }, '');
+            showScreen('pre-submit-screen');
+        }
+
+        // ==========================================
+        // STEP 2: START 5 SEC TIMER
+        // ==========================================
+        function startFinalSubmit() {
+            document.getElementById("btn-final-submit").classList.add("hidden");
+            document.getElementById("submit-loader").classList.remove("hidden");
+            
+            let counter = 5;
+            document.getElementById("submit-timer-text").innerText = counter;
+            
+            let countdown = setInterval(() => {
+                counter--;
+                document.getElementById("submit-timer-text").innerText = counter;
+                if(counter <= 0) {
+                    clearInterval(countdown);
+                    finalizeQuizSubmit();
+                }
+            }, 1000);
+        }
+
+        // ==========================================
+        // STEP 3: FINALIZE RESULT & SHEET DATA
+        // ==========================================
+        function finalizeQuizSubmit() {
             let score = 0;
             currentQuestions.forEach((q, idx) => {
                 if (userAnswers[idx] === q.correct) score++;
@@ -597,13 +731,18 @@
             let total = currentQuestions.length;
             let percent = Math.round((score / total) * 100);
 
-            // गूगल शीट के लिए डाटा इकठ्ठा करना
             let studentName = document.getElementById("student-name").value;
             let studentId = document.getElementById("student-id").value;
             let subjectCode = document.getElementById("subject-select").value;
             let subjectName = document.getElementById("subject-text").innerText;
+            let chapterCode = document.getElementById("chapter-select").value;
             let chapterName = document.getElementById("chapter-text").innerText;
+            let dppKey = document.getElementById("quiz-select").value;
             let dppName = document.getElementById("quiz-text").innerText;
+
+            // लोकल स्टोरेज में सेव करना (5 घंटे के लिए ब्लॉक)
+            let cooldownKey = `dpp_cooldown_${subjectCode}_${chapterCode}_${dppKey}`;
+            localStorage.setItem(cooldownKey, Date.now().toString());
 
             let sheetData = {
                 name: studentName,
@@ -615,12 +754,8 @@
                 dppName: dppName
             };
 
-            // =========================================================
-            // आपका GOOGLE APPS SCRIPT का लिंक 
-            // =========================================================
             const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxZVqprhQ_Y4pdg0xwRixDZUHavrTVDkdbMlprX6hCsqvAboITOaOVHBZYfCZO1O2yySw/exec'; 
 
-            // keepalive: true का इस्तेमाल किया गया है ताकि टैब बंद होने पर भी डाटा चला जाए
             if(GOOGLE_SHEET_URL) {
                 fetch(GOOGLE_SHEET_URL, {
                     method: 'POST',
@@ -637,8 +772,66 @@
             document.getElementById("res-id-display").innerText = `ID: ${studentId}`;
             document.getElementById("res-score").innerText = `${score} / ${total}`;
             document.getElementById("res-percent").innerText = `कुल प्राप्तांक: ${percent}%`;
+
+            // समरी जनरेट करना (Hidden By Default)
+            document.getElementById("summary-container").classList.add("hidden");
+            generateSummary();
+        }
+
+        // ==========================================
+        // VIEW SUMMARY PANEL LOGIC
+        // ==========================================
+        function toggleSummary() {
+            let container = document.getElementById("summary-container");
+            if (container.classList.contains("hidden")) {
+                container.classList.remove("hidden");
+            } else {
+                container.classList.add("hidden");
+            }
+        }
+
+        function generateSummary() {
+            let container = document.getElementById("summary-container");
+            container.innerHTML = `<h3 style="text-align:center; color:#38bdf8; margin-bottom:20px; font-size:1.4rem;">विस्तृत परिणाम</h3>`;
+            
+            currentQuestions.forEach((q, idx) => {
+                let userAnsIdx = userAnswers[idx];
+                let isAttempted = userAnsIdx !== null;
+                let isCorrect = isAttempted && userAnsIdx === q.correct;
+                
+                let mark = isCorrect ? "✔️ सही" : "❌ गलत";
+                let markClass = isCorrect ? "ans-correct" : "ans-wrong";
+                
+                let userAnsText = isAttempted ? String.fromCharCode(65+userAnsIdx) + ") " + q.options[userAnsIdx] : "उत्तर नहीं दिया गया";
+                let correctAnsText = String.fromCharCode(65+q.correct) + ") " + q.options[q.correct];
+
+                // सारे ऑप्शंस को प्रिंट करना
+                let optionsHtml = `<div style="margin: 10px 0; font-size: 0.95rem; color: #94a3b8; line-height: 1.6;">`;
+                q.options.forEach((opt, oIdx) => {
+                    optionsHtml += `<div>${String.fromCharCode(65+oIdx)}) ${opt}</div>`;
+                });
+                optionsHtml += `</div>`;
+
+                let html = `
+                    <div class="summary-item">
+                        <div style="margin-bottom: 5px; color: #ffffff; font-size: 1.05rem;">
+                            <strong>प्रश्न ${idx + 1}:</strong> ${q.question} <span class="${markClass}">(${mark})</span>
+                        </div>
+                        ${optionsHtml}
+                        <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-top: 10px;">
+                            <div style="font-size: 0.95rem; margin-bottom: 5px;">
+                                <strong style="color: #cbd5e1;">छात्र द्वारा दिया गया उत्तर:</strong> 
+                                <span style="${!isCorrect ? 'color:#ef4444; font-weight:600;' : 'color:#10b981; font-weight:600;'}">${userAnsText}</span>
+                            </div>
+                            <div style="color: #10b981; font-size: 0.95rem;">
+                                <strong>असली उत्तर:</strong> <span style="font-weight:600;">${correctAnsText}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
         }
     </script>
 </body>
 </html>
-
