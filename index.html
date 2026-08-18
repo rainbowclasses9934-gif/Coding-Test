@@ -460,26 +460,14 @@
         let timeLeft = 1800; // 30 minutes in seconds
         window.currentQuizFinished = false;
 
-        function checkSession() {
-            let savedLoginTime = localStorage.getItem('dpp_login_time');
-            if (savedLoginTime && (Date.now() - parseInt(savedLoginTime)) < 5 * 60 * 60 * 1000) {
-                return true;
-            }
-            return false;
-        }
-
         window.onload = function() {
-            if (checkSession()) {
-                let savedId = localStorage.getItem('dpp_student_id');
-                document.getElementById('student-name').value = localStorage.getItem('dpp_student_name');
-                document.getElementById('student-id').value = savedId;
-                history.replaceState({ screen: 'selection' }, '');
-                showScreen('selection-screen');
-                checkAndShowNotification(savedId);
-            } else {
-                history.replaceState({ screen: 'instruction' }, '');
-                showScreen('instruction-screen');
-            }
+            // यह कोड रिफ्रेश होते ही नाम और आईडी के बॉक्स को खाली कर देगा
+            document.getElementById('student-name').value = '';
+            document.getElementById('student-id').value = '';
+            
+            // हमेशा शुरुआत (Instruction Screen) से ही पोर्टल खुलेगा
+            history.replaceState({ screen: 'instruction' }, '');
+            showScreen('instruction-screen');
         };
 
         window.addEventListener('popstate', function(event) {
@@ -490,8 +478,7 @@
             document.getElementById("notification-modal").classList.add("hidden");
 
             if (!state) {
-                if (checkSession()) { showScreen('selection-screen'); }
-                else { showScreen('instruction-screen'); }
+                showScreen('instruction-screen');
                 return;
             }
 
@@ -499,14 +486,6 @@
             if (state.optionsModal) document.getElementById("options-modal").classList.remove("hidden");
             if (state.summaryModal) document.getElementById("summary-modal").classList.remove("hidden");
             if (state.notifModal) document.getElementById("notification-modal").classList.remove("hidden");
-
-            if (state.screen === 'instruction' || state.screen === 'login') {
-                if (checkSession()) {
-                    history.replaceState({ screen: 'selection' }, '');
-                    showScreen('selection-screen');
-                    return;
-                }
-            }
 
             if (state.screen === 'quiz' || state.screen === 'pre-submit') {
                 if (window.currentQuizFinished) {
@@ -610,10 +589,6 @@
             }
 
             if (!isIdValid) { showModal("आपकी आईडी पंजीकृत नहीं है! कृपया सही आईडी दर्ज करें।"); return; }
-
-            localStorage.setItem('dpp_student_name', name);
-            localStorage.setItem('dpp_student_id', studentId);
-            localStorage.setItem('dpp_login_time', Date.now().toString());
 
             checkAndShowNotification(studentId);
 
