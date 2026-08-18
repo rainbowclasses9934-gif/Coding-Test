@@ -9,44 +9,61 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; }
         input { user-select: auto; }
         
+        /* 1. बैकग्राउंड: डार्क ब्लू-ग्रे ग्रेडिएंट */
         body { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; background-attachment: fixed; }
         
+        /* टॉप में फिट करने के लिए margin-top: 0 किया गया है */
         .container { width: 100%; max-width: 600px; padding: 15px 15px 20px 15px; margin-top: 0; }
         
+        /* 2. मेन कंटेनर (Glass Panel): सेमी-ट्रांसपेरेंट डार्क ब्लू विद हल्का वाइट बॉर्डर */
         .card { background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 25px; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7); margin-bottom: 20px; animation: fadeIn 0.4s ease-out; position: relative; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         
         .input-group { margin-bottom: 20px; }
         .input-group label { display: block; font-weight: 500; margin-bottom: 10px; color: #ffffff; font-size: 0.95rem; }
         
+        /* 3. इनपुट फील्ड्स: पारदर्शी काला */
         .input-group input { width: 100%; padding: 14px 18px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; font-size: 1rem; color: #ffffff; outline: none; backdrop-filter: blur(8px); transition: all 0.3s ease; }
         .input-group input::placeholder { color: rgba(255, 255, 255, 0.6); }
         .input-group input:focus { border-color: #38bdf8; box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); background: rgba(0, 0, 0, 0.5); }
         
+        /* डार्क ग्लास सेलेक्ट बॉक्स */
         .glass-select-box { width: 100%; padding: 14px 18px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; font-size: 1rem; color: #ffffff; cursor: pointer; backdrop-filter: blur(8px); transition: all 0.3s ease; display: flex; justify-content: space-between; align-items: center; }
         .glass-select-box:hover { border-color: #38bdf8; background: rgba(0, 0, 0, 0.5); box-shadow: 0 0 12px rgba(56, 189, 248, 0.2); }
         .select-icon { font-size: 0.8rem; color: #ffffff; }
         
+        /* 4. बटन्स: प्राइमरी (ब्लू), सक्सेस (ग्रीन), सेकेंडरी (ग्रे) */
         .btn { width: 100%; background: linear-gradient(135deg, #3b82f6, #2563eb); color: #ffffff; border: none; padding: 15px; border-radius: 12px; font-size: 1rem; font-weight: 600; letter-spacing: 0.5px; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35); }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5); filter: brightness(1.1); }
         .btn:active { transform: scale(0.92); box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3); }
 
         .btn-success { background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35); }
+        .btn-success:hover { box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5); }
+
         .btn-secondary { background: linear-gradient(135deg, #475569, #334155); box-shadow: 0 6px 20px rgba(71, 85, 105, 0.35); }
+        .btn-secondary:hover { box-shadow: 0 8px 25px rgba(71, 85, 105, 0.5); }
         
+        /* टाइमर बॉक्स: हल्का नीला */
         .timer-box { font-size: 1rem; font-weight: 600; color: #38bdf8; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.25); padding: 6px 14px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px; float: right; backdrop-filter: blur(8px); box-shadow: 0 0 15px rgba(56, 189, 248, 0.15); transition: all 0.3s ease; }
         
+        /* टाइमर का 10 मिनट वाला वार्निंग इफेक्ट */
         @keyframes alertPulse {
             0% { box-shadow: 0 0 8px rgba(255, 76, 76, 0.4); border-color: rgba(255, 76, 76, 0.4); }
             50% { box-shadow: 0 0 20px rgba(255, 76, 76, 0.8); border-color: rgba(255, 76, 76, 1); }
             100% { box-shadow: 0 0 8px rgba(255, 76, 76, 0.4); border-color: rgba(255, 76, 76, 0.4); }
         }
-        .timer-warning { animation: alertPulse 1s infinite !important; color: #ff4c4c !important; background: rgba(255, 76, 76, 0.15) !important; }
+        .timer-warning {
+            animation: alertPulse 1s infinite !important;
+            color: #ff4c4c !important;
+            background: rgba(255, 76, 76, 0.15) !important;
+        }
 
         .question-text { font-size: 1.15rem; font-weight: 500; margin-top: 45px; margin-bottom: 25px; clear: both; line-height: 1.7; color: #ffffff; }
         
+        /* 5. क्विज़ ऑप्शंस: ट्रांसपेरेंट डार्क -> सेलेक्ट होने पर ब्लू */
         .option-item { background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.1); padding: 15px 18px; border-radius: 12px; margin-bottom: 14px; cursor: pointer; font-size: 1rem; color: #ffffff; transition: all 0.3s ease; backdrop-filter: blur(8px); }
         .option-item:hover { background: rgba(59, 130, 246, 0.1); border-color: #3b82f6; transform: translateX(5px); }
+        
         .option-item.selected { background: rgba(59, 130, 246, 0.2); border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); font-weight: 600; color: #ffffff; transform: scale(1.01); }
         
         .nav-btns { display: flex; justify-content: space-between; gap: 15px; margin-top: 30px; }
@@ -54,19 +71,27 @@
         
         .hidden { display: none !important; }
         .score-card { text-align: center; }
+        
+        /* 6. स्कोर बैज (पीला/गोल्डन) */
         .score-badge { font-size: 3.5rem; font-weight: 800; color: #fbbf24; margin: 25px 0; text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
+        /* 7. मोडल बैकग्राउंड ओवरले (डार्क) और ग्लास (स्लेट ग्रे) */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; justify-content: center; align-items: center; z-index: 1000; animation: modalFade 0.3s ease-out; }
         
-        .modal-glass { background: rgba(30, 40, 50, 0.95); backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 35px; max-width: 400px; width: 88%; text-align: center; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8); animation: modalScale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; position: relative; }
+        .modal-glass { background: rgba(30, 40, 50, 0.95); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 35px; max-width: 400px; width: 88%; text-align: center; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8); animation: modalScale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; position: relative; }
         
         .options-glass { padding: 25px !important; max-height: 80vh; }
         .options-list { overflow-y: auto; max-height: 55vh; text-align: left; padding-right: 8px; margin-bottom: 15px; }
+        
+        /* स्क्रॉलबार */
         .options-list::-webkit-scrollbar { width: 5px; }
         .options-list::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
         .options-list::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 10px; }
+        .options-list::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.6); }
         
+        /* लिस्ट ऑप्शन कार्ड्स (मोडल के अंदर) */
         .option-card { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); padding: 14px 18px; border-radius: 12px; margin-bottom: 10px; cursor: pointer; font-size: 0.95rem; color: #ffffff; transition: all 0.25s ease; }
+        .option-card:hover { background: rgba(59, 130, 246, 0.2); border-color: #3b82f6; color: #ffffff; transform: translateX(5px); }
         
         .modal-icon { font-size: 2.8rem; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3)); }
         .modal-glass p { font-size: 1.05rem; color: #ffffff; margin-bottom: 25px; line-height: 1.6; }
@@ -74,82 +99,147 @@
         @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
         @keyframes modalScale { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        .card::before, .modal-glass::before { content: "RAINBOW CLASSES"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #0f172a; color: #38bdf8; font-size: 0.65rem; font-weight: 700; letter-spacing: 1px; padding: 4px 14px; border: 1px solid rgba(56, 189, 248, 0.5); border-radius: 6px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); white-space: nowrap; z-index: 100; }
+        /* ========================================================= */
+        /* RAINBOW CLASSES टॉप सेंटर बैज (एनवेलप स्टाइल) */
+        /* ========================================================= */
+        .card::before, .modal-glass::before {
+            content: "RAINBOW CLASSES";
+            position: absolute;
+            top: -12px; 
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0f172a; 
+            color: #38bdf8; 
+            font-size: 0.65rem; 
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 4px 14px;
+            border: 1px solid rgba(56, 189, 248, 0.5); 
+            border-radius: 6px; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            white-space: nowrap;
+            z-index: 100;
+        }
 
-        @keyframes slideUpPop { 0% { transform: translateY(50px) scale(0.9); opacity: 0; } 70% { transform: translateY(-10px) scale(1.02); opacity: 1; } 100% { transform: translateY(0) scale(1); opacity: 1; } }
+        /* न्यू ऐडेड स्टाइल्स (Summary Box & Modal) */
+        @keyframes slideUpPop {
+            0% { transform: translateY(50px) scale(0.9); opacity: 0; }
+            70% { transform: translateY(-10px) scale(1.02); opacity: 1; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
         
-        .summary-glass { animation: slideUpPop 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); max-width: 550px; width: 90%; max-height: 85vh; overflow: hidden; padding: 25px; display: flex; flex-direction: column; background: rgba(30, 40, 50, 0.98); backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; position: relative; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8); }
-        .summary-content-scroll { overflow-y: auto; max-height: 65vh; padding-right: 8px; text-align: left; }
+        .summary-glass {
+            animation: slideUpPop 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            max-width: 550px;
+            width: 90%;
+            max-height: 85vh;
+            overflow: hidden;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            background: rgba(30, 40, 50, 0.98);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+        }
+        
+        .summary-content-scroll {
+            overflow-y: auto;
+            max-height: 65vh;
+            padding-right: 8px;
+            text-align: left;
+        }
+
         .summary-content-scroll::-webkit-scrollbar { width: 5px; }
         .summary-content-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
         .summary-content-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 10px; }
+        .summary-content-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.6); }
+
         .summary-item { border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 15px; }
+        .summary-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
         .ans-correct { color: #10b981; font-weight: bold; }
         .ans-wrong { color: #ef4444; font-weight: bold; }
         
-        @keyframes wigglePulse { 0%, 100% { transform: scale(1) rotate(0deg); } 10% { transform: scale(1.02) rotate(-2deg); } 20% { transform: scale(1.02) rotate(2deg); } 30% { transform: scale(1.02) rotate(-2deg); } 40% { transform: scale(1.02) rotate(2deg); } 50% { transform: scale(1) rotate(0deg); } }
-        .reminder-card { background: linear-gradient(135deg, #f59e0b, #d97706); color: #ffffff; padding: 15px 20px; border-radius: 12px; margin-top: 25px; font-size: 1rem; font-weight: bold; text-align: center; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); animation: wigglePulse 2.5s infinite; border: 1px solid rgba(255, 255, 255, 0.3); }
+        /* Reminder Card Animation */
+        @keyframes wigglePulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            10% { transform: scale(1.02) rotate(-2deg); }
+            20% { transform: scale(1.02) rotate(2deg); }
+            30% { transform: scale(1.02) rotate(-2deg); }
+            40% { transform: scale(1.02) rotate(2deg); }
+            50% { transform: scale(1) rotate(0deg); }
+        }
+        .reminder-card {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #ffffff;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-top: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+            animation: wigglePulse 2.5s infinite;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
 
-        @keyframes pulseTimer { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.8; color: #38bdf8; } 100% { transform: scale(1); opacity: 1; } }
+        /* 5 सेकंड टाइमर एनीमेशन */
+        @keyframes pulseTimer {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.8; color: #38bdf8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
         .timer-anim { animation: pulseTimer 1s infinite ease-in-out; }
 
-        /* ======================================================= */
-        /* न्यू डॉक और नोटिफिकेशन बेल की स्टाइलिंग */
-        /* ======================================================= */
-        .bottom-dock {
-            background: rgba(15, 23, 42, 0.88);
-            backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 16px;
-            padding: 10px 20px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-            display: flex;
-            justify-content: flex-end; /* राइट साइड में एलाइन करने के लिए */
-            align-items: center;
-            min-height: 60px;
-        }
-
-        .notif-bell-wrapper {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-        }
-
-        .bell-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            display: flex;
+        /* ========================================================= */
+        /* NEW: Dog & Message Bell Styles */
+        /* ========================================================= */
+        .dog-message-wrapper {
+            position: fixed;
+            bottom: 25px;
+            right: 20px;
+            z-index: 999;
+            display: none; /* Login से पहले छुपा रहेगा */
+            align-items: flex-end;
             justify-content: center;
-            align-items: center;
-            font-size: 1.4rem;
-            color: #fbbf24;
             transition: all 0.3s ease;
-            animation: wiggleBell 2.5s infinite; /* विगल एनीमेशन */
         }
-        
-        .bell-btn:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.05); }
-
+        .dog-icon {
+            font-size: 3rem;
+            position: relative;
+            user-select: none;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+        }
+        .bell-icon {
+            font-size: 1.6rem;
+            position: absolute;
+            top: -12px;
+            right: -15px;
+            cursor: pointer;
+            animation: bellRing 1.5s infinite ease-in-out;
+            display: none; /* डिफ़ॉल्ट रूप से छुपा रहेगा (मैसेज होने पर ही दिखेगा) */
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.4));
+        }
         .red-dot {
             position: absolute;
             top: 2px;
             right: 2px;
-            background: #ef4444;
             width: 12px;
             height: 12px;
+            background-color: #ef4444;
+            border: 2px solid #ffffff;
             border-radius: 50%;
-            border: 2px solid #0f172a;
+            box-shadow: 0 0 8px rgba(239, 68, 68, 0.8);
         }
-
-        @keyframes wiggleBell {
+        @keyframes bellRing {
             0%, 100% { transform: rotate(0deg); }
-            5% { transform: rotate(-20deg); }
             10% { transform: rotate(20deg); }
-            15% { transform: rotate(-15deg); }
-            20% { transform: rotate(15deg); }
-            25% { transform: rotate(0deg); }
+            20% { transform: rotate(-15deg); }
+            30% { transform: rotate(10deg); }
+            40% { transform: rotate(-5deg); }
+            50% { transform: rotate(0deg); }
         }
     </style>
 </head>
@@ -157,26 +247,29 @@
 
     <div class="container">
 
+        <!-- ========================================== -->
         <!-- INSTRUCTION SCREEN -->
+        <!-- ========================================== -->
         <div id="instruction-screen" class="card hidden">
             <h2 style="margin-bottom: 20px; text-align: center; color: #ef4444; font-size: 1.6rem; letter-spacing: 0.5px; font-weight: bold;">🚨 पढ़ने वाले छात्र ध्यान दें 🚨</h2>
             <div style="font-size: 1.05rem; color: #ffffff; line-height: 1.7; margin-bottom: 25px; background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);">
                 <p style="margin-bottom: 15px; color: #cbd5e1; text-align: justify;">
-                    प्रिय छात्रों, आपके शिक्षक आपके उज्ज्वल भविष्य के लिए निरंतर प्रयासरत हैं। आपको प्रतिदिन पढ़ाने, हमारे द्वारा यह <strong>DPP</strong> तैयार करने और महत्वपूर्ण प्रश्नों को संकलित करने में बहुत समय और मेहनत लगता है। 
+                    प्रिय छात्रों, आपके शिक्षक आपके उज्ज्वल भविष्य के लिए निरंतर प्रयासरत हैं। आपको प्रतिदिन पढ़ाने, हमारे द्वारा यह <strong>DPP (Daily Practice Problem)</strong> तैयार करने और महत्वपूर्ण प्रश्नों को संकलित करने में बहुत समय और मेहनत लगता है। यह सब केवल आपकी सफलता के लिए किया जा रहा है और आप अच्छे मार्क्स लाये इसके लिए किया जा रहा है।
                 </p>
                 <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 15px 0;">
                 <p style="color: #38bdf8; margin-bottom: 8px;"><strong>आपसे आग्रह और निर्देश:</strong></p>
                 <ul style="margin-left: 25px; margin-top: 10px; color: #cbd5e1; list-style-type: disc;">
-                    <li style="margin-bottom: 8px;">शिक्षक द्वारा दिए गए निर्देशों का पालन 100% करें।</li>
-                    <li style="margin-bottom: 8px;">प्रतिदिन के <strong>DPP और Tests</strong> में अनिवार्य रूप से भाग लें।</li>
+                    <li style="margin-bottom: 8px;">पढ़ाई पर पूरा ध्यान केंद्रित करें। आपके शिक्षक द्वारा दिए गए निर्देशों का पालन 100% करें। शिक्षक टेस्ट देने के लिए कहते है तो समय से टेस्ट दीजिये </li>
+                    <li style="margin-bottom: 8px;">प्रतिदिन के <strong>DPP और और होने वाले Tests</strong> में अनिवार्य रूप से भाग लें। इन्हें नजरअंदाज न करें।</li>
                     <li style="margin-bottom: 8px;">DPP मे दिए जाने वाले टॉपिक को घर पर अच्छे से याद करे।</li>
-                    <li style="margin-bottom: 8px;">सीरियस होकर पढ़िये, अभी आपको पता नहीं चलेगा लेकिन एग्जाम के समय फायदा होगा।</li>
+                    <li style="margin-bottom: 8px;">शिक्षक आपको राह दिखा सकते हैं, लेकिन उस राह पर चलकर मंजिल पाना आपकी जिम्मेदारी है। एग्जाम अब आपका निकट आ रहा है। आप ईमानदारी से हमारे साथ सारा वर्क कीजिए वरना बाद में पछतावा होगा कि कास हम पढ़ लिए होते और ईमानदारी और मेहनत से पढ़ने वाले बच्चो से मेरा स्पेशल रिक्वेस्ट 🙏 है की please आप सीरियस होकर पढ़िए अभी आपको पता नहीं चलेगा की इतने सारे चीजों को करने से क्या होगा,लेकिन जब आप एग्जाम दीजियेगा तब पता चलेगा की मैंने सही समय पर सही कदम उठाया👍।</li>
                 </ul>
             </div>
             <button class="btn btn-success" onclick="proceedToLogin()">Yes, मै अब मेहनत करूँगा🥺(Next)</button>
         </div>
+        <!-- ========================================== -->
 
-        <!-- LOGIN SCREEN -->
+        <!-- लॉगिन स्क्रीन -->
         <div id="login-screen" class="card hidden">
             <h2 style="margin-bottom: 25px; text-align: center; color: #38bdf8; font-size: 1.4rem; letter-spacing: 0.5px;">Student's identification</h2>
             <div class="input-group">
@@ -190,59 +283,42 @@
             <button class="btn" onclick="verifyStudent()">Next</button>
         </div>
 
-        <!-- SELECTION SCREEN -->
-        <div id="selection-screen" class="hidden">
-            <!-- मेन कार्ड -->
-            <div class="card" style="margin-bottom: 15px;">
-                <h2 style="margin-bottom: 25px; text-align: center; color: #38bdf8; font-size: 1.4rem; letter-spacing: 0.5px;">DPP Setup</h2>
-                <div class="input-group">
-                    <label>विषय चुनें (Class 12th):</label>
-                    <div class="glass-select-box" onclick="openSubjectSelect()">
-                        <span id="subject-text">-- विषय चुनें --</span>
-                        <span class="select-icon">▼</span>
-                    </div>
-                    <input type="hidden" id="subject-select" value="">
+        <div id="selection-screen" class="card hidden">
+            <h2 style="margin-bottom: 25px; text-align: center; color: #38bdf8; font-size: 1.4rem; letter-spacing: 0.5px;">DPP Setup</h2>
+            <div class="input-group">
+                <label>विषय चुनें (Class 12th):</label>
+                <div class="glass-select-box" onclick="openSubjectSelect()">
+                    <span id="subject-text">-- विषय चुनें --</span>
+                    <span class="select-icon">▼</span>
                 </div>
-                <div class="input-group">
-                    <label>अध्याय चुनें:</label>
-                    <div class="glass-select-box" onclick="openChapterSelect()">
-                        <span id="chapter-text">-- पहले विषय चुनें --</span>
-                        <span class="select-icon">▼</span>
-                    </div>
-                    <input type="hidden" id="chapter-select" value="">
-                </div>
-                <div class="input-group">
-                    <label>DPP चुनें:</label>
-                    <div class="glass-select-box" onclick="openQuizSelect()">
-                        <span id="quiz-text">-- पहले अध्याय चुनें --</span>
-                        <span class="select-icon">▼</span>
-                    </div>
-                    <input type="hidden" id="quiz-select" value="">
-                </div>
-                <button class="btn" onclick="startQuiz()">Start DPP</button>
+                <input type="hidden" id="subject-select" value="">
             </div>
-
-            <!-- न्यू डॉक एरिया (कार्ड के नीचे) -->
-            <div class="bottom-dock">
-                <!-- भविष्य में आप यहाँ लेफ्ट साइड में और बटन जोड़ सकते हैं -->
-                
-                <!-- नोटिफिकेशन बेल (सिर्फ तभी दिखेगी जब मैसेज होगा) -->
-                <div id="notification-area" class="hidden">
-                    <div class="notif-bell-wrapper" onclick="openDockMessage()">
-                        <div class="bell-btn">🔔</div>
-                        <div class="red-dot"></div>
-                    </div>
+            <div class="input-group">
+                <label>अध्याय चुनें:</label>
+                <div class="glass-select-box" onclick="openChapterSelect()">
+                    <span id="chapter-text">-- पहले विषय चुनें --</span>
+                    <span class="select-icon">▼</span>
                 </div>
+                <input type="hidden" id="chapter-select" value="">
             </div>
+            <div class="input-group">
+                <label>DPP चुनें:</label>
+                <div class="glass-select-box" onclick="openQuizSelect()">
+                    <span id="quiz-text">-- पहले अध्याय चुनें --</span>
+                    <span class="select-icon">▼</span>
+                </div>
+                <input type="hidden" id="quiz-select" value="">
+            </div>
+            <button class="btn" onclick="startQuiz()">Start DPP</button>
         </div>
 
-        <!-- QUIZ SCREEN -->
         <div id="quiz-screen" class="card hidden">
             <div>
                 <span id="q-counter" style="font-weight: 500; color: #38bdf8; font-size: 0.95rem;">प्रश्न 1 / 10</span>
                 <div class="timer-box" id="timer-ui">⏱️ <span id="time-left">30:00</span></div>
             </div>
             
+            <!-- 10 Minute Warning Message -->
             <div id="time-warning" style="display: none; clear: both; margin-top: 50px; margin-bottom: -15px; color: #ff4c4c; background: rgba(255,0,0,0.1); border: 1px solid #ff4c4c; padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; animation: alertPulse 1s infinite;">
                 ⚠️ आपके पास सिर्फ 10 मिनट शेष हैं! कृपया जल्दी करें।
             </div>
@@ -257,10 +333,11 @@
             <button class="btn btn-success" id="btn-submit" style="margin-top: 15px; display: none;" onclick="submitQuiz()">Submit🧐</button>
         </div>
 
-        <!-- PRE-SUBMIT SCREEN -->
+        <!-- NEW: प्री-सबमिट स्क्रीन -->
         <div id="pre-submit-screen" class="card hidden">
             <h2 style="margin-bottom: 25px; text-align: center; color: #38bdf8; font-size: 1.4rem; letter-spacing: 0.5px;"> DPP Submition Details </h2>
             <div id="pre-submit-details" style="font-size: 1.05rem; line-height: 1.9; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                <!-- यहाँ डेटा डायनामिकली लोड होगा -->
             </div>
             
             <div id="submit-loader" class="hidden" style="text-align: center; margin-top: 20px; padding: 15px;">
@@ -271,7 +348,6 @@
             <button class="btn btn-success" id="btn-final-submit" onclick="startFinalSubmit()">OK (सबमिट करें)</button>
         </div>
 
-        <!-- RESULT SCREEN -->
         <div id="result-screen" class="card score-card hidden">
             <h2 style="color: #38bdf8; font-size: 1.6rem; letter-spacing: 0.5px;">🧾Your Result🫣</h2>
             <p id="res-name" style="margin-top: 15px; color: #ffffff; font-weight: 500; font-size: 1.15rem;"></p>
@@ -280,14 +356,36 @@
             <p id="res-percent" style="font-size: 1.3rem; font-weight: 600; color: #10b981;"></p>
             <br>
             
+            <!-- व्यू समरी और होम बटन -->
             <button class="btn btn-secondary" onclick="openSummaryModal()" style="margin-top: 15px; margin-bottom: 10px;">View Summary / Answer 📝</button>
             <button class="btn" onclick="goHome()" style="margin-top: 10px;">Home 🏠</button>
 
+            <!-- नया एनिमेटेड रिमाइंडर कार्ड -->
             <div class="reminder-card">
                 यदि आप आज के सभी डीपीपी नहीं बनाए हैं तो कृपया सभी डीपीपी बनाएं
             </div>
         </div>
 
+    </div>
+
+    <!-- NEW: Dog Message Icon (Right Bottom Floating) -->
+    <div id="dog-message-container" class="dog-message-wrapper">
+        <div class="dog-icon" id="dog-icon">
+            🐶
+            <div class="bell-icon" id="bell-icon" onclick="openStudentMessageModal()">
+                🔔
+                <div class="red-dot"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW: Student Message Modal -->
+    <div id="student-message-modal" class="modal-overlay hidden">
+        <div class="modal-glass">
+            <h2 style="margin-bottom: 20px; color: #38bdf8; font-size: 1.5rem; letter-spacing: 0.5px; font-weight: bold;">Message</h2>
+            <p id="student-personal-msg-text" style="font-size: 1.1rem; color: #ffffff; line-height: 1.7; text-align: left; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);"></p>
+            <button class="btn" style="margin-top: 25px; padding: 12px;" onclick="closeStudentMessageModal()">Close</button>
+        </div>
     </div>
 
     <!-- Error/Message Modal -->
@@ -308,22 +406,38 @@
         </div>
     </div>
 
-    <!-- Animated Summary Modal -->
+    <!-- NEW: Animated Summary Modal -->
     <div id="summary-modal" class="modal-overlay hidden">
         <div class="summary-glass">
             <h3 style="text-align:center; color:#38bdf8; margin-bottom:20px; font-size:1.4rem;">विस्तृत परिणाम</h3>
-            <div id="summary-content" class="summary-content-scroll"></div>
+            <div id="summary-content" class="summary-content-scroll">
+                <!-- समरी यहाँ लोड होगी -->
+            </div>
             <button class="btn btn-secondary" style="margin-top: 20px; padding: 12px;" onclick="closeSummaryModal()">बंद करें ❌</button>
         </div>
     </div>
 
+    <!-- Script File Reference -->
     <script src="questions.js"></script>
 
+    <!-- Main JS Logic -->
     <script>
+        /* 
+           NOTE: questions.js फाइल में आपको इस प्रकार से मैसेज सेट करना होगा:
+           window.studentMessages = {
+               "cm1217": "आपका पिछले टेस्ट का प्रदर्शन बहुत अच्छा रहा। इसी तरह मेहनत करते रहें!",
+               "ab1010": "कृपया अपने पिछले पेंडिंग DPP को पूरा करें।"
+           };
+        */
+        window.studentMessages = window.studentMessages || {}; // Fallback in case not defined
+
         const subjectsList = {
-            1: "भौतिक विज्ञान (Physics)", 2: "रसायन विज्ञान (Chemistry)",
-            3: "गणित (Mathematics)", 4: "जीव विज्ञान (Biology)",
-            5: "हिंदी (Hindi)", 6: "अंग्रेज़ी (English)"
+            1: "भौतिक विज्ञान (Physics)",
+            2: "रसायन विज्ञान (Chemistry)",
+            3: "गणित (Mathematics)",
+            4: "जीव विज्ञान (Biology)",
+            5: "हिंदी (Hindi)",
+            6: "अंग्रेज़ी (English)"
         };
 
         const chaptersData = {
@@ -339,12 +453,10 @@
         let currentQIndex = 0;
         let userAnswers = [];
         let timerInterval;
-        let timeLeft = 1800; 
+        let timeLeft = 1800; // 30 minutes in seconds
         window.currentQuizFinished = false;
-        
-        // न्यू: छात्र का प्राइवेट मैसेज स्टोर करने के लिए
-        let activeStudentMessage = "";
 
+        // 5 घंटे का सेशन चेक करने का फंक्शन 
         function checkSession() {
             let savedLoginTime = localStorage.getItem('dpp_login_time');
             if (savedLoginTime && (Date.now() - parseInt(savedLoginTime)) < 5 * 60 * 60 * 1000) {
@@ -353,23 +465,10 @@
             return false;
         }
 
-        // नोटिफिकेशन बेल चेक करने का फंक्शन 
-        function checkNotificationBell() {
-            let savedId = localStorage.getItem('dpp_student_id');
-            if (savedId && window.studentMessages && window.studentMessages[savedId.toLowerCase()]) {
-                activeStudentMessage = window.studentMessages[savedId.toLowerCase()];
-                document.getElementById("notification-area").classList.remove("hidden");
-            } else {
-                activeStudentMessage = "";
-                document.getElementById("notification-area").classList.add("hidden");
-            }
-        }
-
         window.onload = function() {
             if (checkSession()) {
                 document.getElementById('student-name').value = localStorage.getItem('dpp_student_name');
                 document.getElementById('student-id').value = localStorage.getItem('dpp_student_id');
-                checkNotificationBell(); // लोड होते समय चेक करें 
                 history.replaceState({ screen: 'selection' }, '');
                 showScreen('selection-screen');
             } else {
@@ -383,6 +482,7 @@
             document.getElementById("custom-modal").classList.add("hidden");
             document.getElementById("options-modal").classList.add("hidden");
             document.getElementById("summary-modal").classList.add("hidden");
+            document.getElementById("student-message-modal").classList.add("hidden");
 
             if (!state) {
                 if (checkSession()) { showScreen('selection-screen'); }
@@ -393,7 +493,9 @@
             if (state.modal) document.getElementById("custom-modal").classList.remove("hidden");
             if (state.optionsModal) document.getElementById("options-modal").classList.remove("hidden");
             if (state.summaryModal) document.getElementById("summary-modal").classList.remove("hidden");
+            if (state.studentMsgModal) document.getElementById("student-message-modal").classList.remove("hidden");
 
+            // यदि 5 घंटे का सेशन एक्टिव है, तो लॉगिन/इंस्ट्रक्शन पर जाने से रोकें
             if (state.screen === 'instruction' || state.screen === 'login') {
                 if (checkSession()) {
                     history.replaceState({ screen: 'selection' }, '');
@@ -402,6 +504,7 @@
                 }
             }
 
+            // यदि छात्र रिजल्ट पर आ चुका है और बैक बटन क्लिक करता है, तो सीधे सेटअप पर भेजें
             if (state.screen === 'quiz' || state.screen === 'pre-submit') {
                 if (window.currentQuizFinished) {
                     history.replaceState({ screen: 'selection' }, '');
@@ -410,13 +513,61 @@
                 }
             }
 
-            if (state.screen === 'instruction') { showScreen('instruction-screen'); clearInterval(timerInterval); }
-            else if (state.screen === 'login') { showScreen('login-screen'); clearInterval(timerInterval); }
-            else if (state.screen === 'selection') { showScreen('selection-screen'); clearInterval(timerInterval); }
-            else if (state.screen === 'quiz') { showScreen('quiz-screen'); }
-            else if (state.screen === 'pre-submit') { showScreen('pre-submit-screen'); }
-            else if (state.screen === 'result') { showScreen('result-screen'); }
+            if (state.screen === 'instruction') {
+                showScreen('instruction-screen');
+                clearInterval(timerInterval);
+            } else if (state.screen === 'login') {
+                showScreen('login-screen');
+                clearInterval(timerInterval);
+            } else if (state.screen === 'selection') {
+                showScreen('selection-screen');
+                clearInterval(timerInterval);
+            } else if (state.screen === 'quiz') {
+                showScreen('quiz-screen');
+            } else if (state.screen === 'pre-submit') {
+                showScreen('pre-submit-screen');
+            } else if (state.screen === 'result') {
+                showScreen('result-screen');
+            }
         });
+
+        // NEW: Message Check & Display Logic
+        function checkAndShowMessageIcon(studentId) {
+            let dogContainer = document.getElementById("dog-message-container");
+            let bellIcon = document.getElementById("bell-icon");
+            let sId = studentId.toLowerCase();
+
+            dogContainer.style.display = "flex"; // Show Dog always after login
+
+            if (window.studentMessages && window.studentMessages[sId]) {
+                bellIcon.style.display = "block"; // Show bell and make clickable
+            } else {
+                bellIcon.style.display = "none"; // No message -> Empty Dog
+            }
+        }
+
+        // NEW: Message Modal Open/Close Logic
+        function openStudentMessageModal() {
+            let sId = localStorage.getItem('dpp_student_id');
+            if (sId && window.studentMessages && window.studentMessages[sId.toLowerCase()]) {
+                document.getElementById("student-personal-msg-text").innerText = window.studentMessages[sId.toLowerCase()];
+                document.getElementById("student-message-modal").classList.remove("hidden");
+                
+                // Optional: घंटी का एनीमेशन मैसेज देखने के बाद रोक दें
+                document.getElementById("bell-icon").style.animation = "none";
+                document.querySelector(".red-dot").style.display = "none";
+                
+                history.pushState({ screen: history.state ? history.state.screen : 'selection', studentMsgModal: true }, '');
+            }
+        }
+
+        function closeStudentMessageModal() {
+            if (history.state && history.state.studentMsgModal) {
+                history.back();
+            } else {
+                document.getElementById("student-message-modal").classList.add("hidden");
+            }
+        }
 
         function showScreen(screenId) {
             document.getElementById("instruction-screen").classList.add("hidden");
@@ -427,6 +578,15 @@
             document.getElementById("result-screen").classList.add("hidden");
             
             document.getElementById(screenId).classList.remove("hidden");
+
+            // Dog Icon Visibility logic
+            let dogContainer = document.getElementById("dog-message-container");
+            if (screenId === 'instruction-screen' || screenId === 'login-screen') {
+                dogContainer.style.display = "none"; // Hide on login and instruction page
+            } else {
+                let savedId = localStorage.getItem('dpp_student_id');
+                if (savedId) { checkAndShowMessageIcon(savedId); }
+            }
         }
 
         function proceedToLogin() {
@@ -455,38 +615,27 @@
                 return;
             }
 
+            // 5 घंटे के लिए लोकल स्टोरेज में सेव करना
             localStorage.setItem('dpp_student_name', name);
             localStorage.setItem('dpp_student_id', studentId);
             localStorage.setItem('dpp_login_time', Date.now().toString());
 
-            // बेल आइकॉन को अपडेट करें और सेटअप स्क्रीन पर जाएँ
-            checkNotificationBell();
-            goToSelectionScreen();
-        }
+            // Check if there is any message for this student
+            checkAndShowMessageIcon(studentId);
 
-        function goToSelectionScreen() {
             history.pushState({ screen: 'selection' }, '');
             showScreen('selection-screen');
-        }
-
-        // बेल पर क्लिक करने पर जो मैसेज खुलेगा
-        function openDockMessage() {
-            if(activeStudentMessage) {
-                document.getElementById("modal-icon").innerText = "💌"; // आइकॉन बदलें
-                showModal(activeStudentMessage);
-                
-                // मोडल बंद होने पर आइकॉन वापस नॉर्मल कर दें
-                setTimeout(() => {
-                    document.getElementById("modal-icon").innerText = "⚠️"; 
-                }, 500);
-            }
         }
 
         function openSubjectSelect() {
             let list = document.getElementById("options-list");
             list.innerHTML = "";
             document.getElementById("options-title").innerText = "विषय चुनें";
-            for (let key in subjectsList) { list.innerHTML += `<div class="option-card" onclick="selectSubject('${key}', '${subjectsList[key]}')">${subjectsList[key]}</div>`; }
+
+            for (let key in subjectsList) {
+                list.innerHTML += `<div class="option-card" onclick="selectSubject('${key}', '${subjectsList[key]}')">${subjectsList[key]}</div>`;
+            }
+
             document.getElementById("options-modal").classList.remove("hidden");
             history.pushState({ screen: history.state ? history.state.screen : 'selection', optionsModal: true }, '');
         }
@@ -494,24 +643,32 @@
         function selectSubject(val, text) {
             document.getElementById("subject-select").value = val;
             document.getElementById("subject-text").innerText = text;
+            
             document.getElementById("chapter-select").value = "";
             document.getElementById("chapter-text").innerText = "-- अध्याय चुनें --";
             document.getElementById("quiz-select").value = "";
             document.getElementById("quiz-text").innerText = "-- पहले अध्याय चुनें --";
+            
             history.back();
         }
 
         function openChapterSelect() {
             let sub = document.getElementById("subject-select").value;
-            if(!sub) { showModal("कृपया पहले विषय चुनें!"); return; }
+            if(!sub) {
+                showModal("कृपया पहले विषय चुनें!");
+                return;
+            }
+
             let list = document.getElementById("options-list");
             list.innerHTML = "";
             document.getElementById("options-title").innerText = "अध्याय चुनें";
+
             let chapters = chaptersData[sub];
             for (let i = 0; i < chapters.length; i++) {
                 let chNum = i + 1;
                 list.innerHTML += `<div class="option-card" onclick="selectChapter('${chNum}', 'अध्याय ${chNum}: ${chapters[i]}')">अध्याय ${chNum}: ${chapters[i]}</div>`;
             }
+
             document.getElementById("options-modal").classList.remove("hidden");
             history.pushState({ screen: history.state ? history.state.screen : 'selection', optionsModal: true }, '');
         }
@@ -528,14 +685,17 @@
             let chNum = document.getElementById("chapter-select").value;
             let qText = document.getElementById("quiz-text");
             document.getElementById("quiz-select").value = ""; 
+
             let hasQuizzes = false;
             let hiddenDueToCooldown = false;
+
             if (window.quizDatabase && window.quizDatabase[sub] && window.quizDatabase[sub][`ch_${chNum}`]) {
                 let quizzes = window.quizDatabase[sub][`ch_${chNum}`];
                 for (let qKey in quizzes) {
                     let cooldownKey = `dpp_cooldown_${sub}_${chNum}_${qKey}`;
                     let savedTime = localStorage.getItem(cooldownKey);
                     let hide = false;
+                    
                     if (savedTime) {
                         let elapsed = Date.now() - parseInt(savedTime);
                         if (elapsed < 5 * 60 * 60 * 1000) { hide = true; hiddenDueToCooldown = true; } 
@@ -544,36 +704,51 @@
                     if (!hide) { hasQuizzes = true; break; }
                 }
             }
-            if (hasQuizzes) { qText.innerText = "-- DPP चुनें --"; } 
-            else if (hiddenDueToCooldown) { qText.innerText = "-- आपने सभी DPP बना लिए (5 घंटे बाद देखें) --"; } 
-            else { qText.innerText = "-- अभी कोई DPP उपलब्ध नहीं है --"; }
+
+            if (hasQuizzes) {
+                qText.innerText = "-- DPP चुनें --";
+            } else if (hiddenDueToCooldown) {
+                qText.innerText = "-- आपने सभी DPP बना लिए (5 घंटे बाद देखें) --";
+            } else {
+                qText.innerText = "-- अभी कोई DPP उपलब्ध नहीं है --";
+            }
         }
 
         function openQuizSelect() {
             let sub = document.getElementById("subject-select").value;
             let chNum = document.getElementById("chapter-select").value;
+            
             if(!sub) { showModal("कृपया पहले विषय चुनें!"); return; }
             if(!chNum) { showModal("कृपया पहले अध्याय चुनें!"); return; }
+
             let list = document.getElementById("options-list");
             list.innerHTML = "";
             document.getElementById("options-title").innerText = "DPP चुनें";
+
             let hasQuizzes = false;
             let totalQuizzes = 0;
             let hiddenQuizzesCount = 0;
 
             if (window.quizDatabase && window.quizDatabase[sub] && window.quizDatabase[sub][`ch_${chNum}`]) {
                 let quizzes = window.quizDatabase[sub][`ch_${chNum}`];
+                
                 if(Object.keys(quizzes).length > 0) {
                     for (let qKey in quizzes) {
                         totalQuizzes++;
                         let cooldownKey = `dpp_cooldown_${sub}_${chNum}_${qKey}`;
                         let savedTime = localStorage.getItem(cooldownKey);
                         let hideQuiz = false;
+                        
                         if (savedTime) {
                             let elapsed = Date.now() - parseInt(savedTime);
-                            if (elapsed < 5 * 60 * 60 * 1000) { hideQuiz = true; hiddenQuizzesCount++; } 
-                            else { localStorage.removeItem(cooldownKey); }
+                            if (elapsed < 5 * 60 * 60 * 1000) { 
+                                hideQuiz = true;
+                                hiddenQuizzesCount++;
+                            } else {
+                                localStorage.removeItem(cooldownKey); 
+                            }
                         }
+
                         if (!hideQuiz) {
                             hasQuizzes = true;
                             let qNum = qKey.replace("dpp_", "");
@@ -582,13 +757,15 @@
                     }
                 }
             }
+
             if (!hasQuizzes) {
                 if (totalQuizzes > 0 && hiddenQuizzesCount === totalQuizzes) {
-                    list.innerHTML = `<div style="text-align:center; color:#ffffff; padding: 20px;">आपने इस अध्याय के सभी DPP हाल ही में बना लिए हैं।<br><br><span style="color:#fbbf24;">कृपया 5 घंटे बाद पुनः प्रयास करें।</span></div>`;
+                    list.innerHTML = `<div style="text-align:center; color:#ffffff; padding: 20px;">आपने इस अध्याय के सभी DPP हाल ही में बना लिए हैं。<br><br><span style="color:#fbbf24;">कृपया 5 घंटे बाद पुनः प्रयास करें।</span></div>`;
                 } else {
-                    list.innerHTML = `<div style="text-align:center; color:#ffffff; padding: 20px;">अभी इस अध्याय में कोई DPP नहीं डाला गया है।<br><br>कृपया बाद में प्रयास करें।</div>`;
+                    list.innerHTML = `<div style="text-align:center; color:#ffffff; padding: 20px;">अभी इस अध्याय में कोई DPP नहीं डाला गया है。<br><br>कृपया बाद में प्रयास करें।</div>`;
                 }
             }
+
             document.getElementById("options-modal").classList.remove("hidden");
             history.pushState({ screen: history.state ? history.state.screen : 'selection', optionsModal: true }, '');
         }
@@ -600,11 +777,13 @@
         }
 
         function closeOptionsModal() {
-            if (history.state && history.state.optionsModal) { history.back(); } 
-            else { document.getElementById("options-modal").classList.add("hidden"); }
+            if (history.state && history.state.optionsModal) {
+                history.back();
+            } else {
+                document.getElementById("options-modal").classList.add("hidden");
+            }
         }
 
-        // मैसेज दिखाने वाला पॉप-अप
         function showModal(msg) {
             document.getElementById("modal-text").innerText = msg;
             document.getElementById("custom-modal").classList.remove("hidden");
@@ -612,25 +791,33 @@
         }
 
         function closeModal() {
-            if (history.state && history.state.modal) { history.back(); } 
-            else { document.getElementById("custom-modal").classList.add("hidden"); }
+            if (history.state && history.state.modal) {
+                history.back();
+            } else {
+                document.getElementById("custom-modal").classList.add("hidden");
+            }
         }
 
         function startQuiz() {
             let sub = document.getElementById("subject-select").value;
             let ch = document.getElementById("chapter-select").value;
             let qKey = document.getElementById("quiz-select").value;
+
             if (!sub) { showModal("कृपया विषय चुनें!"); return; }
             if (!ch) { showModal("कृपया अध्याय चुनें!"); return; }
             if (!qKey) { showModal("कोई DPP चुना नहीं गया है। यदि उपलब्ध नहीं है, तो बाद में प्रयास करें।"); return; }
+
             const chKey = `ch_${ch}`;
+
             if (window.quizDatabase && window.quizDatabase[sub] && window.quizDatabase[sub][chKey] && window.quizDatabase[sub][chKey][qKey]) {
                 currentQuestions = window.quizDatabase[sub][chKey][qKey];
                 userAnswers = new Array(currentQuestions.length).fill(null);
                 currentQIndex = 0;
                 window.currentQuizFinished = false;
+
                 history.pushState({ screen: 'quiz' }, '');
                 showScreen('quiz-screen');
+                
                 startOverallTimer();
                 loadQuestion();
             } else {
@@ -640,17 +827,22 @@
 
         function startOverallTimer() {
             clearInterval(timerInterval);
-            timeLeft = 1800; 
+            timeLeft = 1800; // 30 Minutes
+            
             document.getElementById("time-warning").style.display = "none";
             document.getElementById("timer-ui").classList.remove('timer-warning');
+
             updateTimerDisplay();
+
             timerInterval = setInterval(() => {
                 timeLeft--;
                 updateTimerDisplay();
+
                 if (timeLeft === 600) {
                     document.getElementById("time-warning").style.display = "block";
                     document.getElementById("timer-ui").classList.add('timer-warning');
                 }
+
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
                     showModal("समय समाप्त! आपका DPP स्वचालित रूप से सबमिट किया जा रहा है।");
@@ -669,12 +861,15 @@
             let q = currentQuestions[currentQIndex];
             document.getElementById("q-counter").innerHTML = `प्रश्न ${currentQIndex + 1} / ${currentQuestions.length}`;
             document.getElementById("q-text").innerHTML = `${currentQIndex + 1}. ${q.question}`;
+
             let optsContainer = document.getElementById("options-container");
             optsContainer.innerHTML = "";
+
             q.options.forEach((opt, idx) => {
                 let isSelected = userAnswers[currentQIndex] === idx ? "selected" : "";
                 optsContainer.innerHTML += `<div class="option-item ${isSelected}" onclick="selectOption(${idx})">${String.fromCharCode(65+idx)}) ${opt}</div>`;
             });
+
             document.getElementById("btn-prev").style.visibility = currentQIndex === 0 ? "hidden" : "visible";
             if (currentQIndex === currentQuestions.length - 1) {
                 document.getElementById("btn-next").style.display = "none";
@@ -685,16 +880,36 @@
             }
         }
 
-        function selectOption(idx) { userAnswers[currentQIndex] = idx; loadQuestion(); }
-        function nextQuestion() { if (currentQIndex < currentQuestions.length - 1) { currentQIndex++; loadQuestion(); } }
-        function prevQuestion() { if (currentQIndex > 0) { currentQIndex--; loadQuestion(); } }
+        function selectOption(idx) {
+            userAnswers[currentQIndex] = idx;
+            loadQuestion();
+        }
 
+        function nextQuestion() {
+            if (currentQIndex < currentQuestions.length - 1) {
+                currentQIndex++;
+                loadQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQIndex > 0) {
+                currentQIndex--;
+                loadQuestion();
+            }
+        }
+
+        // ==========================================
+        // SUBMIT QUIZ (Pre-Submit Interface)
+        // ==========================================
         function submitQuiz() {
             clearInterval(timerInterval);
+            
             let studentName = document.getElementById("student-name").value;
             let studentId = document.getElementById("student-id").value;
             let total = currentQuestions.length;
             let attempted = userAnswers.filter(ans => ans !== null).length;
+            
             let timeTakenSec = 1800 - timeLeft;
             let m = Math.floor(timeTakenSec / 60);
             let s = timeTakenSec % 60;
@@ -707,28 +922,44 @@
                 <div style="margin-bottom: 8px;"><strong style="color: #cbd5e1;">आपने अटेम्प्ट किये:</strong> <span style="color:#38bdf8; font-weight:bold;">${attempted}</span></div>
                 <div style="margin-bottom: 8px;"><strong style="color: #cbd5e1;">कुल लिया गया समय:</strong> ${timeTakenStr}</div>
             `;
+
             document.getElementById("submit-loader").classList.add("hidden");
             document.getElementById("btn-final-submit").classList.remove("hidden");
+
             history.pushState({ screen: 'pre-submit' }, '');
             showScreen('pre-submit-screen');
         }
 
+        // ==========================================
+        // START 5 SEC TIMER
+        // ==========================================
         function startFinalSubmit() {
             document.getElementById("btn-final-submit").classList.add("hidden");
             document.getElementById("submit-loader").classList.remove("hidden");
+            
             let counter = 5;
             document.getElementById("submit-timer-text").innerText = counter;
+            
             let countdown = setInterval(() => {
                 counter--;
                 document.getElementById("submit-timer-text").innerText = counter;
-                if(counter <= 0) { clearInterval(countdown); finalizeQuizSubmit(); }
+                if(counter <= 0) {
+                    clearInterval(countdown);
+                    finalizeQuizSubmit();
+                }
             }, 1000);
         }
 
+        // ==========================================
+        // FINALIZE RESULT
+        // ==========================================
         function finalizeQuizSubmit() {
-            window.currentQuizFinished = true; 
+            window.currentQuizFinished = true; // स्कोर पेज पर बैक रोकने के लिए 
             let score = 0;
-            currentQuestions.forEach((q, idx) => { if (userAnswers[idx] === q.correct) score++; });
+            currentQuestions.forEach((q, idx) => {
+                if (userAnswers[idx] === q.correct) score++;
+            });
+
             let total = currentQuestions.length;
             let percent = Math.round((score / total) * 100);
 
@@ -744,11 +975,24 @@
             let cooldownKey = `dpp_cooldown_${subjectCode}_${chapterCode}_${dppKey}`;
             localStorage.setItem(cooldownKey, Date.now().toString());
 
-            let sheetData = { name: studentName, id: studentId, score: `${score} / ${total}`, subjectCode: subjectCode, subjectName: subjectName, chapterName: chapterName, dppName: dppName };
+            let sheetData = {
+                name: studentName,
+                id: studentId,
+                score: `${score} / ${total}`,
+                subjectCode: subjectCode,
+                subjectName: subjectName,
+                chapterName: chapterName,
+                dppName: dppName
+            };
+
             const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxZVqprhQ_Y4pdg0xwRixDZUHavrTVDkdbMlprX6hCsqvAboITOaOVHBZYfCZO1O2yySw/exec'; 
 
             if(GOOGLE_SHEET_URL) {
-                fetch(GOOGLE_SHEET_URL, { method: 'POST', keepalive: true, body: JSON.stringify(sheetData) }).catch(e => console.log("डेटा भेजने में त्रुटि: ", e));
+                fetch(GOOGLE_SHEET_URL, {
+                    method: 'POST',
+                    keepalive: true, 
+                    body: JSON.stringify(sheetData)
+                }).catch(e => console.log("डेटा भेजने में त्रुटि: ", e));
             }
 
             history.replaceState({ screen: 'result' }, '');
@@ -758,38 +1002,53 @@
             document.getElementById("res-id-display").innerText = `ID: ${studentId}`;
             document.getElementById("res-score").innerText = `${score} / ${total}`;
             document.getElementById("res-percent").innerText = `कुल प्राप्तांक: ${percent}%`;
+
             generateSummary();
         }
 
+        // ==========================================
+        // HOME BUTTON NAVIGATION
+        // ==========================================
         function goHome() {
             history.pushState({ screen: 'selection' }, '');
             showScreen('selection-screen');
         }
 
+        // ==========================================
+        // ANIMATED SUMMARY MODAL LOGIC
+        // ==========================================
         function openSummaryModal() {
             document.getElementById("summary-modal").classList.remove("hidden");
             history.pushState({ screen: history.state ? history.state.screen : 'result', summaryModal: true }, '');
         }
 
         function closeSummaryModal() {
-            if (history.state && history.state.summaryModal) { history.back(); } 
-            else { document.getElementById("summary-modal").classList.add("hidden"); }
+            if (history.state && history.state.summaryModal) {
+                history.back();
+            } else {
+                document.getElementById("summary-modal").classList.add("hidden");
+            }
         }
 
         function generateSummary() {
             let container = document.getElementById("summary-content");
             container.innerHTML = "";
+            
             currentQuestions.forEach((q, idx) => {
                 let userAnsIdx = userAnswers[idx];
                 let isAttempted = userAnsIdx !== null;
                 let isCorrect = isAttempted && userAnsIdx === q.correct;
+                
                 let mark = isCorrect ? "✔️ सही" : "❌ गलत";
                 let markClass = isCorrect ? "ans-correct" : "ans-wrong";
+                
                 let userAnsText = isAttempted ? String.fromCharCode(65+userAnsIdx) + ") " + q.options[userAnsIdx] : "उत्तर नहीं दिया गया";
                 let correctAnsText = String.fromCharCode(65+q.correct) + ") " + q.options[q.correct];
 
                 let optionsHtml = `<div style="margin: 10px 0; font-size: 0.95rem; color: #94a3b8; line-height: 1.6;">`;
-                q.options.forEach((opt, oIdx) => { optionsHtml += `<div>${String.fromCharCode(65+oIdx)}) ${opt}</div>`; });
+                q.options.forEach((opt, oIdx) => {
+                    optionsHtml += `<div>${String.fromCharCode(65+oIdx)}) ${opt}</div>`;
+                });
                 optionsHtml += `</div>`;
 
                 let html = `
@@ -801,7 +1060,7 @@
                         <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-top: 10px;">
                             <div style="font-size: 0.95rem; margin-bottom: 5px;">
                                 <strong style="color: #cbd5e1;">छात्र द्वारा दिया गया उत्तर:</strong> 
-                                <span style="${!isCorrect ? 'color:#ef4444; font-weight:600;' : 'color:#10b981; font-weight:600 দলের'}">${userAnsText}</span>
+                                <span style="${!isCorrect ? 'color:#ef4444; font-weight:600;' : 'color:#10b981; font-weight:600;'}">${userAnsText}</span>
                             </div>
                             <div style="color: #10b981; font-size: 0.95rem;">
                                 <strong>असली उत्तर:</strong> <span style="font-weight:600;">${correctAnsText}</span>
