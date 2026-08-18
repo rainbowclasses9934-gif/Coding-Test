@@ -378,6 +378,11 @@
         let timeLeft = 1800; // 30 minutes in seconds
         window.currentQuizFinished = false;
 
+        // === सुरक्षा (Security) वेरिएबल्स ===
+        let isQuizActive = false; 
+        let fullscreenExitCount = 0;
+        let tabSwitchCount = 0;
+
         // 5 घंटे का सेशन चेक करने का फंक्शन 
         function checkSession() {
             let savedLoginTime = localStorage.getItem('dpp_login_time');
@@ -404,6 +409,11 @@
             document.getElementById("custom-modal").classList.add("hidden");
             document.getElementById("options-modal").classList.add("hidden");
             document.getElementById("summary-modal").classList.add("hidden");
+
+            // यदि वे बैक करके टेस्ट स्क्रीन से बाहर जाते हैं, तो सिक्योरिटी चेकिंग बंद करें
+            if (isQuizActive && (!state || state.screen !== 'quiz')) {
+                isQuizActive = false;
+            }
 
             if (!state) {
                 if (checkSession()) { showScreen('selection-screen'); }
@@ -436,12 +446,15 @@
             if (state.screen === 'instruction') {
                 showScreen('instruction-screen');
                 clearInterval(timerInterval);
+                isQuizActive = false;
             } else if (state.screen === 'login') {
                 showScreen('login-screen');
                 clearInterval(timerInterval);
+                isQuizActive = false;
             } else if (state.screen === 'selection') {
                 showScreen('selection-screen');
                 clearInterval(timerInterval);
+                isQuizActive = false;
             } else if (state.screen === 'quiz') {
                 showScreen('quiz-screen');
             } else if (state.screen === 'pre-submit') {
@@ -630,7 +643,7 @@
 
             if (!hasQuizzes) {
                 if (totalQuizzes > 0 && hiddenQuizzesCount === totalQuizzes) {
-                    list.innerHTML = `<div style="text-align:center; color:#ffffff; padding: 20px;">आपने इस अध्याय के सभी DPP हाल ही में बना लिए हैं।<br><br><span style="color:#fbbf24;">कृपया 5 घंटे बाद पुनः प्रयास करें।</span></div>`;
+                    list.innerHTML = `<div style="text-align:center; color:#ffffff; padding: 20px;">आपने इस अध्याय के सभी DPP हाल ही में बना लिए हैं。<br><br><span style="color:#fbbf24;">कृपया 5 घंटे बाद पुनः प्रयास करें।</span></div>`;
                 } else {
                     list.innerHTML = `<div style="text-align:center; color:#ffffff; padding: 20px;">अभी इस अध्याय में कोई DPP नहीं डाला गया है।<br><br>कृपया बाद में प्रयास करें।</div>`;
                 }
@@ -668,6 +681,16 @@
             }
         }
 
+        // ==========================================
+        // सिक्यूरिटी के लिए फुल-स्क्रीन मोड फंक्शन
+        // ==========================================
+        function enterFullscreen() {
+            let elem = document.documentElement;
+            if (elem.requestFullscreen) { elem.requestFullscreen().catch(err => console.log(err)); } 
+            else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen().catch(err => console.log(err)); } 
+            else if (elem.msRequestFullscreen) { elem.msRequestFullscreen().catch(err => console.log(err)); }
+        }
+
         function startQuiz() {
             let sub = document.getElementById("subject-select").value;
             let ch = document.getElementById("chapter-select").value;
@@ -688,6 +711,13 @@
                 history.pushState({ screen: 'quiz' }, '');
                 showScreen('quiz-screen');
                 
+                // --- सिक्योरिटी इनिशियलाइजेशन ---
+                isQuizActive = true;
+                fullscreenExitCount = 0;
+                tabSwitchCount = 0;
+                enterFullscreen();
+                // ---------------------------------
+
                 startOverallTimer();
                 loadQuestion();
             } else {
@@ -773,6 +803,10 @@
         // SUBMIT QUIZ (Pre-Submit Interface)
         // ==========================================
         function submitQuiz() {
+            // --- सिक्योरिटी ट्रैकिंग बंद करें ---
+            isQuizActive = false; 
+            // ------------------------------------
+            
             clearInterval(timerInterval);
             
             let studentName = document.getElementById("student-name").value;
@@ -821,7 +855,7 @@
         }
 
         // ==========================================
-        // FINALIZE RESULT
+        // FINALIZE RESULT (एवं फोर्स सबमिट लॉजिक)
         // ==========================================
         function finalizeQuizSubmit() {
             window.currentQuizFinished = true; // स्कोर पेज पर बैक रोकने के लिए 
@@ -874,6 +908,19 @@
             document.getElementById("res-percent").innerText = `कुल प्राप्तांक: ${percent}%`;
 
             generateSummary();
+        }
+
+        // --- चीटिंग पकड़ने पर अपने आप सबमिट करने का फंक्शन ---
+        function autoForceSubmit(reason) {
+            if (!isQuizActive) return;
+            isQuizActive = false; // दुबारा ट्रिगर न हो
+            clearInterval(timerInterval);
+            
+            // बिना प्री-सबमिट स्क्रीन के सीधे रिजल्ट दिखाएं
+            finalizeQuizSubmit();
+            
+            // रिजल्ट स्क्रीन के ऊपर चेतावनी पॉपअप दिखाएं
+            setTimeout(() => { showModal(reason); }, 400); 
         }
 
         // ==========================================
@@ -941,6 +988,71 @@
                 container.innerHTML += html;
             });
         }
+
+        // ==========================================
+        // 🔒 संपूर्ण सुरक्षा नीतियां (SECURITY EVENT LISTENERS) 🔒
+        // ==========================================
+
+        // 1. फुल-स्क्रीन मोड मॉनिटर
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+
+        function handleFullscreenChange() {
+            if (!isQuizActive) return;
+            
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                fullscreenExitCount++;
+                if (fullscreenExitCount < 3) {
+                    showModal(`🚨 चेतावनी (${fullscreenExitCount}/3): कृपया फुल-स्क्रीन मोड से बाहर न निकलें। यह नियमों के विरुद्ध है। 3 बार ऐसा करने पर आपका टेस्ट अपने आप सबमिट हो जाएगा।`);
+                    enterFullscreen(); // छात्र को वापस फुल स्क्रीन में भेजने का प्रयास 
+                } else {
+                    autoForceSubmit("🚫 फुल-स्क्रीन मोड से 3 बार बाहर निकलने (नियम उल्लंघन) के कारण आपका टेस्ट अपने आप सबमिट कर दिया गया है।");
+                }
+            }
+        }
+
+        // 2. टैब स्विचिंग (Visibility) मॉनिटर
+        document.addEventListener("visibilitychange", () => {
+            if (!isQuizActive) return;
+            
+            if (document.hidden) {
+                tabSwitchCount++;
+                if (tabSwitchCount < 3) {
+                    // छात्र जब वापस आएगा तब उसे चेतावनी मिलेगी 
+                    setTimeout(() => {
+                        showModal(`🚨 चेतावनी (${tabSwitchCount}/3): आपने टेस्ट के दौरान अपना टैब या विंडो बदला है! यह चीटिंग मानी जाएगी। तीसरी बार ऐसा करने पर टेस्ट अपने आप सबमिट हो जाएगा।`);
+                    }, 300);
+                } else {
+                    autoForceSubmit("🚫 3 बार टैब बदलने या बाहर जाने (चीटिंग का प्रयास) के कारण आपका टेस्ट अपने आप सबमिट कर दिया गया है।");
+                }
+            }
+        });
+
+        // 3. राइट-क्लिक ब्लॉक (Context Menu)
+        document.addEventListener('contextmenu', function(e) {
+            if (isQuizActive) {
+                e.preventDefault();
+            }
+        });
+
+        // 4. कीबोर्ड शॉर्टकट ब्लॉक (F12, Ctrl+C, Ctrl+V, Print, Alt+Tab prevention in browser)
+        document.addEventListener('keydown', function(e) {
+            if (!isQuizActive) return;
+            
+            // F12 ब्लॉक
+            if (e.key === 'F12' || e.keyCode === 123) {
+                e.preventDefault();
+            }
+            // Developer Tools: Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) {
+                e.preventDefault();
+            }
+            // Copy, Paste, Print, View Source, Select All (Ctrl+C, V, P, U, A)
+            if (e.ctrlKey && (e.key === 'U' || e.key === 'u' || e.key === 'C' || e.key === 'c' || e.key === 'V' || e.key === 'v' || e.key === 'P' || e.key === 'p' || e.key === 'A' || e.key === 'a')) {
+                e.preventDefault();
+            }
+        });
+
     </script>
 </body>
 </html>
