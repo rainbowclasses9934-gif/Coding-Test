@@ -58,7 +58,7 @@
             background: rgba(255, 76, 76, 0.15) !important;
         }
 
-        .question-text { font-size: 1.15rem; font-weight: 500; margin-top: 45px; margin-bottom: 25px; clear: both; line-height: 1.7; color: #ffffff; }
+        .question-text { font-size: 1.15rem; font-weight: 500; margin-top: 45px; margin-bottom: 25px; clear: both; line-height: 1.7; color: #ffffff; transition: color 1.2s ease; }
         
         /* 5. क्विज़ ऑप्शंस: ट्रांसपेरेंट डार्क -> सेलेक्ट होने पर ब्लू */
         .option-item { background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.1); padding: 15px 18px; border-radius: 12px; margin-bottom: 14px; cursor: pointer; font-size: 1rem; color: #ffffff; transition: all 0.3s ease; backdrop-filter: blur(8px); }
@@ -99,9 +99,7 @@
         @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
         @keyframes modalScale { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        /* ========================================================= */
         /* RAINBOW CLASSES टॉप सेंटर बैज (एनवेलप स्टाइल) */
-        /* ========================================================= */
         .card::before, .modal-glass::before {
             content: "RAINBOW CLASSES";
             position: absolute;
@@ -121,7 +119,7 @@
             z-index: 100;
         }
 
-        /* न्यू ऐडेड स्टाइल्स (Summary Box & Modal) */
+        /* Summary Box & Modal */
         @keyframes slideUpPop {
             0% { transform: translateY(50px) scale(0.9); opacity: 0; }
             70% { transform: translateY(-10px) scale(1.02); opacity: 1; }
@@ -130,28 +128,13 @@
         
         .summary-glass {
             animation: slideUpPop 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-            max-width: 550px;
-            width: 90%;
-            max-height: 85vh;
-            overflow: hidden;
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            background: rgba(30, 40, 50, 0.98);
-            backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            position: relative;
+            max-width: 550px; width: 90%; max-height: 85vh; overflow: hidden; padding: 25px; display: flex;
+            flex-direction: column; background: rgba(30, 40, 50, 0.98); backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; position: relative;
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
         }
         
-        .summary-content-scroll {
-            overflow-y: auto;
-            max-height: 65vh;
-            padding-right: 8px;
-            text-align: left;
-        }
-
+        .summary-content-scroll { overflow-y: auto; max-height: 65vh; padding-right: 8px; text-align: left; }
         .summary-content-scroll::-webkit-scrollbar { width: 5px; }
         .summary-content-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
         .summary-content-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 10px; }
@@ -172,77 +155,87 @@
             50% { transform: scale(1) rotate(0deg); }
         }
         .reminder-card {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: #ffffff;
-            padding: 15px 20px;
-            border-radius: 12px;
-            margin-top: 25px;
-            font-size: 1rem;
-            font-weight: bold;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
-            animation: wigglePulse 2.5s infinite;
+            background: linear-gradient(135deg, #f59e0b, #d97706); color: #ffffff; padding: 15px 20px;
+            border-radius: 12px; margin-top: 25px; font-size: 1rem; font-weight: bold; text-align: center;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); animation: wigglePulse 2.5s infinite;
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        /* 5 सेकंड टाइमर एनीमेशन */
+        .timer-anim { animation: pulseTimer 1s infinite ease-in-out; }
         @keyframes pulseTimer {
             0% { transform: scale(1); opacity: 1; }
             50% { transform: scale(1.3); opacity: 0.8; color: #38bdf8; }
             100% { transform: scale(1); opacity: 1; }
         }
-        .timer-anim { animation: pulseTimer 1s infinite ease-in-out; }
 
-        /* ========================================================= */
         /* APPLE DOCK & BELL ICON */
-        /* ========================================================= */
         .dock-card {
-            background: rgba(15, 23, 42, 0.88);
-            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 25px; 
-            padding: 10px 25px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
-            margin-bottom: 20px;
-            animation: fadeIn 0.4s ease-out;
-            display: flex;
-            justify-content: space-between; 
-            align-items: center;
-            height: 65px; 
+            background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 25px; padding: 10px 25px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7); margin-bottom: 20px; animation: fadeIn 0.4s ease-out;
+            display: flex; justify-content: space-between; align-items: center; height: 65px; 
         }
         
         .bell-wrapper {
-            font-size: 1.8rem;
-            position: relative;
-            cursor: pointer;
-            animation: bellRing 2.5s infinite ease-in-out;
-            display: none; 
-            transition: transform 0.2s;
+            font-size: 1.8rem; position: relative; cursor: pointer; animation: bellRing 2.5s infinite ease-in-out;
+            display: none; transition: transform 0.2s;
         }
-        
-        .bell-wrapper:hover {
-            transform: scale(1.1);
-        }
-
+        .bell-wrapper:hover { transform: scale(1.1); }
         .red-dot {
-            position: absolute;
-            top: 2px;
-            right: 2px;
-            width: 12px;
-            height: 12px;
-            background: #ef4444;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #ef4444;
-            border: 2px solid #0f172a;
+            position: absolute; top: 2px; right: 2px; width: 12px; height: 12px; background: #ef4444;
+            border-radius: 50%; box-shadow: 0 0 8px #ef4444; border: 2px solid #0f172a;
         }
 
         @keyframes bellRing {
-            0% { transform: rotate(0); }
-            10% { transform: rotate(15deg); }
-            20% { transform: rotate(-15deg); }
-            30% { transform: rotate(10deg); }
-            40% { transform: rotate(-10deg); }
-            50%, 100% { transform: rotate(0); }
+            0% { transform: rotate(0); } 10% { transform: rotate(15deg); } 20% { transform: rotate(-15deg); }
+            30% { transform: rotate(10deg); } 40% { transform: rotate(-10deg); } 50%, 100% { transform: rotate(0); }
+        }
+
+        /* ========================================================= */
+        /* NEW FEATURES CSS (Light Mode & Quiz Dock)                 */
+        /* ========================================================= */
+        
+        /* Glass Buttons for Dock */
+        .glass-btn-dock {
+            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff; padding: 8px 16px; border-radius: 15px; cursor: pointer;
+            backdrop-filter: blur(10px); transition: all 0.3s ease; font-weight: 600; font-size: 0.9rem;
+        }
+        .glass-btn-dock:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.05); }
+        
+        /* Theme Selection Popup */
+        .theme-popup-box {
+            position: absolute; bottom: 120%; left: 0; background: rgba(30, 40, 50, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 6px;
+            display: flex; flex-direction: column; gap: 5px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            z-index: 200; transform-origin: bottom; animation: popUpAnim 0.3s ease-out; min-width: 120px;
+        }
+        @keyframes popUpAnim { from { opacity: 0; transform: scaleY(0); } to { opacity: 1; transform: scaleY(1); } }
+        
+        .theme-opt {
+            padding: 8px 12px; cursor: pointer; border-radius: 8px; color: #fff; font-size: 0.9rem; font-weight: 500; transition: 0.2s; text-align: center;
+        }
+        .theme-opt:hover { background: rgba(56, 189, 248, 0.2); color: #38bdf8; }
+
+        /* Light Mode Specifics - एनिमेटेड 1.5 सेकंड ट्रांजिशन के साथ */
+        #quiz-screen { transition: background 1.5s ease-in-out, border-color 1.5s ease-in-out; }
+        #quiz-screen.light-mode-active {
+            background: rgba(248, 250, 252, 0.95) !important;
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+        #quiz-screen.light-mode-active .question-text { color: #0f172a; transition: color 1.5s ease-in-out; font-weight: 600; }
+        #quiz-screen.light-mode-active #q-counter { color: #2563eb; transition: color 1.5s ease-in-out;}
+        #quiz-screen.light-mode-active .timer-box { 
+            background: rgba(37, 99, 235, 0.1); color: #2563eb; border-color: rgba(37, 99, 235, 0.3);
+        }
+        #quiz-screen.light-mode-active .option-item {
+            background: #ffffff; border-color: #cbd5e1; color: #1e293b; box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: all 1.5s ease-in-out;
+        }
+        #quiz-screen.light-mode-active .option-item:hover {
+            background: #f1f5f9; border-color: #3b82f6; transform: translateX(5px);
+        }
+        #quiz-screen.light-mode-active .option-item.selected {
+            background: rgba(59, 130, 246, 0.15); border-color: #2563eb; color: #000; font-weight: 600;
         }
     </style>
 </head>
@@ -250,9 +243,7 @@
 
     <div class="container">
 
-        <!-- ========================================== -->
         <!-- INSTRUCTION SCREEN -->
-        <!-- ========================================== -->
         <div id="instruction-screen" class="card hidden">
             <h2 style="margin-bottom: 20px; text-align: center; color: #ef4444; font-size: 1.6rem; letter-spacing: 0.5px; font-weight: bold;">🚨 पढ़ने वाले छात्र ध्यान दें 🚨</h2>
             <div style="font-size: 1.05rem; color: #ffffff; line-height: 1.7; margin-bottom: 25px; background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);">
@@ -285,9 +276,7 @@
             <button class="btn" onclick="verifyStudent()">Next</button>
         </div>
 
-        <!-- ========================================== -->
         <!-- DPP SETUP SCREEN -->
-        <!-- ========================================== -->
         <div id="selection-screen" class="card hidden">
             <h2 style="margin-bottom: 25px; text-align: center; color: #38bdf8; font-size: 1.4rem; letter-spacing: 0.5px;">DPP Setup</h2>
             <div class="input-group">
@@ -317,9 +306,7 @@
             <button class="btn" onclick="startQuiz()">Start DPP</button>
         </div>
 
-        <!-- ========================================== -->
-        <!-- DOCK CONTAINER (Shows with Setup)     -->
-        <!-- ========================================== -->
+        <!-- DOCK CONTAINER (Shows with Setup) -->
         <div id="dock-container" class="dock-card hidden">
             <div style="flex-grow: 1; color: rgba(255,255,255,0.4); font-size: 0.8rem; font-weight: 500;">
                 <!-- खाली जगह ताकि बेल राइट साइड में रहे -->
@@ -328,7 +315,7 @@
             <!-- नोटिफिकेशन बेल -->
             <div id="notification-bell" class="bell-wrapper" onclick="openNotificationModal()">
                 🔔
-                <span class="red-dot"></span>
+                <span id="bell-dot" class="red-dot"></span>
             </div>
         </div>
 
@@ -344,7 +331,7 @@
                 ⚠️ आपके पास सिर्फ 10 मिनट शेष हैं! कृपया जल्दी करें।
             </div>
 
-            <div class="question-text" id="q-text">प्रश्न लोड हो रहा है...</div>
+            <div class="question-text" id="q-text">प्रश्न लोड আসতে रहा है...</div>
             <div id="options-container"></div>
             
             <div class="nav-btns">
@@ -352,6 +339,25 @@
                 <button class="btn" id="btn-next" onclick="nextQuestion()">Next ►</button>
             </div>
             <button class="btn btn-success" id="btn-submit" style="margin-top: 15px; display: none;" onclick="submitQuiz()">Submit🧐</button>
+        </div>
+
+        <!-- NEW: QUIZ SCREEN DOCK -->
+        <div id="quiz-dock-container" class="dock-card hidden" style="margin-top: 5px;">
+            <!-- Left Side: Screen Mode -->
+            <div style="width: 50%; display: flex; justify-content: flex-start; position: relative;">
+                <button id="btn-screen-mode" class="glass-btn-dock" onclick="toggleThemePopup()">स्क्रीन मोड 🌗</button>
+                
+                <!-- Theme Popup -->
+                <div id="theme-popup" class="theme-popup-box hidden">
+                    <div class="theme-opt" onclick="applyLightMode()">Light Mode ☀️</div>
+                    <div class="theme-opt" onclick="applyDarkMode()">Dark Mode 🌙</div>
+                </div>
+            </div>
+            
+            <!-- Right Side: Full Screen Mode -->
+            <div style="width: 50%; display: flex; justify-content: flex-end;">
+                <button id="btn-fullscreen" class="glass-btn-dock" onclick="toggleFullScreen()">फुल स्क्रीन मोड 🔲</button>
+            </div>
         </div>
 
         <!-- प्री-सबमिट स्क्रीन -->
@@ -378,11 +384,9 @@
             <p id="res-percent" style="font-size: 1.3rem; font-weight: 600; color: #10b981;"></p>
             <br>
             
-            <!-- व्यू समरी और होम बटन -->
             <button class="btn btn-secondary" onclick="openSummaryModal()" style="margin-top: 15px; margin-bottom: 10px;">View Summary / Answer 📝</button>
             <button class="btn" onclick="goHome()" style="margin-top: 10px;">Home 🏠</button>
 
-            <!-- नया एनिमेटेड रिमाइंडर कार्ड -->
             <div class="reminder-card">
                 यदि आप आज के सभी डीपीपी नहीं बनाए हैं तो कृपया सभी डीपीपी बनाएं
             </div>
@@ -390,11 +394,7 @@
 
     </div>
 
-    <!-- ========================================== -->
     <!-- MODALS SECTION -->
-    <!-- ========================================== -->
-
-    <!-- Error/Message Modal -->
     <div id="custom-modal" class="modal-overlay hidden">
         <div class="modal-glass">
             <div class="modal-icon">⚠️</div>
@@ -403,7 +403,6 @@
         </div>
     </div>
 
-    <!-- Options Select Modal -->
     <div id="options-modal" class="modal-overlay hidden">
         <div class="modal-glass options-glass">
             <h3 id="options-title" style="margin-bottom: 20px; color: #38bdf8; font-size: 1.2rem; font-weight: 500;">चुनें</h3>
@@ -412,18 +411,14 @@
         </div>
     </div>
 
-    <!-- Animated Summary Modal -->
     <div id="summary-modal" class="modal-overlay hidden">
         <div class="summary-glass">
             <h3 style="text-align:center; color:#38bdf8; margin-bottom:20px; font-size:1.4rem;">विस्तृत परिणाम</h3>
-            <div id="summary-content" class="summary-content-scroll">
-                <!-- समरी यहाँ लोड होगी -->
-            </div>
+            <div id="summary-content" class="summary-content-scroll"></div>
             <button class="btn btn-secondary" style="margin-top: 20px; padding: 12px;" onclick="closeSummaryModal()">बंद करें ❌</button>
         </div>
     </div>
 
-    <!-- NEW: Student Notification Modal -->
     <div id="notification-modal" class="modal-overlay hidden">
         <div class="modal-glass">
             <div style="font-size: 3rem; margin-bottom: 10px; animation: bellRing 2s infinite;">🔔</div>
@@ -465,7 +460,6 @@
         let timeLeft = 1800; // 30 minutes in seconds
         window.currentQuizFinished = false;
 
-        // 5 घंटे का सेशन चेक करने का फंक्शन 
         function checkSession() {
             let savedLoginTime = localStorage.getItem('dpp_login_time');
             if (savedLoginTime && (Date.now() - parseInt(savedLoginTime)) < 5 * 60 * 60 * 1000) {
@@ -481,8 +475,6 @@
                 document.getElementById('student-id').value = savedId;
                 history.replaceState({ screen: 'selection' }, '');
                 showScreen('selection-screen');
-                
-                // सेशन चालू होने पर भी नोटिफिकेशन चेक करें
                 checkAndShowNotification(savedId);
             } else {
                 history.replaceState({ screen: 'instruction' }, '');
@@ -508,7 +500,6 @@
             if (state.summaryModal) document.getElementById("summary-modal").classList.remove("hidden");
             if (state.notifModal) document.getElementById("notification-modal").classList.remove("hidden");
 
-            // यदि 5 घंटे का सेशन एक्टिव है, तो लॉगिन/इंस्ट्रक्शन पर जाने से रोकें
             if (state.screen === 'instruction' || state.screen === 'login') {
                 if (checkSession()) {
                     history.replaceState({ screen: 'selection' }, '');
@@ -517,7 +508,6 @@
                 }
             }
 
-            // यदि छात्र रिजल्ट पर आ चुका है और बैक बटन क्लिक करता है, तो सीधे सेटअप पर भेजें
             if (state.screen === 'quiz' || state.screen === 'pre-submit') {
                 if (window.currentQuizFinished) {
                     history.replaceState({ screen: 'selection' }, '');
@@ -526,25 +516,14 @@
                 }
             }
 
-            if (state.screen === 'instruction') {
-                showScreen('instruction-screen');
-                clearInterval(timerInterval);
-            } else if (state.screen === 'login') {
-                showScreen('login-screen');
-                clearInterval(timerInterval);
-            } else if (state.screen === 'selection') {
-                showScreen('selection-screen');
-                clearInterval(timerInterval);
-            } else if (state.screen === 'quiz') {
-                showScreen('quiz-screen');
-            } else if (state.screen === 'pre-submit') {
-                showScreen('pre-submit-screen');
-            } else if (state.screen === 'result') {
-                showScreen('result-screen');
-            }
+            if (state.screen === 'instruction') { showScreen('instruction-screen'); clearInterval(timerInterval); } 
+            else if (state.screen === 'login') { showScreen('login-screen'); clearInterval(timerInterval); } 
+            else if (state.screen === 'selection') { showScreen('selection-screen'); clearInterval(timerInterval); } 
+            else if (state.screen === 'quiz') { showScreen('quiz-screen'); } 
+            else if (state.screen === 'pre-submit') { showScreen('pre-submit-screen'); } 
+            else if (state.screen === 'result') { showScreen('result-screen'); }
         });
 
-        // स्क्रीन बदलने का फंक्शन (डॉक को भी मैनेज करता है)
         function showScreen(screenId) {
             document.getElementById("instruction-screen").classList.add("hidden");
             document.getElementById("login-screen").classList.add("hidden");
@@ -553,44 +532,46 @@
             document.getElementById("pre-submit-screen").classList.add("hidden");
             document.getElementById("result-screen").classList.add("hidden");
             document.getElementById("dock-container").classList.add("hidden");
+            document.getElementById("quiz-dock-container").classList.add("hidden");
             
             document.getElementById(screenId).classList.remove("hidden");
             
-            // अगर क्विज सेटअप स्क्रीन है, तो डॉक भी दिखाएं
             if(screenId === 'selection-screen') {
                 document.getElementById("dock-container").classList.remove("hidden");
             }
+            if(screenId === 'quiz-screen') {
+                document.getElementById("quiz-dock-container").classList.remove("hidden");
+            }
         }
 
-        // ==========================================
-        // NEW: स्मार्ट नोटिफिकेशन चेक करने का फंक्शन (Case-Insensitive)
-        // ==========================================
         function checkAndShowNotification(studentId) {
             let bell = document.getElementById("notification-bell");
-            let enteredIdLower = studentId.toLowerCase(); // छात्र ने जो डाला उसे छोटा किया
+            let enteredIdLower = studentId.toLowerCase();
             let foundMessage = null;
 
-            // चेक करें कि questions.js में window.studentMessages है या नहीं
             if (window.studentMessages) {
-                // teacher ने questions.js में आईडी जैसे भी लिखी हो (Capital/Small), सबको चेक करेगा
                 for (let savedId in window.studentMessages) {
                     if (savedId.toLowerCase() === enteredIdLower) {
                         foundMessage = window.studentMessages[savedId];
-                        break; // जैसे ही आईडी मिल जाए, खोजना बंद कर दे
+                        break;
                     }
                 }
             }
-
             if (foundMessage) {
-                bell.style.display = "block"; // बेल दिखाएं
-                bell.dataset.message = foundMessage; // मैसेज को सेट करें
+                bell.style.display = "block";
+                bell.dataset.message = foundMessage;
             } else {
-                bell.style.display = "none"; // बेल छिपाएं
+                bell.style.display = "none";
             }
         }
 
         function openNotificationModal() {
             let bell = document.getElementById("notification-bell");
+            
+            // Feature Update: Hide Red Dot on first click
+            let dot = document.getElementById("bell-dot");
+            if(dot) dot.style.display = "none"; 
+            
             let msg = bell.dataset.message;
             if(msg) {
                 document.getElementById("student-msg-text").innerText = msg;
@@ -628,17 +609,12 @@
                 });
             }
 
-            if (!isIdValid) {
-                showModal("आपकी आईडी पंजीकृत नहीं है! कृपया सही आईडी दर्ज करें।");
-                return;
-            }
+            if (!isIdValid) { showModal("आपकी आईडी पंजीकृत नहीं है! कृपया सही आईडी दर्ज करें।"); return; }
 
-            // 5 घंटे के लिए लोकल स्टोरेज में सेव करना
             localStorage.setItem('dpp_student_name', name);
             localStorage.setItem('dpp_student_id', studentId);
             localStorage.setItem('dpp_login_time', Date.now().toString());
 
-            // यहाँ पर नोटिफिकेशन चेक करें
             checkAndShowNotification(studentId);
 
             history.pushState({ screen: 'selection' }, '');
@@ -672,10 +648,7 @@
 
         function openChapterSelect() {
             let sub = document.getElementById("subject-select").value;
-            if(!sub) {
-                showModal("कृपया पहले विषय चुनें!");
-                return;
-            }
+            if(!sub) { showModal("कृपया पहले विषय चुनें!"); return; }
 
             let list = document.getElementById("options-list");
             list.innerHTML = "";
@@ -723,13 +696,9 @@
                 }
             }
 
-            if (hasQuizzes) {
-                qText.innerText = "-- DPP चुनें --";
-            } else if (hiddenDueToCooldown) {
-                qText.innerText = "-- आपने सभी DPP बना लिए (5 घंटे बाद देखें) --";
-            } else {
-                qText.innerText = "-- अभी कोई DPP उपलब्ध नहीं है --";
-            }
+            if (hasQuizzes) { qText.innerText = "-- DPP चुनें --"; } 
+            else if (hiddenDueToCooldown) { qText.innerText = "-- आपने सभी DPP बना लिए (5 घंटे बाद देखें) --"; } 
+            else { qText.innerText = "-- अभी कोई DPP उपलब्ध नहीं है --"; }
         }
 
         function openQuizSelect() {
@@ -760,8 +729,7 @@
                         if (savedTime) {
                             let elapsed = Date.now() - parseInt(savedTime);
                             if (elapsed < 5 * 60 * 60 * 1000) { 
-                                hideQuiz = true;
-                                hiddenQuizzesCount++;
+                                hideQuiz = true; hiddenQuizzesCount++;
                             } else {
                                 localStorage.removeItem(cooldownKey); 
                             }
@@ -795,11 +763,8 @@
         }
 
         function closeOptionsModal() {
-            if (history.state && history.state.optionsModal) {
-                history.back();
-            } else {
-                document.getElementById("options-modal").classList.add("hidden");
-            }
+            if (history.state && history.state.optionsModal) { history.back(); } 
+            else { document.getElementById("options-modal").classList.add("hidden"); }
         }
 
         function showModal(msg) {
@@ -809,12 +774,55 @@
         }
 
         function closeModal() {
-            if (history.state && history.state.modal) {
-                history.back();
+            if (history.state && history.state.modal) { history.back(); } 
+            else { document.getElementById("custom-modal").classList.add("hidden"); }
+        }
+
+        /* ========================================================== */
+        /* NEW FEATURES LOGIC: Screen Mode & Full Screen Mode         */
+        /* ========================================================== */
+
+        function toggleThemePopup() {
+            document.getElementById('theme-popup').classList.toggle('hidden');
+        }
+
+        function applyLightMode() {
+            document.getElementById('quiz-screen').classList.add('light-mode-active');
+            document.getElementById('theme-popup').classList.add('hidden');
+        }
+
+        function applyDarkMode() {
+            document.getElementById('quiz-screen').classList.remove('light-mode-active');
+            document.getElementById('theme-popup').classList.add('hidden');
+        }
+
+        function toggleFullScreen() {
+            let btn = document.getElementById("btn-fullscreen");
+            
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().then(() => {
+                    btn.innerText = "नॉर्मल 🔙";
+                }).catch(err => {
+                    console.log("Error attempting to enable fullscreen:", err.message);
+                });
             } else {
-                document.getElementById("custom-modal").classList.add("hidden");
+                if (document.exitFullscreen) {
+                    document.exitFullscreen().then(() => {
+                        btn.innerText = "फुल स्क्रीन मोड 🔲";
+                    });
+                }
             }
         }
+
+        // Full Screen Event Listener - अगर छात्र Esc बटन दबा कर फुल स्क्रीन से बाहर आये
+        document.addEventListener('fullscreenchange', (event) => {
+            let btn = document.getElementById("btn-fullscreen");
+            if (!document.fullscreenElement) {
+                btn.innerText = "फुल स्क्रीन मोड 🔲";
+            }
+        });
+
+        /* ========================================================== */
 
         function startQuiz() {
             let sub = document.getElementById("subject-select").value;
@@ -832,6 +840,9 @@
                 userAnswers = new Array(currentQuestions.length).fill(null);
                 currentQIndex = 0;
                 window.currentQuizFinished = false;
+
+                // Ensure Dark mode is default on start
+                applyDarkMode();
 
                 history.pushState({ screen: 'quiz' }, '');
                 showScreen('quiz-screen');
@@ -917,12 +928,12 @@
             }
         }
 
-        // ==========================================
-        // SUBMIT QUIZ (Pre-Submit Interface)
-        // ==========================================
         function submitQuiz() {
             clearInterval(timerInterval);
             
+            // Remove Light Theme so that Result Screen displays in Dark Mode correctly
+            applyDarkMode(); 
+
             let studentName = document.getElementById("student-name").value;
             let studentId = document.getElementById("student-id").value;
             let total = currentQuestions.length;
@@ -948,9 +959,6 @@
             showScreen('pre-submit-screen');
         }
 
-        // ==========================================
-        // START 5 SEC TIMER
-        // ==========================================
         function startFinalSubmit() {
             document.getElementById("btn-final-submit").classList.add("hidden");
             document.getElementById("submit-loader").classList.remove("hidden");
@@ -968,11 +976,8 @@
             }, 1000);
         }
 
-        // ==========================================
-        // FINALIZE RESULT
-        // ==========================================
         function finalizeQuizSubmit() {
-            window.currentQuizFinished = true; // स्कोर पेज पर बैक रोकने के लिए 
+            window.currentQuizFinished = true; 
             let score = 0;
             currentQuestions.forEach((q, idx) => {
                 if (userAnswers[idx] === q.correct) score++;
@@ -1024,28 +1029,19 @@
             generateSummary();
         }
 
-        // ==========================================
-        // HOME BUTTON NAVIGATION
-        // ==========================================
         function goHome() {
             history.pushState({ screen: 'selection' }, '');
             showScreen('selection-screen');
         }
 
-        // ==========================================
-        // ANIMATED SUMMARY MODAL LOGIC
-        // ==========================================
         function openSummaryModal() {
             document.getElementById("summary-modal").classList.remove("hidden");
             history.pushState({ screen: history.state ? history.state.screen : 'result', summaryModal: true }, '');
         }
 
         function closeSummaryModal() {
-            if (history.state && history.state.summaryModal) {
-                history.back();
-            } else {
-                document.getElementById("summary-modal").classList.add("hidden");
-            }
+            if (history.state && history.state.summaryModal) { history.back(); } 
+            else { document.getElementById("summary-modal").classList.add("hidden"); }
         }
 
         function generateSummary() {
