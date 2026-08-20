@@ -7,57 +7,80 @@
     <!-- HTML To Canvas Library (For Score Card Download) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        /* CSS: न्यू डार्क ब्लू-ग्रे थीम (Rainbow Classes Custom Theme) */
+        /* CSS: प्रीमियम प्योर डार्क थीम & ग्लास इफ़ेक्ट (Glassmorphism) */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; }
         input { user-select: auto; }
         
-        /* स्मूथ 2 सेकंड ट्रांजिशन के लिए */
+        /* स्मूथ ट्रांजिशन */
         body, .card, .dock-card, .question-text, .option-item, .timer-box, input, .glass-select-box, p, label, h2, h3, .summary-glass, .modal-glass {
-            transition: background 2s ease-in-out, color 2s ease-in-out, border-color 2s ease-in-out, box-shadow 2s ease-in-out !important;
+            transition: all 0.5s ease-in-out;
         }
 
-        body { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; background-attachment: fixed; }
+        /* प्योर डार्क बैकग्राउंड */
+        body { 
+            background: #000000;
+            /* ग्लास इफ़ेक्ट को उभारने के लिए बहुत ही हल्का डार्क रेडियल ग्रेडिएंट */
+            background-image: radial-gradient(circle at 50% 0%, #111111 0%, #000000 70%);
+            color: #ffffff; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            background-attachment: fixed; 
+        }
         
-        .container { width: 100%; max-width: 600px; padding: 15px 15px 20px 15px; margin-top: 0; position: relative; }
+        .container { width: 100%; max-width: 600px; padding: 15px 15px 20px 15px; margin-top: 0; position: relative; z-index: 1; }
         
-        .card { background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 25px; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7); margin-bottom: 20px; animation: fadeIn 0.4s ease-out; position: relative; }
+        /* असली ट्रांसपेरेंट ग्लास इफ़ेक्ट वाले कार्ड्स */
+        .card { 
+            background: rgba(20, 20, 20, 0.45); 
+            backdrop-filter: blur(18px); 
+            -webkit-backdrop-filter: blur(18px); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            border-radius: 20px; 
+            padding: 25px; 
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6); 
+            margin-bottom: 20px; 
+            animation: fadeIn 0.4s ease-out; 
+            position: relative; 
+        }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         
         .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; font-weight: 500; margin-bottom: 10px; color: #ffffff; font-size: 0.95rem; }
+        .input-group label { display: block; font-weight: 500; margin-bottom: 10px; color: #e2e8f0; font-size: 0.95rem; }
         
-        .input-group input { width: 100%; padding: 14px 18px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; font-size: 1rem; color: #ffffff; outline: none; backdrop-filter: blur(8px); transition: all 0.3s ease; }
-        .input-group input::placeholder { color: rgba(255, 255, 255, 0.6); }
-        .input-group input:focus { border-color: #38bdf8; box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); background: rgba(0, 0, 0, 0.5); }
+        .input-group input { width: 100%; padding: 14px 18px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; font-size: 1rem; color: #ffffff; outline: none; backdrop-filter: blur(8px); transition: all 0.3s ease; }
+        .input-group input::placeholder { color: rgba(255, 255, 255, 0.4); }
+        .input-group input:focus { border-color: #38bdf8; box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); background: rgba(255, 255, 255, 0.1); }
         
-        .glass-select-box { width: 100%; padding: 14px 18px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; font-size: 1rem; color: #ffffff; cursor: pointer; backdrop-filter: blur(8px); transition: all 0.3s ease; display: flex; justify-content: space-between; align-items: center; }
-        .glass-select-box:hover { border-color: #38bdf8; background: rgba(0, 0, 0, 0.5); box-shadow: 0 0 12px rgba(56, 189, 248, 0.2); }
-        .select-icon { font-size: 0.8rem; color: #ffffff; }
+        .glass-select-box { width: 100%; padding: 14px 18px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; font-size: 1rem; color: #ffffff; cursor: pointer; backdrop-filter: blur(8px); transition: all 0.3s ease; display: flex; justify-content: space-between; align-items: center; }
+        .glass-select-box:hover { border-color: #38bdf8; background: rgba(255, 255, 255, 0.08); box-shadow: 0 0 12px rgba(56, 189, 248, 0.15); }
+        .select-icon { font-size: 0.8rem; color: #a1a1aa; }
         
-        .btn { width: 100%; background: linear-gradient(135deg, #3b82f6, #2563eb); color: #ffffff; border: none; padding: 15px; border-radius: 12px; font-size: 1rem; font-weight: 600; letter-spacing: 0.5px; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35); }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5); filter: brightness(1.1); }
+        .btn { width: 100%; background: linear-gradient(135deg, #3b82f6, #2563eb); color: #ffffff; border: none; padding: 15px; border-radius: 12px; font-size: 1rem; font-weight: 600; letter-spacing: 0.5px; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25); }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4); filter: brightness(1.1); }
         .btn:active { transform: scale(0.92); box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3); }
 
-        .btn-success { background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35); }
-        .btn-success:hover { box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5); }
+        .btn-success { background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.25); }
+        .btn-success:hover { box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4); }
 
-        .btn-secondary { background: linear-gradient(135deg, #475569, #334155); box-shadow: 0 6px 20px rgba(71, 85, 105, 0.35); }
-        .btn-secondary:hover { box-shadow: 0 8px 25px rgba(71, 85, 105, 0.5); }
+        .btn-secondary { background: linear-gradient(135deg, #3f3f46, #27272a); box-shadow: 0 6px 20px rgba(63, 63, 70, 0.35); }
+        .btn-secondary:hover { box-shadow: 0 8px 25px rgba(63, 63, 70, 0.5); border: 1px solid rgba(255, 255, 255, 0.2); }
         
-        .timer-box { font-size: 1rem; font-weight: 600; color: #38bdf8; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.25); padding: 6px 14px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px; float: right; backdrop-filter: blur(8px); box-shadow: 0 0 15px rgba(56, 189, 248, 0.15); transition: all 0.3s ease; }
+        .timer-box { font-size: 1rem; font-weight: 600; color: #38bdf8; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.2); padding: 6px 14px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px; float: right; backdrop-filter: blur(8px); box-shadow: 0 0 10px rgba(56, 189, 248, 0.1); transition: all 0.3s ease; }
         
         @keyframes alertPulse {
-            0% { box-shadow: 0 0 8px rgba(255, 76, 76, 0.4); border-color: rgba(255, 76, 76, 0.4); }
-            50% { box-shadow: 0 0 20px rgba(255, 76, 76, 0.8); border-color: rgba(255, 76, 76, 1); }
-            100% { box-shadow: 0 0 8px rgba(255, 76, 76, 0.4); border-color: rgba(255, 76, 76, 0.4); }
+            0% { box-shadow: 0 0 8px rgba(255, 76, 76, 0.3); border-color: rgba(255, 76, 76, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(255, 76, 76, 0.6); border-color: rgba(255, 76, 76, 0.8); }
+            100% { box-shadow: 0 0 8px rgba(255, 76, 76, 0.3); border-color: rgba(255, 76, 76, 0.3); }
         }
-        .timer-warning { animation: alertPulse 1s infinite !important; color: #ff4c4c !important; background: rgba(255, 76, 76, 0.15) !important; }
+        .timer-warning { animation: alertPulse 1s infinite !important; color: #ff4c4c !important; background: rgba(255, 76, 76, 0.1) !important; }
 
-        .question-text { font-size: 1.15rem; font-weight: 500; margin-top: 45px; margin-bottom: 25px; clear: both; line-height: 1.7; color: #ffffff; }
+        .question-text { font-size: 1.15rem; font-weight: 500; margin-top: 45px; margin-bottom: 25px; clear: both; line-height: 1.7; color: #f8fafc; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         
-        .option-item { background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.1); padding: 15px 18px; border-radius: 12px; margin-bottom: 14px; cursor: pointer; font-size: 1rem; color: #ffffff; backdrop-filter: blur(8px); }
-        .option-item:hover { background: rgba(59, 130, 246, 0.1); border-color: #3b82f6; transform: translateX(5px); transition: transform 0.3s ease; }
-        .option-item.selected { background: rgba(59, 130, 246, 0.2); border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); font-weight: 600; color: #ffffff; transform: scale(1.01); }
+        .option-item { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); padding: 15px 18px; border-radius: 12px; margin-bottom: 14px; cursor: pointer; font-size: 1rem; color: #d1d5db; backdrop-filter: blur(8px); transition: all 0.3s ease; }
+        .option-item:hover { background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.4); transform: translateX(5px); color: #ffffff; }
+        .option-item.selected { background: rgba(59, 130, 246, 0.15); border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.2); font-weight: 600; color: #ffffff; transform: scale(1.01); }
         
         .nav-btns { display: flex; justify-content: space-between; gap: 15px; margin-top: 30px; }
         .nav-btns button { width: 48%; }
@@ -65,41 +88,42 @@
         .hidden { display: none !important; }
         .score-card { text-align: center; }
         
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; justify-content: center; align-items: center; z-index: 1000; animation: modalFade 0.3s ease-out; }
-        .modal-glass { background: rgba(30, 40, 50, 0.95); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 35px; max-width: 400px; width: 88%; text-align: center; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8); animation: modalScale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; position: relative; }
+        /* Modal & Popup - Glassmorphism */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 1000; animation: modalFade 0.3s ease-out; }
+        .modal-glass { background: rgba(15, 15, 15, 0.55); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 35px; max-width: 400px; width: 88%; text-align: center; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8); animation: modalScale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; position: relative; }
         
         .options-glass { padding: 25px !important; max-height: 80vh; }
         .options-list { overflow-y: auto; max-height: 55vh; text-align: left; padding-right: 8px; margin-bottom: 15px; }
         .options-list::-webkit-scrollbar { width: 5px; }
-        .options-list::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
-        .options-list::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 10px; }
-        .options-list::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.6); }
+        .options-list::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.3); border-radius: 10px; }
+        .options-list::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
+        .options-list::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.5); }
         
-        .option-card { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); padding: 14px 18px; border-radius: 12px; margin-bottom: 10px; cursor: pointer; font-size: 0.95rem; color: #ffffff; transition: transform 0.25s ease; }
-        .option-card:hover { background: rgba(59, 130, 246, 0.2); border-color: #3b82f6; color: #ffffff; transform: translateX(5px); }
+        .option-card { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); padding: 14px 18px; border-radius: 12px; margin-bottom: 10px; cursor: pointer; font-size: 0.95rem; color: #d1d5db; transition: all 0.25s ease; backdrop-filter: blur(5px); }
+        .option-card:hover { background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.5); color: #ffffff; transform: translateX(5px); }
         
-        .modal-icon { font-size: 2.8rem; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3)); }
-        .modal-glass p { font-size: 1.05rem; color: #ffffff; margin-bottom: 25px; line-height: 1.6; }
+        .modal-icon { font-size: 2.8rem; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2)); }
+        .modal-glass p { font-size: 1.05rem; color: #e2e8f0; margin-bottom: 25px; line-height: 1.6; }
         
         @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
         @keyframes modalScale { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        /* RAINBOW CLASSES टॉप सेंटर बैज (सिर्फ मेन कार्ड्स और मोडल के लिए) */
+        /* RAINBOW CLASSES टॉप सेंटर बैज */
         .card:not(#result-screen)::before, .modal-glass::before {
             content: "RAINBOW CLASSES";
             position: absolute;
             top: -12px; 
             left: 50%;
             transform: translateX(-50%);
-            background: #0f172a; 
+            background: #000000; 
             color: #38bdf8; 
             font-size: 0.65rem; 
             font-weight: 700;
             letter-spacing: 1px;
             padding: 4px 14px;
-            border: 1px solid rgba(56, 189, 248, 0.5); 
+            border: 1px solid rgba(56, 189, 248, 0.3); 
             border-radius: 6px; 
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
             white-space: nowrap;
             z-index: 100;
         }
@@ -110,21 +134,22 @@
             100% { transform: translateY(0) scale(1); opacity: 1; }
         }
         
+        /* समरी ग्लास पैनल */
         .summary-glass {
             animation: slideUpPop 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
             max-width: 550px; width: 90%; max-height: 85vh; overflow: hidden; padding: 25px; display: flex;
-            flex-direction: column; background: rgba(30, 40, 50, 0.98); backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; position: relative;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+            flex-direction: column; background: rgba(15, 15, 15, 0.6); backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; 
+            position: relative; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
         }
         
         .summary-content-scroll { overflow-y: auto; max-height: 65vh; padding-right: 8px; text-align: left; }
         .summary-content-scroll::-webkit-scrollbar { width: 5px; }
-        .summary-content-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
-        .summary-content-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 10px; }
-        .summary-content-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.6); }
+        .summary-content-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.3); border-radius: 10px; }
+        .summary-content-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
+        .summary-content-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.5); }
 
-        .summary-item { border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 15px; }
+        .summary-item { border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; margin-bottom: 15px; }
         .summary-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
         .ans-correct { color: #10b981; font-weight: bold; }
         .ans-wrong { color: #ef4444; font-weight: bold; }
@@ -138,10 +163,10 @@
             50% { transform: scale(1) rotate(0deg); }
         }
         .reminder-card {
-            background: linear-gradient(135deg, #f59e0b, #d97706); color: #ffffff; padding: 15px 20px;
+            background: rgba(217, 119, 6, 0.2); color: #fbbf24; padding: 15px 20px;
             border-radius: 12px; margin-top: 25px; font-size: 1rem; font-weight: bold; text-align: center;
-            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); animation: wigglePulse 2.5s infinite;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.1); animation: wigglePulse 2.5s infinite;
+            border: 1px solid rgba(245, 158, 11, 0.3); backdrop-filter: blur(8px);
         }
 
         .timer-anim { animation: pulseTimer 1s infinite ease-in-out; }
@@ -151,92 +176,52 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
+        /* डॉक कार्ड ग्लास इफ़ेक्ट */
         .dock-card {
-            background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 25px; padding: 10px 25px;
+            background: rgba(20, 20, 20, 0.45); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 25px; padding: 10px 25px;
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7); margin-bottom: 20px; animation: fadeIn 0.4s ease-out;
-            display: flex; justify-content: space-between; align-items: center; height: 65px; 
+            display: flex; justify-content: flex-end; align-items: center; height: 65px; 
             position: relative; z-index: 200;
         }
         
         .bell-wrapper { font-size: 1.8rem; position: relative; cursor: pointer; animation: bellRing 2.5s infinite ease-in-out; display: none; transition: transform 0.2s; }
         .bell-wrapper:hover { transform: scale(1.1); }
-        .red-dot { position: absolute; top: 2px; right: 2px; width: 12px; height: 12px; background: #ef4444; border-radius: 50%; box-shadow: 0 0 8px #ef4444; border: 2px solid #0f172a; }
+        .red-dot { position: absolute; top: 2px; right: 2px; width: 12px; height: 12px; background: #ef4444; border-radius: 50%; box-shadow: 0 0 8px #ef4444; border: 2px solid #000; }
 
         @keyframes bellRing {
             0% { transform: rotate(0); } 10% { transform: rotate(15deg); } 20% { transform: rotate(-15deg); }
             30% { transform: rotate(10deg); } 40% { transform: rotate(-10deg); } 50%, 100% { transform: rotate(0); }
         }
 
-        .glass-btn-dock { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; padding: 8px 16px; border-radius: 15px; cursor: pointer; backdrop-filter: blur(10px); transition: transform 0.3s ease; font-weight: 600; font-size: 0.9rem; }
-        .glass-btn-dock:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.05); }
-        
-        .theme-popup-box { position: absolute; top: 120%; left: 0; background: rgba(30, 40, 50, 0.95); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 6px; display: flex; flex-direction: column; gap: 5px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); z-index: 210; transform-origin: top; animation: dropDownAnim 0.3s ease-out; min-width: 120px; }
-        @keyframes dropDownAnim { from { opacity: 0; transform: scaleY(0); } to { opacity: 1; transform: scaleY(1); } }
-        
-        .theme-opt { padding: 8px 12px; cursor: pointer; border-radius: 8px; color: #fff; font-size: 0.9rem; font-weight: 500; transition: 0.2s; text-align: center; }
-        .theme-opt:hover { background: rgba(56, 189, 248, 0.2); color: #38bdf8; }
-
-        /* ================= LIGHT MODE CSS ================= */
-        body.light-mode-active { background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important; color: #0f172a !important; }
-        body.light-mode-active .card, body.light-mode-active .dock-card, body.light-mode-active .summary-glass, body.light-mode-active .modal-glass { background: rgba(255, 255, 255, 0.95) !important; border: 1px solid rgba(0, 0, 0, 0.1) !important; box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08) !important; }
-        body.light-mode-active .card:not(#result-screen)::before, body.light-mode-active .modal-glass::before { background: #ffffff !important; color: #2563eb !important; border-color: rgba(37, 99, 235, 0.3) !important; }
-        
-        /* रिजल्ट कार्ड के अंदर के एलिमेंट्स को लाइट मोड से बचाने के लिए :not() का उपयोग किया गया है */
-        body.light-mode-active p:not(.rc-details-box p):not(.res-label), 
-        body.light-mode-active label, 
-        body.light-mode-active h2:not(.rc-title), 
-        body.light-mode-active h3, 
-        body.light-mode-active .question-text, 
-        body.light-mode-active strong:not(.pre-sub-label),
-        body.light-mode-active .summary-item div { color: #1e293b !important; }
-        
-        body.light-mode-active .input-group input, body.light-mode-active .glass-select-box { background: #f1f5f9 !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
-        body.light-mode-active .input-group input:focus { border-color: #2563eb !important; background: #ffffff !important; box-shadow: 0 0 10px rgba(37,99,235,0.1) !important; }
-        body.light-mode-active .input-group input::placeholder { color: #94a3b8 !important; }
-        body.light-mode-active .glass-select-box .select-icon { color: #0f172a !important; }
-        body.light-mode-active .option-item, body.light-mode-active .option-card { background: #ffffff !important; border-color: #e2e8f0 !important; color: #1e293b !important; box-shadow: 0 2px 8px rgba(0,0,0,0.02) !important; }
-        body.light-mode-active .option-item:hover, body.light-mode-active .option-card:hover { background: #f8fafc !important; border-color: #3b82f6 !important; }
-        body.light-mode-active .option-item.selected { background: rgba(59, 130, 246, 0.1) !important; border-color: #2563eb !important; color: #0f172a !important; font-weight: 600 !important; }
-        body.light-mode-active .glass-btn-dock { background: #f1f5f9 !important; border-color: #cbd5e1 !important; color: #1e293b !important; }
-        body.light-mode-active .glass-btn-dock:hover { background: #e2e8f0 !important; }
-        body.light-mode-active .timer-box { background: rgba(37, 99, 235, 0.1) !important; color: #2563eb !important; border-color: rgba(37, 99, 235, 0.3) !important; }
-        body.light-mode-active #q-counter { color: #2563eb !important; font-weight: 600; }
-        body.light-mode-active .theme-popup-box { background: #ffffff !important; border-color: #e2e8f0 !important; }
-        body.light-mode-active .theme-opt { color: #1e293b !important; }
-        body.light-mode-active .theme-opt:hover { background: #f1f5f9 !important; color: #2563eb !important; }
+        .glass-btn-dock { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; padding: 8px 16px; border-radius: 15px; cursor: pointer; backdrop-filter: blur(10px); transition: transform 0.3s ease; font-weight: 600; font-size: 0.9rem; }
+        .glass-btn-dock:hover { background: rgba(255, 255, 255, 0.1); transform: scale(1.05); border-color: rgba(255, 255, 255, 0.2); }
 
         /* ================= PRE-SUBMIT CSS ================= */
-        .pre-sub-label { color: #cbd5e1; transition: color 0.5s ease; }
+        .pre-sub-label { color: #94a3b8; transition: color 0.5s ease; }
         .pre-sub-val { color: #ffffff; transition: color 0.5s ease; }
         .attempted-count { color: #38bdf8; font-weight: bold; transition: color 0.5s ease; }
-        
-        body.light-mode-active .pre-sub-label { color: #475569 !important; }
-        body.light-mode-active .pre-sub-val { color: #0f172a !important; font-weight: 600; }
-        body.light-mode-active .attempted-count { color: #2563eb !important; font-weight: 800; font-size: 1.1rem; }
 
-        /* ================= RESULT CARD (हमेशा डार्क मोड में रहेगा) ================= */
-        .score-receipt-card { padding: 30px 20px; border-radius: 20px; background: linear-gradient(135deg, #1e293b, #0f172a); border: 2px solid rgba(56, 189, 248, 0.5); position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: all 0.5s ease; }
-        .rc-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #0f172a; color: #38bdf8; font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px; padding: 6px 16px; border: 1px solid #38bdf8; border-radius: 8px; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.6); z-index: 10; transition: all 0.5s ease; }
-        .rc-title { color: #38bdf8; font-size: 1.8rem; letter-spacing: 0.5px; margin-top: 10px; transition: color 0.5s ease; }
-        .rc-details-box { margin-top: 25px; background: rgba(0, 0, 0, 0.4); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: left; display: inline-block; width: 95%; transition: all 0.5s ease; }
-        .rc-details-box p { color: #ffffff; font-weight: 500; font-size: 1rem; margin-bottom: 8px; transition: color 0.5s ease; }
-        .res-label { color: #94a3b8; font-weight: 500; transition: color 0.5s ease; }
-        .score-badge { font-size: 4rem; font-weight: 800; color: #fbbf24; margin: 25px 0; text-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: color 0.5s ease; }
-        .rc-percent { font-size: 1.4rem; font-weight: 700; color: #10b981; margin-bottom: 10px; transition: color 0.5s ease; }
+        /* ================= RESULT CARD ================= */
+        .score-receipt-card { padding: 30px 20px; border-radius: 20px; background: rgba(15, 15, 15, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(56, 189, 248, 0.3); position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.8); transition: all 0.5s ease; }
+        .rc-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #000; color: #38bdf8; font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px; padding: 6px 16px; border: 1px solid rgba(56, 189, 248, 0.5); border-radius: 8px; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.9); z-index: 10; }
+        .rc-title { color: #38bdf8; font-size: 1.8rem; letter-spacing: 0.5px; margin-top: 10px; }
+        .rc-details-box { margin-top: 25px; background: rgba(0, 0, 0, 0.4); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); text-align: left; display: inline-block; width: 95%; }
+        .rc-details-box p { color: #e2e8f0; font-weight: 500; font-size: 1rem; margin-bottom: 8px; }
+        .res-label { color: #64748b; font-weight: 500; }
+        .score-badge { font-size: 4rem; font-weight: 800; color: #fbbf24; margin: 25px 0; text-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+        .rc-percent { font-size: 1.4rem; font-weight: 700; color: #10b981; margin-bottom: 10px; }
     </style>
 </head>
 <body>
-
-    <div id="theme-overlay" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.15); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); z-index: 150;" onclick="toggleThemePopup()"></div>
 
     <div class="container">
 
         <!-- INSTRUCTION SCREEN -->
         <div id="instruction-screen" class="card hidden">
             <h2 style="margin-bottom: 20px; text-align: center; color: #ef4444; font-size: 1.6rem; letter-spacing: 0.5px; font-weight: bold;"> 🚨 आपके लिए सन्देश 🚨</h2>
-            <div style="font-size: 1.05rem; color: #ffffff; line-height: 1.7; margin-bottom: 25px; background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);">
-                <p style="margin-bottom: 15px; color: #cbd5e1; text-align: justify;">
+            <div style="font-size: 1.05rem; color: #e2e8f0; line-height: 1.7; margin-bottom: 25px; background: rgba(0, 0, 0, 0.4); padding: 15px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05);">
+                <p style="margin-bottom: 15px; text-align: justify;">
                     प्रिय छात्रों, आज केमिस्ट्री का DPP नहीं दिया गया है आज सिर्फ आपको फिजिक्स का DPP भी बनाना है।
                 </p>
             </div>
@@ -289,16 +274,8 @@
             <button class="btn" onclick="startQuiz()">Start DPP</button>
         </div>
 
-        <!-- DOCK CONTAINER -->
+        <!-- DOCK CONTAINER (Light Mode Removed) -->
         <div id="dock-container" class="dock-card hidden">
-            <div style="display: flex; justify-content: flex-start; position: relative;">
-                <button id="btn-screen-mode" class="glass-btn-dock" onclick="toggleThemePopup()">स्क्रीन मोड 🌗</button>
-                <div id="theme-popup" class="theme-popup-box hidden">
-                    <div class="theme-opt" onclick="applyLightMode()">Light Mode ☀️</div>
-                    <div class="theme-opt" onclick="applyDarkMode()">Dark Mode 🌙</div>
-                </div>
-            </div>
-            <div style="flex-grow: 1;"></div>
             <div id="notification-bell" class="bell-wrapper" onclick="openNotificationModal()">
                 🔔<span id="bell-dot" class="red-dot"></span>
             </div>
@@ -311,7 +288,7 @@
                 <div class="timer-box" id="timer-ui">⏱️ <span id="time-left">30:00</span></div>
             </div>
             
-            <div id="time-warning" style="display: none; clear: both; margin-top: 50px; margin-bottom: -15px; color: #ff4c4c; background: rgba(255,0,0,0.1); border: 1px solid #ff4c4c; padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; animation: alertPulse 1s infinite;">
+            <div id="time-warning" style="display: none; clear: both; margin-top: 50px; margin-bottom: -15px; color: #ff4c4c; background: rgba(255,0,0,0.1); border: 1px solid rgba(255,76,76,0.3); padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; animation: alertPulse 1s infinite;">
                 ⚠️ आपके पास सिर्फ 10 मिनट शेष हैं! कृपया जल्दी करें।
             </div>
 
@@ -332,7 +309,7 @@
         <!-- प्री-सबमिट स्क्रीन -->
         <div id="pre-submit-screen" class="card hidden">
             <h2 style="margin-bottom: 25px; text-align: center; color: #38bdf8; font-size: 1.4rem; letter-spacing: 0.5px;"> DPP Submission Details </h2>
-            <div id="pre-submit-details" style="font-size: 1.05rem; line-height: 1.9; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+            <div id="pre-submit-details" style="font-size: 1.05rem; line-height: 1.9; margin-bottom: 20px; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
             </div>
             <div id="submit-loader" class="hidden" style="text-align: center; margin-top: 20px; padding: 15px;">
                 <h3 style="color: #fbbf24; font-size: 1.2rem;">आपका रिजल्ट सबमिट हो रहा है...</h3>
@@ -368,7 +345,7 @@
             
             <!-- एक्शन बटन्स -->
             <div id="action-buttons" style="margin-top: 10px;">
-                <button class="btn" onclick="downloadScoreCard()" style="margin-bottom: 15px; background: linear-gradient(135deg, #d946ef, #9333ea); box-shadow: 0 6px 20px rgba(147, 51, 234, 0.35);">Download Score Card 📥</button>
+                <button class="btn" onclick="downloadScoreCard()" style="margin-bottom: 15px; background: linear-gradient(135deg, #d946ef, #9333ea); box-shadow: 0 6px 20px rgba(147, 51, 234, 0.25);">Download Score Card 📥</button>
                 <button class="btn btn-secondary" onclick="openSummaryModal()" style="margin-bottom: 10px;">View Summary / Answer 📝</button>
                 <button class="btn" onclick="goHome()" style="margin-top: 10px;">Home 🏠</button>
             </div>
@@ -409,8 +386,8 @@
         <div class="modal-glass">
             <div style="font-size: 3rem; margin-bottom: 10px; animation: bellRing 2s infinite;">🔔</div>
             <h3 style="margin-bottom: 20px; color: #38bdf8; font-size: 1.3rem; font-weight: 600;">आपके लिए खास संदेश</h3>
-            <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; margin-bottom: 25px;">
-                <p id="student-msg-text" style="color: #ffffff; font-size: 1.05rem; line-height: 1.6; margin: 0;"></p>
+            <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; margin-bottom: 25px;">
+                <p id="student-msg-text" style="color: #e2e8f0; font-size: 1.05rem; line-height: 1.6; margin: 0;"></p>
             </div>
             <button class="btn btn-secondary" style="padding: 12px;" onclick="closeNotificationModal()">बंद करें</button>
         </div>
@@ -636,7 +613,6 @@
             let qText = document.getElementById("quiz-text");
             document.getElementById("quiz-select").value = ""; 
 
-            // छात्र की आईडी लें
             let studentId = document.getElementById("student-id").value.trim().toLowerCase();
 
             let hasQuizzes = false;
@@ -645,7 +621,6 @@
             if (window.quizDatabase && window.quizDatabase[sub] && window.quizDatabase[sub][`ch_${chNum}`]) {
                 let quizzes = window.quizDatabase[sub][`ch_${chNum}`];
                 for (let qKey in quizzes) {
-                    // अब आईडी के आधार पर चेक होगा
                     let cooldownKey = `dpp_cooldown_${studentId}_${sub}_${chNum}_${qKey}`;
                     let savedTime = localStorage.getItem(cooldownKey);
                     let hide = false;
@@ -671,7 +646,6 @@
             if(!sub) { showModal("कृपया पहले विषय चुनें!"); return; }
             if(!chNum) { showModal("कृपया पहले अध्याय चुनें!"); return; }
 
-            // छात्र की आईडी लें
             let studentId = document.getElementById("student-id").value.trim().toLowerCase();
 
             let list = document.getElementById("options-list");
@@ -687,7 +661,6 @@
                 if(Object.keys(quizzes).length > 0) {
                     for (let qKey in quizzes) {
                         totalQuizzes++;
-                        // अब आईडी के आधार पर चेक होगा
                         let cooldownKey = `dpp_cooldown_${studentId}_${sub}_${chNum}_${qKey}`;
                         let savedTime = localStorage.getItem(cooldownKey);
                         let hideQuiz = false;
@@ -739,23 +712,6 @@
         function closeModal() {
             if (history.state && history.state.modal) { history.back(); } 
             else { document.getElementById("custom-modal").classList.add("hidden"); }
-        }
-
-        function toggleThemePopup() {
-            document.getElementById('theme-popup').classList.toggle('hidden');
-            document.getElementById('theme-overlay').classList.toggle('hidden');
-        }
-
-        function applyLightMode() {
-            document.body.classList.add('light-mode-active');
-            document.getElementById('theme-popup').classList.add('hidden');
-            document.getElementById('theme-overlay').classList.add('hidden');
-        }
-
-        function applyDarkMode() {
-            document.body.classList.remove('light-mode-active');
-            document.getElementById('theme-popup').classList.add('hidden');
-            document.getElementById('theme-overlay').classList.add('hidden');
         }
 
         function toggleFullScreen() {
@@ -899,7 +855,7 @@
             let percent = Math.round((score / total) * 100);
 
             let studentName = document.getElementById("student-name").value;
-            let studentId = document.getElementById("student-id").value.trim().toLowerCase(); // आईडी निकाली
+            let studentId = document.getElementById("student-id").value.trim().toLowerCase(); 
             let subjectCode = document.getElementById("subject-select").value;
             let subjectName = document.getElementById("subject-text").innerText;
             let chapterCode = document.getElementById("chapter-select").value;
@@ -907,7 +863,6 @@
             let dppKey = document.getElementById("quiz-select").value;
             let dppName = document.getElementById("quiz-text").innerText;
 
-            // Cooldown में छात्र की आईडी जोड़ दी
             let cooldownKey = `dpp_cooldown_${studentId}_${subjectCode}_${chapterCode}_${dppKey}`;
             localStorage.setItem(cooldownKey, Date.now().toString());
 
@@ -974,7 +929,7 @@
                             <strong>प्रश्न ${idx + 1}:</strong> ${q.question} <span class="${markClass}">(${mark})</span>
                         </div>
                         ${optionsHtml}
-                        <div style="background: rgba(0,0,0,0.1); border: 1px solid rgba(150,150,150,0.2); padding: 10px; border-radius: 8px; margin-top: 10px;">
+                        <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; margin-top: 10px;">
                             <div style="font-size: 0.95rem; margin-bottom: 5px;">
                                 <strong style="opacity: 0.8;">आपका उत्तर 👉</strong> 
                                 <span style="${!isCorrect ? 'color:#ef4444; font-weight:600;' : 'color:#10b981; font-weight:600;'}">${userAnsText}</span>
@@ -989,12 +944,9 @@
             });
         }
         
-        // --- डार्क मोड में स्कोरकार्ड डाउनलोड करने के लिए फिक्स ---
         function downloadScoreCard() {
             let scoreCardWrapper = document.getElementById("download-wrapper");
-            
-            // हमेशा डार्क मोड का बैकग्राउंड सेट करें ताकि डाउनलोड एकदम प्रोफेशनल दिखे
-            let canvasBgColor = "#0f172a";
+            let canvasBgColor = "#000000";
 
             html2canvas(scoreCardWrapper, {
                 scale: 3, 
