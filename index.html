@@ -2,1117 +2,875 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAINBOW CLASSES - DPP Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>मॉडर्न छात्र चर्चा पोर्टल</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* CSS: न्यू डार्क ब्लू-ग्रे थीम (Rainbow Classes Custom Theme) */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; }
-        input { user-select: auto; }
-        
-        /* 1. बैकग्राउंड: डार्क ब्लू-ग्रे ग्रेडिएंट */
-        body { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; background-attachment: fixed; }
-        
-        /* टॉप में फिट करने के लिए margin-top: 0 किया गया है */
-        .container { width: 100%; max-width: 600px; padding: 15px 15px 20px 15px; margin-top: 0; }
-        
-        /* 2. मेन कंटेनर (Glass Panel): सेमी-ट्रांसपेरेंट डार्क ब्लू विद हल्का वाइट बॉर्डर */
-        .card { background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 25px; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7); margin-bottom: 20px; animation: fadeIn 0.4s ease-out; position: relative; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; font-weight: 500; margin-bottom: 10px; color: #ffffff; font-size: 0.95rem; }
-        
-        /* 3. इनपुट फील्ड्स: पारदर्शी काला */
-        .input-group input { width: 100%; padding: 14px 18px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; font-size: 1rem; color: #ffffff; outline: none; backdrop-filter: blur(8px); transition: all 0.3s ease; }
-        .input-group input::placeholder { color: rgba(255, 255, 255, 0.6); }
-        .input-group input:focus { border-color: #38bdf8; box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); background: rgba(0, 0, 0, 0.5); }
-        
-        /* डार्क ग्लास सेलेक्ट बॉक्स */
-        .glass-select-box { width: 100%; padding: 14px 18px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; font-size: 1rem; color: #ffffff; cursor: pointer; backdrop-filter: blur(8px); transition: all 0.3s ease; display: flex; justify-content: space-between; align-items: center; }
-        .glass-select-box:hover { border-color: #38bdf8; background: rgba(0, 0, 0, 0.5); box-shadow: 0 0 12px rgba(56, 189, 248, 0.2); }
-        .select-icon { font-size: 0.8rem; color: #ffffff; }
-        
-        /* 4. बटन्स: प्राइमरी (ब्लू), सक्सेस (ग्रीन), सेकेंडरी (ग्रे) */
-        .btn { width: 100%; background: linear-gradient(135deg, #3b82f6, #2563eb); color: #ffffff; border: none; padding: 15px; border-radius: 12px; font-size: 1rem; font-weight: 600; letter-spacing: 0.5px; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35); }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5); filter: brightness(1.1); }
-        .btn:active { transform: scale(0.92); box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3); }
-
-        .btn-success { background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35); }
-        .btn-success:hover { box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5); }
-
-        .btn-secondary { background: linear-gradient(135deg, #475569, #334155); box-shadow: 0 6px 20px rgba(71, 85, 105, 0.35); }
-        .btn-secondary:hover { box-shadow: 0 8px 25px rgba(71, 85, 105, 0.5); }
-        
-        /* टाइमर बॉक्स: हल्का नीला */
-        .timer-box { font-size: 1rem; font-weight: 600; color: #38bdf8; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.25); padding: 6px 14px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px; float: right; backdrop-filter: blur(8px); box-shadow: 0 0 15px rgba(56, 189, 248, 0.15); transition: all 0.3s ease; }
-        
-        /* टाइमर का 10 मिनट वाला वार्निंग इफेक्ट */
-        @keyframes alertPulse {
-            0% { box-shadow: 0 0 8px rgba(255, 76, 76, 0.4); border-color: rgba(255, 76, 76, 0.4); }
-            50% { box-shadow: 0 0 20px rgba(255, 76, 76, 0.8); border-color: rgba(255, 76, 76, 1); }
-            100% { box-shadow: 0 0 8px rgba(255, 76, 76, 0.4); border-color: rgba(255, 76, 76, 0.4); }
-        }
-        .timer-warning {
-            animation: alertPulse 1s infinite !important;
-            color: #ff4c4c !important;
-            background: rgba(255, 76, 76, 0.15) !important;
+        :root {
+            --text-main: #1f2937;
+            --text-muted: #4b5563;
+            --primary-color: rgba(37, 99, 235, 0.8);
+            --primary-hover: rgba(29, 78, 216, 0.9);
+            --border-color: rgba(255, 255, 255, 0.4);
+            --radius-md: 16px;
+            --radius-sm: 10px;
         }
 
-        .question-text { font-size: 1.15rem; font-weight: 500; margin-top: 45px; margin-bottom: 25px; clear: both; line-height: 1.7; color: #ffffff; transition: color 1.2s ease; }
-        
-        /* 5. क्विज़ ऑप्शंस: ट्रांसपेरेंट डार्क -> सेलेक्ट होने पर ब्लू */
-        .option-item { background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.1); padding: 15px 18px; border-radius: 12px; margin-bottom: 14px; cursor: pointer; font-size: 1rem; color: #ffffff; transition: all 0.3s ease; backdrop-filter: blur(8px); }
-        .option-item:hover { background: rgba(59, 130, 246, 0.1); border-color: #3b82f6; transform: translateX(5px); }
-        
-        .option-item.selected { background: rgba(59, 130, 246, 0.2); border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); font-weight: 600; color: #ffffff; transform: scale(1.01); }
-        
-        .nav-btns { display: flex; justify-content: space-between; gap: 15px; margin-top: 30px; }
-        .nav-btns button { width: 48%; }
-        
-        .hidden { display: none !important; }
-        .score-card { text-align: center; }
-        
-        /* 6. स्कोर बैज (पीला/गोल्डन) */
-        .score-badge { font-size: 3.5rem; font-weight: 800; color: #fbbf24; margin: 25px 0; text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        
-        /* 7. मोडल बैकग्राउंड ओवरले (डार्क) और ग्लास (स्लेट ग्रे) */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; justify-content: center; align-items: center; z-index: 1000; animation: modalFade 0.3s ease-out; }
-        
-        .modal-glass { background: rgba(30, 40, 50, 0.95); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 35px; max-width: 400px; width: 88%; text-align: center; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8); animation: modalScale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; position: relative; }
-        
-        .options-glass { padding: 25px !important; max-height: 80vh; }
-        .options-list { overflow-y: auto; max-height: 55vh; text-align: left; padding-right: 8px; margin-bottom: 15px; }
-        
-        /* स्क्रॉलबार */
-        .options-list::-webkit-scrollbar { width: 5px; }
-        .options-list::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
-        .options-list::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 10px; }
-        .options-list::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.6); }
-        
-        /* लिस्ट ऑप्शन कार्ड्स (मोडल के अंदर) */
-        .option-card { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); padding: 14px 18px; border-radius: 12px; margin-bottom: 10px; cursor: pointer; font-size: 0.95rem; color: #ffffff; transition: all 0.25s ease; }
-        .option-card:hover { background: rgba(59, 130, 246, 0.2); border-color: #3b82f6; color: #ffffff; transform: translateX(5px); }
-        
-        .modal-icon { font-size: 2.8rem; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3)); }
-        .modal-glass p { font-size: 1.05rem; color: #ffffff; margin-bottom: 25px; line-height: 1.6; }
-        
-        @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes modalScale { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
 
-        /* RAINBOW CLASSES टॉप सेंटर बैज (एनवेलप स्टाइल) */
-        .card::before, .modal-glass::before {
-            content: "RAINBOW CLASSES";
-            position: absolute;
-            top: -12px; 
-            left: 50%;
-            transform: translateX(-50%);
-            background: #0f172a; 
-            color: #38bdf8; 
-            font-size: 0.65rem; 
+        body {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            color: var(--text-main);
+            padding: 20px;
+            min-height: 100vh;
+            background-attachment: fixed;
+            -webkit-tap-highlight-color: transparent;
+            overscroll-behavior-y: none;
+        }
+
+        /* --- Top Fixed Dock --- */
+        .top-dock {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0;
+            width: 100%;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            z-index: 99999;
+            transform: translate3d(0, 0, 0);
+            -webkit-transform: translate3d(0, 0, 0);
+        }
+
+        .dock-logo {
+            font-size: 15px;
             font-weight: 700;
-            letter-spacing: 1px;
-            padding: 4px 14px;
-            border: 1px solid rgba(56, 189, 248, 0.5); 
-            border-radius: 6px; 
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            color: #111827;
             white-space: nowrap;
-            z-index: 100;
+            letter-spacing: 0.5px;
         }
 
-        /* Summary Box & Modal */
-        @keyframes slideUpPop {
-            0% { transform: translateY(50px) scale(0.9); opacity: 0; }
-            70% { transform: translateY(-10px) scale(1.02); opacity: 1; }
-            100% { transform: translateY(0) scale(1); opacity: 1; }
+        .admin-dock-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        
-        .summary-glass {
-            animation: slideUpPop 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-            max-width: 550px; width: 90%; max-height: 85vh; overflow: hidden; padding: 25px; display: flex;
-            flex-direction: column; background: rgba(30, 40, 50, 0.98); backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; position: relative;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
-        }
-        
-        .summary-content-scroll { overflow-y: auto; max-height: 65vh; padding-right: 8px; text-align: left; }
-        .summary-content-scroll::-webkit-scrollbar { width: 5px; }
-        .summary-content-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
-        .summary-content-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 10px; }
-        .summary-content-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.6); }
 
-        .summary-item { border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 15px; }
-        .summary-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .ans-correct { color: #10b981; font-weight: bold; }
-        .ans-wrong { color: #ef4444; font-weight: bold; }
-        
-        /* Reminder Card Animation */
-        @keyframes wigglePulse {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            10% { transform: scale(1.02) rotate(-2deg); }
-            20% { transform: scale(1.02) rotate(2deg); }
-            30% { transform: scale(1.02) rotate(-2deg); }
-            40% { transform: scale(1.02) rotate(2deg); }
-            50% { transform: scale(1) rotate(0deg); }
+        .admin-pin-input {
+            padding: 5px 12px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            outline: none;
+            font-size: 11px;
+            width: 110px;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
         }
-        .reminder-card {
-            background: linear-gradient(135deg, #f59e0b, #d97706); color: #ffffff; padding: 15px 20px;
-            border-radius: 12px; margin-top: 25px; font-size: 1rem; font-weight: bold; text-align: center;
-            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); animation: wigglePulse 2.5s infinite;
+
+        .admin-pin-input:focus {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(37, 99, 235, 0.5);
+        }
+
+        .delete-all-clear-btn {
+            width: 0;
+            padding: 5px 0;
+            opacity: 0;
+            background: rgba(220, 38, 38, 0.85);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 10px rgba(220, 38, 38, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .delete-all-clear-btn:hover { background: rgba(185, 28, 28, 1); }
+        .delete-all-clear-btn.show { width: 65px; padding: 5px 12px; opacity: 1; }
+
+        .portal-container {
+            max-width: 800px;
+            margin: 70px auto 40px auto;
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: var(--radius-md);
+            padding: 30px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+
+        .header-section { margin-bottom: 25px; }
+        .header-title { font-size: 26px; font-weight: 600; margin-bottom: 5px; color: #111827; }
+        .header-subtitle { color: var(--text-muted); font-size: 14px; }
+
+        .user-setup { margin-bottom: 25px; }
+        .user-setup input[type="text"] {
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            outline: none;
+            font-size: 14px;
+            width: 100%;
+            max-width: 300px;
+            transition: border-color 0.3s;
+        }
+        .user-setup input[type="text"]:focus {
+            border-color: rgba(37, 99, 235, 0.8);
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .comment-input-area { display: flex; gap: 15px; margin-bottom: 40px; }
+
+        .avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.8);
+            color: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 18px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .input-wrapper { flex-grow: 1; }
+
+        textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            resize: vertical;
+            outline: none;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
+        }
+        textarea:focus { background: rgba(255, 255, 255, 0.7); border-color: var(--primary-color); }
+
+        .submit-btn {
+            margin-top: 10px;
+            background: var(--primary-color);
+            color: white;
             border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            float: right;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+        }
+        .submit-btn:hover { background: var(--primary-hover); }
+
+        .comments-list { display: flex; flex-direction: column; gap: 25px; clear: both; }
+        .comment-box { display: flex; gap: 15px; }
+
+        .comment-content {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 18px;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            flex-grow: 1;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
         }
 
-        .timer-anim { animation: pulseTimer 1s infinite ease-in-out; }
-        @keyframes pulseTimer {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.3); opacity: 0.8; color: #38bdf8; }
-            100% { transform: scale(1); opacity: 1; }
+        .admin-comment {
+            background: rgba(254, 242, 242, 0.55) !important; 
+            border: 1px solid rgba(252, 165, 165, 0.5);
         }
 
-        /* APPLE DOCK & BELL ICON */
-        .dock-card {
-            background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 25px; padding: 10px 25px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7); margin-bottom: 20px; animation: fadeIn 0.4s ease-out;
-            display: flex; justify-content: space-between; align-items: center; height: 65px; 
+        .admin-avatar {
+            background: rgba(239, 68, 68, 0.8) !important; 
+            color: white !important;
+            border: none;
         }
+
+        .admin-badge {
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            margin-left: 8px;
+            font-weight: bold;
+            display: inline-block;
+            vertical-align: middle;
+            backdrop-filter: blur(2px);
+        }
+
+        /* --- New Top Right Container for Time and Pin --- */
+        .message-top-right {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        .time-ago-text {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth Animation */
+        }
+
+        /* Pin Wrapper & Button */
+        .pin-wrapper {
+            width: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+        }
+
+        .admin-mode .pin-wrapper {
+            width: 60px; /* Expands to make room, pushing time left */
+            opacity: 1;
+            margin-left: 6px;
+        }
+
+        .pin-btn {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            color: #1f2937;
+            white-space: nowrap;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: background 0.2s;
+        }
+
+        .pin-btn:hover {
+            background: #fff;
+        }
+
+        .pinned-badge {
+            background: rgba(37, 99, 235, 0.1);
+            color: #2563eb;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+            font-weight: 600;
+            border: 1px solid rgba(37, 99, 235, 0.2);
+        }
+
+        .comment-header { display: flex; align-items: center; margin-bottom: 10px; }
+        .user-name { font-weight: 600; font-size: 15px; }
+        .comment-text { font-size: 15px; line-height: 1.6; color: #374151; white-space: pre-wrap; }
+
+        /* --- Actions Layout --- */
+        .comment-actions-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .left-actions { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+        .right-actions { display: flex; align-items: center; }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .action-btn:hover { color: #2563eb; }
+
+        .user-action-btn {
+            background: none;
+            border: none;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .user-action-btn:hover { opacity: 0.7; }
+        .user-action-btn.edit { color: #2563eb; }
+        .user-action-btn.delete { color: #ef4444; }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #ef4444;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            display: none;
+        }
+        .delete-btn:hover { color: #b91c1c; }
+
+        .like-btn {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255,255,255,0.9);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            color: #1f2937;
+        }
+        .like-btn:hover { 
+            background: rgba(255,255,255,0.95); 
+            transform: scale(1.05); 
+        }
+
+        .replies-container {
+            margin-top: 15px;
+            margin-left: 10px;
+            border-left: 2px solid rgba(37, 99, 235, 0.2);
+            padding-left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .reply-input-wrapper { display: none; margin-top: 15px; }
+        .reply-input-wrapper.active { display: block; }
+
+        /* --- Modal Styles --- */
+        .modal-overlay {
+            display: none; 
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 999999; 
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.show { display: flex; opacity: 1; }
+
+        .modal-box {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: var(--radius-md);
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.show .modal-box { transform: translateY(0); }
+
+        .modal-title { font-size: 20px; font-weight: 600; margin-bottom: 15px; color: #111827; }
+        .modal-message { font-size: 15px; color: #4b5563; margin-bottom: 25px; line-height: 1.5; }
         
-        .bell-wrapper {
-            font-size: 1.8rem; position: relative; cursor: pointer; animation: bellRing 2.5s infinite ease-in-out;
-            display: none; transition: transform 0.2s;
+        #modalEditInput {
+            display: none;
+            width: 100%;
+            min-height: 80px;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: var(--radius-sm);
+            border: 1px solid #ccc;
+            outline: none;
+            resize: vertical;
+            font-size: 14px;
         }
-        .bell-wrapper:hover { transform: scale(1.1); }
-        .red-dot {
-            position: absolute; top: 2px; right: 2px; width: 12px; height: 12px; background: #ef4444;
-            border-radius: 50%; box-shadow: 0 0 8px #ef4444; border: 2px solid #0f172a;
-        }
+        #modalEditInput:focus { border-color: var(--primary-color); }
 
-        @keyframes bellRing {
-            0% { transform: rotate(0); } 10% { transform: rotate(15deg); } 20% { transform: rotate(-15deg); }
-            30% { transform: rotate(10deg); } 40% { transform: rotate(-10deg); } 50%, 100% { transform: rotate(0); }
-        }
+        .modal-actions { display: flex; justify-content: center; gap: 15px; }
 
-        /* ========================================================= */
-        /* NEW FEATURES CSS (Light Mode & Quiz Dock)                 */
-        /* ========================================================= */
-        
-        /* Glass Buttons for Dock */
-        .glass-btn-dock {
-            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff; padding: 8px 16px; border-radius: 15px; cursor: pointer;
-            backdrop-filter: blur(10px); transition: all 0.3s ease; font-weight: 600; font-size: 0.9rem;
+        .modal-btn {
+            padding: 10px 25px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            transition: background 0.3s;
         }
-        .glass-btn-dock:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.05); }
-        
-        /* Theme Selection Popup */
-        .theme-popup-box {
-            position: absolute; bottom: 120%; left: 0; background: rgba(30, 40, 50, 0.95);
-            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 6px;
-            display: flex; flex-direction: column; gap: 5px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            z-index: 200; transform-origin: bottom; animation: popUpAnim 0.3s ease-out; min-width: 120px;
-        }
-        @keyframes popUpAnim { from { opacity: 0; transform: scaleY(0); } to { opacity: 1; transform: scaleY(1); } }
-        
-        .theme-opt {
-            padding: 8px 12px; cursor: pointer; border-radius: 8px; color: #fff; font-size: 0.9rem; font-weight: 500; transition: 0.2s; text-align: center;
-        }
-        .theme-opt:hover { background: rgba(56, 189, 248, 0.2); color: #38bdf8; }
+        .btn-cancel { background: rgba(229, 231, 235, 0.7); color: #374151; }
+        .btn-cancel:hover { background: rgba(209, 213, 219, 0.9); }
+        .btn-ok { background: var(--primary-color); color: white; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2); }
+        .btn-ok:hover { background: var(--primary-hover); }
+        .btn-ok-danger { background: rgba(220, 38, 38, 0.9); box-shadow: 0 4px 10px rgba(220, 38, 38, 0.2); }
+        .btn-ok-danger:hover { background: rgba(185, 28, 28, 1); }
 
-        /* Light Mode Specifics - एनिमेटेड 1.5 सेकंड ट्रांजिशन के साथ */
-        #quiz-screen { transition: background 1.5s ease-in-out, border-color 1.5s ease-in-out; }
-        #quiz-screen.light-mode-active {
-            background: rgba(248, 250, 252, 0.95) !important;
-            border-color: rgba(0, 0, 0, 0.1);
-        }
-        #quiz-screen.light-mode-active .question-text { color: #0f172a; transition: color 1.5s ease-in-out; font-weight: 600; }
-        #quiz-screen.light-mode-active #q-counter { color: #2563eb; transition: color 1.5s ease-in-out;}
-        #quiz-screen.light-mode-active .timer-box { 
-            background: rgba(37, 99, 235, 0.1); color: #2563eb; border-color: rgba(37, 99, 235, 0.3);
-        }
-        #quiz-screen.light-mode-active .option-item {
-            background: #ffffff; border-color: #cbd5e1; color: #1e293b; box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: all 1.5s ease-in-out;
-        }
-        #quiz-screen.light-mode-active .option-item:hover {
-            background: #f1f5f9; border-color: #3b82f6; transform: translateX(5px);
-        }
-        #quiz-screen.light-mode-active .option-item.selected {
-            background: rgba(59, 130, 246, 0.15); border-color: #2563eb; color: #000; font-weight: 600;
-        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-
-        <!-- INSTRUCTION SCREEN -->
-        <div id="instruction-screen" class="card hidden">
-            <h2 style="margin-bottom: 20px; text-align: center; color: #ef4444; font-size: 1.6rem; letter-spacing: 0.5px; font-weight: bold;">🚨 पढ़ने वाले छात्र ध्यान दें 🚨</h2>
-            <div style="font-size: 1.05rem; color: #ffffff; line-height: 1.7; margin-bottom: 25px; background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);">
-                <p style="margin-bottom: 15px; color: #cbd5e1; text-align: justify;">
-                    प्रिय छात्रों, आपके शिक्षक आपके उज्ज्वल भविष्य के लिए निरंतर प्रयासरत हैं। आपको प्रतिदिन पढ़ाने, हमारे द्वारा यह <strong>DPP (Daily Practice Problem)</strong> तैयार करने और महत्वपूर्ण प्रश्नों को संकलित करने में बहुत समय और मेहनत लगता है। यह सब केवल आपकी सफलता के लिए किया जा रहा है और आप अच्छे मार्क्स लाये इसके लिए किया जा रहा है।
-                </p>
-                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 15px 0;">
-                <p style="color: #38bdf8; margin-bottom: 8px;"><strong>आपसे आग्रह और निर्देश:</strong></p>
-                <ul style="margin-left: 25px; margin-top: 10px; color: #cbd5e1; list-style-type: disc;">
-                    <li style="margin-bottom: 8px;">पढ़ाई पर पूरा ध्यान केंद्रित करें। आपके शिक्षक द्वारा दिए गए निर्देशों का पालन 100% करें। शिक्षक टेस्ट देने के लिए कहते है तो समय से टेस्ट दीजिये </li>
-                    <li style="margin-bottom: 8px;">प्रतिदिन के <strong>DPP और और होने वाले Tests</strong> में अनिवार्य रूप से भाग लें। इन्हें नजरअंदाज न करें।</li>
-                    <li style="margin-bottom: 8px;">DPP मे दिए जाने वाले टॉपिक को घर पर अच्छे से याद करे।</li>
-                    <li style="margin-bottom: 8px;">शिक्षक आपको राह दिखा सकते हैं, लेकिन उस राह पर चलकर मंजिल पाना आपकी जिम्मेदारी है। एग्जाम अब आपका निकट आ रहा है। आप ईमानदारी से हमारे साथ सारा वर्क कीजिए वरना बाद में पछतावा होगा कि कास हम पढ़ लिए होते और ईमानदारी और मेहनत से पढ़ने वाले बच्चो से मेरा स्पेशल रिक्वेस्ट 🙏 है की please आप सीरियस होकर पढ़िए अभी आपको पता नहीं चलेगा की इतने सारे चीजों को करने से क्या होगा,लेकिन जब বাধ में एग्जाम दीजियेगा तब पता चलेगा की मैंने सही समय पर सही कदम उठाया👍।</li>
-                </ul>
-            </div>
-            <button class="btn btn-success" onclick="proceedToLogin()">Yes, मै अब मेहनत करूँगा🥺(Next)</button>
-        </div>
-
-        <!-- लॉगिन स्क्रीन -->
-        <div id="login-screen" class="card hidden">
-            <h2 style="margin-bottom: 25px; text-align: center; color: #38bdf8; font-size: 1.4rem; letter-spacing: 0.5px;">Student's identification</h2>
-            <div class="input-group">
-                <label>Student Name(विद्यार्थी का नाम):</label>
-                <input type="text" id="student-name" placeholder="ex-'Chandramani'...">
-            </div>
-            <div class="input-group">
-                <label>विद्यार्थी की आईडी:</label>
-                <input type="text" id="student-id" placeholder="ex-'cm1217'">
-            </div>
-            <button class="btn" onclick="verifyStudent()">Next</button>
-        </div>
-
-        <!-- DPP SETUP SCREEN -->
-        <div id="selection-screen" class="card hidden">
-            <h2 style="margin-bottom: 25px; text-align: center; color: #38bdf8; font-size: 1.4rem; letter-spacing: 0.5px;">DPP Setup</h2>
-            <div class="input-group">
-                <label>विषय चुनें (Class 12th):</label>
-                <div class="glass-select-box" onclick="openSubjectSelect()">
-                    <span id="subject-text">-- विषय चुनें --</span>
-                    <span class="select-icon">▼</span>
-                </div>
-                <input type="hidden" id="subject-select" value="">
-            </div>
-            <div class="input-group">
-                <label>अध्याय चुनें:</label>
-                <div class="glass-select-box" onclick="openChapterSelect()">
-                    <span id="chapter-text">-- पहले विषय चुनें --</span>
-                    <span class="select-icon">▼</span>
-                </div>
-                <input type="hidden" id="chapter-select" value="">
-            </div>
-            <div class="input-group">
-                <label>DPP चुनें:</label>
-                <div class="glass-select-box" onclick="openQuizSelect()">
-                    <span id="quiz-text">-- पहले अध्याय चुनें --</span>
-                    <span class="select-icon">▼</span>
-                </div>
-                <input type="hidden" id="quiz-select" value="">
-            </div>
-            <button class="btn" onclick="startQuiz()">Start DPP</button>
-        </div>
-
-        <!-- DOCK CONTAINER (Shows with Setup) -->
-        <div id="dock-container" class="dock-card hidden">
-            <div style="flex-grow: 1; color: rgba(255,255,255,0.4); font-size: 0.8rem; font-weight: 500;">
-                <!-- खाली जगह ताकि बेल राइट साइड में रहे -->
-            </div>
-            
-            <!-- नोटिफिकेशन बेल -->
-            <div id="notification-bell" class="bell-wrapper" onclick="openNotificationModal()">
-                🔔
-                <span id="bell-dot" class="red-dot"></span>
-            </div>
-        </div>
-
-        <!-- क्विज स्क्रीन -->
-        <div id="quiz-screen" class="card hidden">
-            <div>
-                <span id="q-counter" style="font-weight: 500; color: #38bdf8; font-size: 0.95rem;">प्रश्न 1 / 10</span>
-                <div class="timer-box" id="timer-ui">⏱️ <span id="time-left">30:00</span></div>
-            </div>
-            
-            <!-- 10 Minute Warning Message -->
-            <div id="time-warning" style="display: none; clear: both; margin-top: 50px; margin-bottom: -15px; color: #ff4c4c; background: rgba(255,0,0,0.1); border: 1px solid #ff4c4c; padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; animation: alertPulse 1s infinite;">
-                ⚠️ आपके पास सिर्फ 10 मिनट शेष हैं! कृपया जल्दी करें।
-            </div>
-
-            <div class="question-text" id="q-text">प्रश्न लोड আসতে रहा है...</div>
-            <div id="options-container"></div>
-            
-            <div class="nav-btns">
-                <button class="btn btn-secondary" id="btn-prev" onclick="prevQuestion()">◄ Previous</button>
-                <button class="btn" id="btn-next" onclick="nextQuestion()">Next ►</button>
-            </div>
-            <button class="btn btn-success" id="btn-submit" style="margin-top: 15px; display: none;" onclick="submitQuiz()">Submit🧐</button>
-        </div>
-
-        <!-- NEW: QUIZ SCREEN DOCK -->
-        <div id="quiz-dock-container" class="dock-card hidden" style="margin-top: 5px;">
-            <!-- Left Side: Screen Mode -->
-            <div style="width: 50%; display: flex; justify-content: flex-start; position: relative;">
-                <button id="btn-screen-mode" class="glass-btn-dock" onclick="toggleThemePopup()">स्क्रीन मोड 🌗</button>
-                
-                <!-- Theme Popup -->
-                <div id="theme-popup" class="theme-popup-box hidden">
-                    <div class="theme-opt" onclick="applyLightMode()">Light Mode ☀️</div>
-                    <div class="theme-opt" onclick="applyDarkMode()">Dark Mode 🌙</div>
-                </div>
-            </div>
-            
-            <!-- Right Side: Full Screen Mode -->
-            <div style="width: 50%; display: flex; justify-content: flex-end;">
-                <button id="btn-fullscreen" class="glass-btn-dock" onclick="toggleFullScreen()">फुल स्क्रीन मोड 🔲</button>
-            </div>
-        </div>
-
-        <!-- प्री-सबमिट स्क्रीन -->
-        <div id="pre-submit-screen" class="card hidden">
-            <h2 style="margin-bottom: 25px; text-align: center; color: #38bdf8; font-size: 1.4rem; letter-spacing: 0.5px;"> DPP Submition Details </h2>
-            <div id="pre-submit-details" style="font-size: 1.05rem; line-height: 1.9; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
-                <!-- यहाँ डेटा डायनामिकली लोड होगा -->
-            </div>
-            
-            <div id="submit-loader" class="hidden" style="text-align: center; margin-top: 20px; padding: 15px;">
-                <h3 style="color: #fbbf24; font-size: 1.2rem;">आपका रिजल्ट सबमिट हो रहा है...</h3>
-                <div class="timer-anim" style="font-size: 3.5rem; font-weight: 800; margin-top: 15px; color: #ffffff;" id="submit-timer-text">5</div>
-            </div>
-            
-            <button class="btn btn-success" id="btn-final-submit" onclick="startFinalSubmit()">OK (सबमिट करें)</button>
-        </div>
-
-        <!-- रिजल्ट स्क्रीन -->
-        <div id="result-screen" class="card score-card hidden">
-            <h2 style="color: #38bdf8; font-size: 1.6rem; letter-spacing: 0.5px;">🧾Your Result🫣</h2>
-            <p id="res-name" style="margin-top: 15px; color: #ffffff; font-weight: 500; font-size: 1.15rem;"></p>
-            <p id="res-id-display" style="color: #ffffff; font-size: 0.95rem; margin-top: 5px;"></p>
-            <div class="score-badge" id="res-score">0 / 0</div>
-            <p id="res-percent" style="font-size: 1.3rem; font-weight: 600; color: #10b981;"></p>
-            <br>
-            
-            <button class="btn btn-secondary" onclick="openSummaryModal()" style="margin-top: 15px; margin-bottom: 10px;">View Summary / Answer 📝</button>
-            <button class="btn" onclick="goHome()" style="margin-top: 10px;">Home 🏠</button>
-
-            <div class="reminder-card">
-                यदि आप आज के सभी डीपीपी नहीं बनाए हैं तो कृपया सभी डीपीपी बनाएं
-            </div>
-        </div>
-
-    </div>
-
-    <!-- MODALS SECTION -->
-    <div id="custom-modal" class="modal-overlay hidden">
-        <div class="modal-glass">
-            <div class="modal-icon">⚠️</div>
-            <p id="modal-text">संदेश यहाँ दिखेगा</p>
-            <button class="btn" style="padding: 12px;" onclick="closeModal()">ठीक है</button>
+    <div class="top-dock">
+        <div class="dock-logo">RAINBOW CLASSES</div>
+        <div class="admin-dock-controls">
+            <input type="password" id="adminPinInput" class="admin-pin-input" placeholder="ADMIN PIN 🔐">
+            <div id="deleteAllDockBtn" class="delete-all-clear-btn">Clear</div>
         </div>
     </div>
 
-    <div id="options-modal" class="modal-overlay hidden">
-        <div class="modal-glass options-glass">
-            <h3 id="options-title" style="margin-bottom: 20px; color: #38bdf8; font-size: 1.2rem; font-weight: 500;">चुनें</h3>
-            <div id="options-list" class="options-list"></div>
-            <button class="btn btn-secondary" style="padding: 12px;" onclick="closeOptionsModal()">रद्द करें</button>
+    <div class="portal-container">
+        <div class="header-section">
+            <h1 class="header-title">Teacher & Students Community 👨‍👩‍👧‍👦</h1>
+            <p class="header-subtitle">अपने सवाल पूछें और अन्य छात्रों या शिक्षक से चर्चा करें।</p>
         </div>
-    </div>
 
-    <div id="summary-modal" class="modal-overlay hidden">
-        <div class="summary-glass">
-            <h3 style="text-align:center; color:#38bdf8; margin-bottom:20px; font-size:1.4rem;">विस्तृत परिणाम</h3>
-            <div id="summary-content" class="summary-content-scroll"></div>
-            <button class="btn btn-secondary" style="margin-top: 20px; padding: 12px;" onclick="closeSummaryModal()">बंद करें ❌</button>
+        <div class="user-setup">
+            <input type="text" id="userNameInput" placeholder="अपना User ID दर्ज करें 🔐">
         </div>
-    </div>
 
-    <div id="notification-modal" class="modal-overlay hidden">
-        <div class="modal-glass">
-            <div style="font-size: 3rem; margin-bottom: 10px; animation: bellRing 2s infinite;">🔔</div>
-            <h3 style="margin-bottom: 20px; color: #38bdf8; font-size: 1.3rem; font-weight: 600;">आपके लिए खास संदेश</h3>
-            <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; margin-bottom: 25px;">
-                <p id="student-msg-text" style="color: #ffffff; font-size: 1.05rem; line-height: 1.6; margin: 0;"></p>
+        <div class="comment-input-area">
+            <div class="avatar" id="mainAvatar">S</div> 
+            <div class="input-wrapper">
+                <textarea id="mainCommentInput" placeholder="अपना सवाल या विचार यहाँ लिखें..."></textarea>
+                <button class="submit-btn" id="postMainBtn">Send 📨</button>
             </div>
-            <button class="btn btn-secondary" style="padding: 12px;" onclick="closeNotificationModal()">बंद करें</button>
+        </div>
+
+        <!-- Add .admin-mode class here dynamically when admin logs in -->
+        <div class="comments-list" id="commentsList">
+            <p style="text-align: center; color: var(--text-muted);">Loading Comments ⏳...</p>
         </div>
     </div>
 
-    <!-- Script File Reference -->
-    <script src="questions.js"></script>
+    <div class="modal-overlay" id="customModal">
+        <div class="modal-box">
+            <h3 class="modal-title" id="modalTitle">संदेश</h3>
+            <p class="modal-message" id="modalMessage">यहाँ टेक्स्ट होगा</p>
+            <textarea id="modalEditInput"></textarea>
+            <div class="modal-actions">
+                <button class="modal-btn btn-cancel" id="modalCancelBtn">Cancel</button>
+                <button class="modal-btn btn-ok" id="modalOkBtn">OK</button>
+            </div>
+        </div>
+    </div>
 
-    <!-- Main JS Logic -->
-    <script>
-        const subjectsList = {
-            1: "भौतिक विज्ञान (Physics)",
-            2: "रसायन विज्ञान (Chemistry)",
-            3: "गणित (Mathematics)",
-            4: "जीव विज्ञान (Biology)",
-            5: "हिंदी (Hindi)",
-            6: "अंग्रेज़ी (English)"
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, deleteDoc, doc, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCpbl_PZ6veAe1Wvg1vJCYzBM3sqaH-Pss",
+            authDomain: "students-community-4c135.firebaseapp.com",
+            projectId: "students-community-4c135",
+            storageBucket: "students-community-4c135.firebasestorage.app",
+            messagingSenderId: "236504122314",
+            appId: "1:236504122314:web:8e3b7055a89c80facc0533",
+            measurementId: "G-GJ9T111X0G"
         };
 
-        const chaptersData = {
-            1: ["वैद्युत आवेश तथा क्षेत्र", "स्थिरवैद्युत विभव तथा धारिता", "विद्युत धारा", "गतिमान आवेश और चुंबकत्व", "चुंबकत्व एवं द्रव्य", "वैद्युतचुंबकीय प्रेरण", "प्रत्यावर्ती धारा", "वैद्युतचुंबकीय तरंगें", "किरण प्रकाशिकी एवं प्रकाशिक यंत्र", "तरंग - प्रकाशिकी", "विकिरण तथा द्रव्य की द्वैत प्रकृति", "परमाणु", "नाभिक", "अर्धचालक इलेक्ट्रॉनिकी", "संचार व्यवस्था"],
-            2: ["ठोस अवस्था", "विलयन", "वैद्युत रसायन", "रासायनिक बलगतिकी", "पृष्ठ रसायन", "तत्त्वों के निष्कर्षण के सिद्धांत एवं प्रक्रम", "p-ब्लॉक के तत्त्व", "d- एवं f-ब्लॉक के तत्त्व", "उपसहसंयोजन यौगिक", "हैलोऐल्केन तथा हैलोऐरीन", "ऐल्कोहॉल, फ़ीनॉल एवं ईथर", "ऐल्डिहाइड, कीटोन एवं कार्बोक्सिलिक अम्ल", "ऐमीन", "जैव-अणु", "बहुलक", "दैनिक जीवन में रसायन"],
-            3: ["संबंध एवं फलन", "प्रतिलोम त्रिकोणमितीय फलन", "आव्यूह", "सारणिक", "सांतत्य तथा अवकलनीयता", "अवकलज के अनुप्रयोग", "समाकलन", "समाकलनों के अनुप्रयोग", "अवकल समीकरण", "सदिश बीजगणित", "त्रि-विमीय ज्यामिति", "रैखिक प्रोग्रामन", "प्रायिकता"],
-            4: ["जीवों में जनन", "पुष्पी पादपों में लैंगिक जनन", "मानव जनन", "जनन स्वास्थ्य", "वंशागति तथा विविधता के सिद्धांत", "वंशागति के आणविक आधार", "विकास", "मानव स्वास्थ्य तथा रोग", "खाद्य उत्पादन में वृद्धि की कार्यनीति", "मानव कल्याण में सूक्ष्म जीव", "जैव प्रौद्योगिकी - सिद्धांत व प्रक्रम", "जैव प्रौद्योगिकी एवं उसके उपयोग", "जीव और समष्टियां", "पारितंत्र", "जैव विविधता एवं संरक्षण", "पर्यावरण के मुद्दे"],
-            5: ["बातचीत", "उसने कहा था", "संपूर्ण क्रांति", "अर्द्धनारीश्वर", "रोज", "एक लेख और एक पत्र", "ओ सदानीरा", "सिपाही की माँ", "प्रगीत और समाज", "जूठन", "हंसते हुए मेरा अकेलापन", "तिरछ", "शिक्षा", "कड़बक", "पद (सूरदास)", "पद (तुलसीदास)", "छप्पय", "कवित्त", "तुमुल कोलाहल कलह में", "पुत्र वियोग", "उषा", "जन-जन का चेहरा एक", "अधिनायक", "प्यारे नन्हें बेटे को", "हार-जीत", "गाँव का घर"],
-            6: ["Indian Civilization and Culture", "Bharat is My Home", "A Pinch of Snuff", "I Have a Dream", "Ideas That Have Helped Mankind", "The Artist", "A Child is Born", "How Free is the Press", "The Earth", "India Through a Traveler's Eyes", "A Marriage Proposal", "Sweetest Love I Do Not Goe", "Song of Myself", "Now the Leaves Are Falling Fast", "Ode to Autumn", "An Epitaph", "The Soldier", "Macavity: The Mystery Cat", "Fire-Hymn", "Snake", "My Grandmother's House"]
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const studentData = {
+            "cm2007": "Chandramani", "omi2009": "Munna Kumar", "pk2010": "Priyanshu kumar", 
+            "234051190003": "PRIYE RANJAN KUMAR", "skroy": "Santosh sir", "nc2009": "Nisha kumari",
+            "1234": "Anshu", "prity.rc2010.classes": "Prity kumari", "29/05/2009": "Simple kumari",
+            "lebeta": "Satyam", "nroy99991": "Nisha Roy", "2026-27": "Niharika Bharti",
+            "amanraosahab": "Aman Kumar", "9561": "komal kumari", "j245": "Jaya kumari",
+            "sharmapritee8210": "Pritee sharma", "3763": "Sachin kumar", "ut8406": "Utkarsh Raj yadav",
+            "juli123": "Priyanshu kumari", "@neharoy12345": "@neha roy", "1234tanya": "Tanya",
+            "khushbu1234": "Khushbu kumari", "22/08/....": "Laxman", "2009": "Anjali.kumari",
+            "123456n": "Nishant Yadav", "123456s": "Sadhna kumari", "123456c": "Chandni kumari",
+            "yadav123": "Bablu", "ahiran302": "Ritesh", "sak1234": "Sakshi Kumari",
+            "8210": "Nikku Roy", "848506": "Saloni", "lakshmi@10": "Lakshmi kumari",
+            "rcprince": "PRINCE KUMAR", "ankushkumar": "Ankush raj", "4-2-2009": "Nutan kumari",
+            "pujak92": "Puja gupta", "sk8485": "Sushant yadav", "62060": "Sapna kumari", "anjali": "Pushpanjali"
         };
 
-        let currentQuestions = [];
-        let currentQIndex = 0;
-        let userAnswers = [];
-        let timerInterval;
-        let timeLeft = 1800; // 30 minutes in seconds
-        window.currentQuizFinished = false;
+        function normalizeID(id) { return id.toLowerCase().replace(/\s+/g, ''); }
 
-        // NEW FUNCTION: क्विज़ सेटअप को रिसेट करने के लिए
-        function resetSetupScreen() {
-            document.getElementById("subject-select").value = "";
-            document.getElementById("subject-text").innerText = "-- विषय चुनें --";
-            document.getElementById("chapter-select").value = "";
-            document.getElementById("chapter-text").innerText = "-- पहले विषय चुनें --";
-            document.getElementById("quiz-select").value = "";
-            document.getElementById("quiz-text").innerText = "-- पहले अध्याय चुनें --";
+        const commentsListEl = document.getElementById('commentsList');
+        const postMainBtn = document.getElementById('postMainBtn');
+        const mainInput = document.getElementById('mainCommentInput');
+        const nameInput = document.getElementById('userNameInput');
+        const mainAvatar = document.getElementById('mainAvatar');
+        const adminPinInput = document.getElementById('adminPinInput');
+        const deleteAllDockBtn = document.getElementById('deleteAllDockBtn');
+        
+        let isAdminLoggedIn = false;
+        let globalDocs = []; 
+
+        // Modal Logic
+        const modal = document.getElementById('customModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalEditInput = document.getElementById('modalEditInput');
+        const modalCancelBtn = document.getElementById('modalCancelBtn');
+        const modalOkBtn = document.getElementById('modalOkBtn');
+        let modalConfirmCallback = null;
+
+        function showModal(title, message, type, onConfirm = null) {
+            modalTitle.innerText = title;
+            modalMessage.innerText = message;
+            modalEditInput.style.display = 'none';
+            modalMessage.style.display = 'block';
+
+            if (type === 'alert') {
+                modalCancelBtn.style.display = 'none';
+                modalOkBtn.className = 'modal-btn btn-ok';
+                modalOkBtn.innerText = 'OK';
+            } else if (type === 'danger-confirm') {
+                modalCancelBtn.style.display = 'inline-block';
+                modalOkBtn.className = 'modal-btn btn-ok-danger';
+                modalOkBtn.innerText = 'Delete';
+            } else if (type === 'edit-confirm') {
+                modalCancelBtn.style.display = 'inline-block';
+                modalOkBtn.className = 'modal-btn btn-ok';
+                modalOkBtn.innerText = 'Save';
+                modalEditInput.style.display = 'block';
+                modalMessage.style.display = 'none';
+            }
+
+            modal.classList.add('show');
+            modalConfirmCallback = onConfirm;
         }
 
-        window.onload = function() {
-            // यह कोड रिफ्रेश होते ही नाम और आईडी के बॉक्स को खाली कर देगा
-            document.getElementById('student-name').value = '';
-            document.getElementById('student-id').value = '';
-            
-            // हमेशा शुरुआत (Instruction Screen) से ही पोर्टल खुलेगा
-            history.replaceState({ screen: 'instruction' }, '');
-            showScreen('instruction-screen');
+        modalCancelBtn.onclick = () => { modal.classList.remove('show'); modalEditInput.style.display = 'none'; };
+        modalOkBtn.onclick = () => { modal.classList.remove('show'); if(modalConfirmCallback) modalConfirmCallback(); };
+
+        nameInput.addEventListener('input', () => {
+            const rawId = nameInput.value.trim();
+            const normalized = normalizeID(rawId);
+            if (studentData[normalized]) { mainAvatar.innerText = studentData[normalized].charAt(0).toUpperCase(); } 
+            else { mainAvatar.innerText = rawId ? rawId.charAt(0).toUpperCase() : 'S'; }
+            renderComments(); 
+        });
+
+        // --- Admin Login Event with Class Toggle for Animation ---
+        adminPinInput.addEventListener('input', () => {
+            if (adminPinInput.value.trim().toLowerCase() === 'xyz') {
+                isAdminLoggedIn = true;
+                deleteAllDockBtn.classList.add('show');
+                commentsListEl.classList.add('admin-mode'); // Triggers slide animation & shows pin
+            } else {
+                isAdminLoggedIn = false;
+                deleteAllDockBtn.classList.remove('show');
+                commentsListEl.classList.remove('admin-mode'); // Reverts animation
+            }
+            renderComments();
+        });
+
+        deleteAllDockBtn.addEventListener('click', () => {
+            showModal("चेतावनी!", "क्या आप वाकई सभी मैसेज हमेशा के लिए हटाना चाहते हैं?", "danger-confirm", async () => {
+                try {
+                    const q = query(collection(db, "portal_comments"));
+                    const querySnapshot = await getDocs(q);
+                    querySnapshot.forEach(async (docSnap) => { await deleteDoc(doc(db, "portal_comments", docSnap.id)); });
+                } catch (error) { showModal("त्रुटि", "मैसेज हटाने में समस्या आई।", "alert"); }
+            });
+        });
+
+        postMainBtn.addEventListener('click', async () => {
+            const text = mainInput.value.trim();
+            const rawUserIdInput = nameInput.value;
+            const normalizedInput = normalizeID(rawUserIdInput);
+
+            if (!isAdminLoggedIn && !rawUserIdInput.trim()) { showModal("जानकारी", "कृपया अपना User ID दर्ज करें!", "alert"); return; }
+            if (!text) { showModal("जानकारी", "कृपया मैसेज बॉक्स में कुछ लिखें!", "alert"); return; }
+
+            let displayName = "";
+            if (isAdminLoggedIn) {
+                if (rawUserIdInput.trim() && studentData[normalizedInput]) displayName = studentData[normalizedInput]; 
+                else if (rawUserIdInput.trim()) displayName = rawUserIdInput.trim(); 
+                else displayName = "Admin";
+            } else {
+                if (studentData[normalizedInput]) displayName = studentData[normalizedInput]; 
+                else { showModal("एक्सेस मना है 🚫", "आपका User ID गलत है या सूची में पंजीकृत नहीं है।", "alert"); return; }
+            }
+
+            try {
+                await addDoc(collection(db, "portal_comments"), {
+                    userName: displayName, 
+                    text: text,
+                    role: isAdminLoggedIn ? 'admin' : 'student',
+                    parentId: null,
+                    likes: 0,
+                    pinned: false, // Added Pinned Status for new messages
+                    timestamp: serverTimestamp()
+                });
+                mainInput.value = ''; 
+            } catch (error) { showModal("सर्वर त्रुटि", "मैसेज नहीं गया!", "alert"); }
+        });
+
+        window.postReply = async function(parentId, inputId) {
+            const replyInput = document.getElementById(inputId);
+            const text = replyInput.value.trim();
+            const rawUserIdInput = nameInput.value; 
+            const normalizedInput = normalizeID(rawUserIdInput);
+
+            if (!isAdminLoggedIn && !rawUserIdInput.trim()) { showModal("जानकारी", "रिप्लाई करने से पहले ऊपर अपना User ID दर्ज करें!", "alert"); return; }
+            if (!text) { showModal("जानकारी", "कृपया रिप्लाई बॉक्स में कुछ लिखें!", "alert"); return; }
+
+            let displayName = "";
+            if (isAdminLoggedIn) {
+                if (rawUserIdInput.trim() && studentData[normalizedInput]) displayName = studentData[normalizedInput];
+                else if (rawUserIdInput.trim()) displayName = rawUserIdInput.trim(); 
+                else displayName = "Admin";
+            } else {
+                if (studentData[normalizedInput]) displayName = studentData[normalizedInput];
+                else { showModal("एक्सेस मना है 🚫", "आपका User ID गलत है या सूची में पंजीकृत नहीं है।", "alert"); return; }
+            }
+
+            try {
+                await addDoc(collection(db, "portal_comments"), {
+                    userName: displayName, text: text, role: isAdminLoggedIn ? 'admin' : 'student', 
+                    parentId: parentId, timestamp: serverTimestamp()
+                });
+                replyInput.value = '';
+                toggleReplyBox('replyBox_' + parentId); 
+            } catch (error) { console.error(error); }
+        };
+        
+        window.deleteComment = async function(commentId) {
+            if (!isAdminLoggedIn) return; 
+            try { await deleteDoc(doc(db, "portal_comments", commentId)); } catch (error) { console.error(error); }
         };
 
-        window.addEventListener('popstate', function(event) {
-            const state = event.state;
-            document.getElementById("custom-modal").classList.add("hidden");
-            document.getElementById("options-modal").classList.add("hidden");
-            document.getElementById("summary-modal").classList.add("hidden");
-            document.getElementById("notification-modal").classList.add("hidden");
+        window.deleteUserComment = function(commentId) {
+            showModal("मैसेज डिलीट", "क्या आप वाकई अपना यह मैसेज डिलीट करना चाहते हैं?", "danger-confirm", async () => {
+                try { await deleteDoc(doc(db, "portal_comments", commentId)); } catch (error) { showModal("त्रुटि", "डिलीट करने में समस्या आई।", "alert"); }
+            });
+        };
 
-            if (!state) {
-                showScreen('instruction-screen');
+        window.editUserComment = function(commentId) {
+            const comment = globalDocs.find(d => d.id === commentId);
+            if(!comment) return;
+            modalEditInput.value = comment.text;
+            showModal("मैसेज एडिट करें ✏️", "", "edit-confirm", async () => {
+                const newText = modalEditInput.value.trim();
+                if(newText && newText !== comment.text) {
+                    try { await updateDoc(doc(db, "portal_comments", commentId), { text: newText }); } 
+                    catch (error) { showModal("त्रुटि", "अपडेट करने में समस्या आई।", "alert"); }
+                }
+            });
+        };
+
+        window.toggleLike = async function(commentId, currentLikes) {
+            const likeKey = 'liked_' + commentId;
+            const isLiked = localStorage.getItem(likeKey);
+            let newLikes = currentLikes || 0;
+            if (isLiked) { localStorage.removeItem(likeKey); newLikes = Math.max(0, newLikes - 1); } 
+            else { localStorage.setItem(likeKey, 'true'); newLikes = newLikes + 1; }
+            try { await updateDoc(doc(db, "portal_comments", commentId), { likes: newLikes }); } catch (error) { console.error(error); }
+        };
+
+        window.toggleReplyBox = function(boxId) { const box = document.getElementById(boxId); if(box) box.classList.toggle('active'); };
+
+        // --- Toggle Pin Function ---
+        window.togglePin = async function(commentId, currentPinStatus) {
+            if (!isAdminLoggedIn) return;
+            try {
+                await updateDoc(doc(db, "portal_comments", commentId), { pinned: !currentPinStatus });
+            } catch (error) { console.error("Pinning error", error); }
+        };
+
+        function getTimeString(timestamp) {
+            if (!timestamp) return 'अभी-अभी'; 
+            const now = Date.now();
+            const past = timestamp.toMillis();
+            const diffSec = Math.floor((now - past) / 1000);
+            if (diffSec < 60) return `${Math.max(1, diffSec)} सेकंड`;
+            const diffMin = Math.floor(diffSec / 60);
+            if (diffMin < 60) return `${diffMin} मिनट`;
+            const diffHour = Math.floor(diffMin / 60);
+            if (diffHour < 24) return `${diffHour} घंटे`;
+            const diffDay = Math.floor(diffHour / 24);
+            return `${diffDay} दिन`;
+        }
+
+        const q = query(collection(db, "portal_comments"), orderBy("timestamp", "desc"));
+        onSnapshot(q, (snapshot) => {
+            globalDocs = [];
+            snapshot.forEach(doc => { globalDocs.push({ id: doc.id, ...doc.data() }); });
+            renderComments();
+        });
+
+        function renderComments() {
+            let mainComments = globalDocs.filter(d => !d.parentId);
+            const replies = globalDocs.filter(d => d.parentId);
+
+            if (mainComments.length === 0) {
+                commentsListEl.innerHTML = '<p style="text-align: center; color: var(--text-muted); font-weight: 500;">अभी कोई चर्चा नहीं हुई है। अपना पहला मैसेज भेजें!</p>';
                 return;
             }
 
-            if (state.modal) document.getElementById("custom-modal").classList.remove("hidden");
-            if (state.optionsModal) document.getElementById("options-modal").classList.remove("hidden");
-            if (state.summaryModal) document.getElementById("summary-modal").classList.remove("hidden");
-            if (state.notifModal) document.getElementById("notification-modal").classList.remove("hidden");
+            // --- Sorting Logic for Pinned Messages ---
+            // Pinned messages at top, unpinned below. Timestamp desc is maintained due to initial query order.
+            const pinnedComments = mainComments.filter(c => c.pinned);
+            const unpinnedComments = mainComments.filter(c => !c.pinned);
+            mainComments = [...pinnedComments, ...unpinnedComments];
 
-            // UPDATE: अगर रिजल्ट/क्विज/प्री-सबमिट स्क्रीन से वापस आता है तो सेटअप रिसेट हो जाएगा
-            if (state.screen === 'quiz' || state.screen === 'pre-submit') {
-                if (window.currentQuizFinished) {
-                    resetSetupScreen();
-                    window.currentQuizFinished = false; // स्टेट को पुनः नार्मल करें
-                    history.replaceState({ screen: 'selection' }, '');
-                    showScreen('selection-screen');
-                    return;
-                }
-            }
+            commentsListEl.innerHTML = '';
+            const currentUserDisplayName = studentData[normalizeID(nameInput.value.trim())];
+            const adminDelStyle = isAdminLoggedIn ? 'display: inline-block;' : 'display: none;';
 
-            if (state.screen === 'instruction') { showScreen('instruction-screen'); clearInterval(timerInterval); } 
-            else if (state.screen === 'login') { showScreen('login-screen'); clearInterval(timerInterval); } 
-            else if (state.screen === 'selection') { showScreen('selection-screen'); clearInterval(timerInterval); } 
-            else if (state.screen === 'quiz') { showScreen('quiz-screen'); } 
-            else if (state.screen === 'pre-submit') { showScreen('pre-submit-screen'); } 
-            else if (state.screen === 'result') { showScreen('result-screen'); }
-        });
-
-        function showScreen(screenId) {
-            document.getElementById("instruction-screen").classList.add("hidden");
-            document.getElementById("login-screen").classList.add("hidden");
-            document.getElementById("selection-screen").classList.add("hidden");
-            document.getElementById("quiz-screen").classList.add("hidden");
-            document.getElementById("pre-submit-screen").classList.add("hidden");
-            document.getElementById("result-screen").classList.add("hidden");
-            document.getElementById("dock-container").classList.add("hidden");
-            document.getElementById("quiz-dock-container").classList.add("hidden");
-            
-            document.getElementById(screenId).classList.remove("hidden");
-            
-            if(screenId === 'selection-screen') {
-                document.getElementById("dock-container").classList.remove("hidden");
-            }
-            if(screenId === 'quiz-screen') {
-                document.getElementById("quiz-dock-container").classList.remove("hidden");
-            }
-        }
-
-        // UPDATE: 10 घंटे का लोकल स्टोरेज लॉजिक ऐड किया गया और स्पेस/कैपिटल इग्नोर किया गया
-        function checkAndShowNotification(studentId) {
-            let bell = document.getElementById("notification-bell");
-            // सारा स्पेस हटा कर और लोअरकेस करके आईडी को क्लीन करना
-            let enteredIdClean = studentId.toLowerCase().replace(/\s+/g, '');
-            let foundMessage = null;
-
-            // 10 घंटे के Cooldown का चेक
-            let cooldownKey = 'bell_cooldown_' + enteredIdClean;
-            let savedTime = localStorage.getItem(cooldownKey);
-            
-            if (savedTime) {
-                let elapsed = Date.now() - parseInt(savedTime);
-                if (elapsed < 10 * 60 * 60 * 1000) { // 10 Hours
-                    bell.style.display = "none";
-                    return; // अगले 10 घंटे तक बेल नहीं दिखेगा
-                } else {
-                    localStorage.removeItem(cooldownKey); // 10 घंटे पूरे हो गए, टाइमर डिलीट
-                }
-            }
-
-            if (window.studentMessages) {
-                for (let savedId in window.studentMessages) {
-                    // सेव की हुई आईडी का भी स्पेस हटा कर और लोअरकेस करके मिलान करना
-                    if (savedId.toLowerCase().replace(/\s+/g, '') === enteredIdClean) {
-                        foundMessage = window.studentMessages[savedId];
-                        break;
-                    }
-                }
-            }
-            
-            if (foundMessage) {
-                bell.style.display = "block";
-                bell.dataset.message = foundMessage;
-                bell.dataset.clicks = "0"; // क्लिक काउंटर सेट
+            mainComments.forEach(comment => {
+                const commentReplies = replies.filter(r => r.parentId === comment.id);
+                commentReplies.sort((a, b) => (a.timestamp?.toMillis() || 0) - (b.timestamp?.toMillis() || 0));
                 
-                let dot = document.getElementById("bell-dot");
-                if(dot) dot.style.display = "block"; // सुनिश्चित करें कि नया मैसेज आने पर डॉट दिखे
-            } else {
-                bell.style.display = "none";
-            }
-        }
-
-        // UPDATE: पहली बार और दूसरी बार क्लिक करने का लॉजिक
-        function openNotificationModal() {
-            let bell = document.getElementById("notification-bell");
-            // नोटिफिकेशन के लिए भी क्लीन आईडी का उपयोग
-            let studentId = document.getElementById("student-id").value.trim().toLowerCase().replace(/\s+/g, '');
-            
-            // क्लिक की गिनती बढ़ाएं
-            let currentClicks = parseInt(bell.dataset.clicks || "0");
-            currentClicks++;
-            bell.dataset.clicks = currentClicks.toString();
-
-            let dot = document.getElementById("bell-dot");
-            
-            if (currentClicks === 1) {
-                // पहली बार क्लिक: सिर्फ रेड डॉट हटेगा
-                if(dot) dot.style.display = "none";
-            } else if (currentClicks >= 2) {
-                // दूसरी बार (या अधिक) क्लिक: बेल पूरी तरह गायब और 10 घंटे का टाइमर सेव
-                bell.style.display = "none";
-                localStorage.setItem('bell_cooldown_' + studentId, Date.now().toString());
-            }
-            
-            let msg = bell.dataset.message;
-            if(msg) {
-                document.getElementById("student-msg-text").innerText = msg;
-                document.getElementById("notification-modal").classList.remove("hidden");
-                history.pushState({ screen: history.state ? history.state.screen : 'selection', notifModal: true }, '');
-            }
-        }
-
-        function closeNotificationModal() {
-            if (history.state && history.state.notifModal) {
-                history.back();
-            } else {
-                document.getElementById("notification-modal").classList.add("hidden");
-            }
-        }
-
-        function proceedToLogin() {
-            history.pushState({ screen: 'login' }, '');
-            showScreen('login-screen');
-        }
-
-        function verifyStudent() {
-            let name = document.getElementById("student-name").value.trim();
-            let studentId = document.getElementById("student-id").value.trim(); 
-
-            if (!name) { showModal("Please, 👉 Enter Your Name "); return; }
-            if (!studentId) { showModal("Please, 👉 Enter Your id "); return; }
-
-            let isIdValid = false;
-            // सारा स्पेस हटा कर और लोअरकेस करके आईडी को क्लीन करना
-            let enteredIdClean = studentId.toLowerCase().replace(/\s+/g, ''); 
-
-            if (window.validStudentIDs) {
-                isIdValid = window.validStudentIDs.some(function(savedId) {
-                    // सेव की हुई आईडी का भी स्पेस हटा कर और लोअरकेस करके मिलान करना
-                    return savedId.toLowerCase().replace(/\s+/g, '') === enteredIdClean;
-                });
-            }
-
-            if (!isIdValid) { showModal("आपकी आईडी पंजीकृत नहीं है! कृपया सही आईडी दर्ज करें।"); return; }
-
-            checkAndShowNotification(studentId);
-
-            history.pushState({ screen: 'selection' }, '');
-            showScreen('selection-screen');
-        }
-
-        function openSubjectSelect() {
-            let list = document.getElementById("options-list");
-            list.innerHTML = "";
-            document.getElementById("options-title").innerText = "विषय चुनें";
-
-            for (let key in subjectsList) {
-                list.innerHTML += `<div class="option-card" onclick="selectSubject('${key}', '${subjectsList[key]}')">${subjectsList[key]}</div>`;
-            }
-
-            document.getElementById("options-modal").classList.remove("hidden");
-            history.pushState({ screen: history.state ? history.state.screen : 'selection', optionsModal: true }, '');
-        }
-
-        function selectSubject(val, text) {
-            document.getElementById("subject-select").value = val;
-            document.getElementById("subject-text").innerText = text;
-            
-            document.getElementById("chapter-select").value = "";
-            document.getElementById("chapter-text").innerText = "-- अध्याय चुनें --";
-            document.getElementById("quiz-select").value = "";
-            document.getElementById("quiz-text").innerText = "-- पहले अध्याय चुनें --";
-            
-            history.back();
-        }
-
-        function openChapterSelect() {
-            let sub = document.getElementById("subject-select").value;
-            if(!sub) { showModal("कृपया पहले विषय चुनें!"); return; }
-
-            let list = document.getElementById("options-list");
-            list.innerHTML = "";
-            document.getElementById("options-title").innerText = "अध्याय चुनें";
-
-            let chapters = chaptersData[sub];
-            for (let i = 0; i < chapters.length; i++) {
-                let chNum = i + 1;
-                list.innerHTML += `<div class="option-card" onclick="selectChapter('${chNum}', 'अध्याय ${chNum}: ${chapters[i]}')">अध्याय ${chNum}: ${chapters[i]}</div>`;
-            }
-
-            document.getElementById("options-modal").classList.remove("hidden");
-            history.pushState({ screen: history.state ? history.state.screen : 'selection', optionsModal: true }, '');
-        }
-
-        function selectChapter(val, text) {
-            document.getElementById("chapter-select").value = val;
-            document.getElementById("chapter-text").innerText = text;
-            history.back();
-            loadQuizzesCustom();
-        }
-
-        function loadQuizzesCustom() {
-            let sub = document.getElementById("subject-select").value;
-            let chNum = document.getElementById("chapter-select").value;
-            let qText = document.getElementById("quiz-text");
-            document.getElementById("quiz-select").value = ""; 
-
-            let hasQuizzes = false;
-            let hiddenDueToCooldown = false;
-
-            if (window.quizDatabase && window.quizDatabase[sub] && window.quizDatabase[sub][`ch_${chNum}`]) {
-                let quizzes = window.quizDatabase[sub][`ch_${chNum}`];
-                for (let qKey in quizzes) {
-                    let cooldownKey = `dpp_cooldown_${sub}_${chNum}_${qKey}`;
-                    let savedTime = localStorage.getItem(cooldownKey);
-                    let hide = false;
-                    
-                    if (savedTime) {
-                        let elapsed = Date.now() - parseInt(savedTime);
-                        if (elapsed < 5 * 60 * 60 * 1000) { hide = true; hiddenDueToCooldown = true; } 
-                        else { localStorage.removeItem(cooldownKey); }
-                    }
-                    if (!hide) { hasQuizzes = true; break; }
-                }
-            }
-
-            if (hasQuizzes) { qText.innerText = "-- DPP चुनें --"; } 
-            else if (hiddenDueToCooldown) { qText.innerText = "-- आपने सभी DPP बना लिए (5 घंटे बाद देखें) --"; } 
-            else { qText.innerText = "-- अभी कोई DPP उपलब्ध नहीं है --"; }
-        }
-
-        function openQuizSelect() {
-            let sub = document.getElementById("subject-select").value;
-            let chNum = document.getElementById("chapter-select").value;
-            
-            if(!sub) { showModal("कृपया पहले विषय चुनें!"); return; }
-            if(!chNum) { showModal("कृपया पहले अध्याय चुनें!"); return; }
-
-            let list = document.getElementById("options-list");
-            list.innerHTML = "";
-            document.getElementById("options-title").innerText = "DPP चुनें";
-
-            let hasQuizzes = false;
-            let totalQuizzes = 0;
-            let hiddenQuizzesCount = 0;
-
-            if (window.quizDatabase && window.quizDatabase[sub] && window.quizDatabase[sub][`ch_${chNum}`]) {
-                let quizzes = window.quizDatabase[sub][`ch_${chNum}`];
-                
-                if(Object.keys(quizzes).length > 0) {
-                    for (let qKey in quizzes) {
-                        totalQuizzes++;
-                        let cooldownKey = `dpp_cooldown_${sub}_${chNum}_${qKey}`;
-                        let savedTime = localStorage.getItem(cooldownKey);
-                        let hideQuiz = false;
-                        
-                        if (savedTime) {
-                            let elapsed = Date.now() - parseInt(savedTime);
-                            if (elapsed < 5 * 60 * 60 * 1000) { 
-                                hideQuiz = true; hiddenQuizzesCount++;
-                            } else {
-                                localStorage.removeItem(cooldownKey); 
-                            }
-                        }
-
-                        if (!hideQuiz) {
-                            hasQuizzes = true;
-                            let qNum = qKey.replace("dpp_", "");
-                            list.innerHTML += `<div class="option-card" onclick="selectQuiz('${qKey}', 'DPP-${qNum}')">DPP-${qNum}</div>`;
-                        }
-                    }
-                }
-            }
-
-            if (!hasQuizzes) {
-                if (totalQuizzes > 0 && hiddenQuizzesCount === totalQuizzes) {
-                    list.innerHTML = `<div style="text-align:center; color:#ffffff; padding: 20px;">आपने इस अध्याय के सभी DPP हाल ही में बना लिए हैं。<br><br><span style="color:#fbbf24;">कृपया 5 घंटे बाद पुनः प्रयास करें।</span></div>`;
-                } else {
-                    list.innerHTML = `<div style="text-align:center; color:#ffffff; padding: 20px;">अभी इस अध्याय में कोई DPP नहीं डाला गया है。<br><br>कृपया बाद में प्रयास करें।</div>`;
-                }
-            }
-
-            document.getElementById("options-modal").classList.remove("hidden");
-            history.pushState({ screen: history.state ? history.state.screen : 'selection', optionsModal: true }, '');
-        }
-
-        function selectQuiz(val, text) {
-            document.getElementById("quiz-select").value = val;
-            document.getElementById("quiz-text").innerText = text;
-            history.back();
-        }
-
-        function closeOptionsModal() {
-            if (history.state && history.state.optionsModal) { history.back(); } 
-            else { document.getElementById("options-modal").classList.add("hidden"); }
-        }
-
-        function showModal(msg) {
-            document.getElementById("modal-text").innerText = msg;
-            document.getElementById("custom-modal").classList.remove("hidden");
-            history.pushState({ screen: history.state ? history.state.screen : 'selection', modal: true }, '');
-        }
-
-        function closeModal() {
-            if (history.state && history.state.modal) { history.back(); } 
-            else { document.getElementById("custom-modal").classList.add("hidden"); }
-        }
-
-        /* ========================================================== */
-        /* NEW FEATURES LOGIC: Screen Mode & Full Screen Mode         */
-        /* ========================================================== */
-
-        function toggleThemePopup() {
-            document.getElementById('theme-popup').classList.toggle('hidden');
-        }
-
-        function applyLightMode() {
-            document.getElementById('quiz-screen').classList.add('light-mode-active');
-            document.getElementById('theme-popup').classList.add('hidden');
-        }
-
-        function applyDarkMode() {
-            document.getElementById('quiz-screen').classList.remove('light-mode-active');
-            document.getElementById('theme-popup').classList.add('hidden');
-        }
-
-        function toggleFullScreen() {
-            let btn = document.getElementById("btn-fullscreen");
-            
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().then(() => {
-                    btn.innerText = "नॉर्मल 🔙";
-                }).catch(err => {
-                    console.log("Error attempting to enable fullscreen:", err.message);
-                });
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen().then(() => {
-                        btn.innerText = "फुल स्क्रीन मोड 🔲";
-                    });
-                }
-            }
-        }
-
-        // Full Screen Event Listener - अगर छात्र Esc बटन दबा कर फुल स्क्रीन से बाहर आये
-        document.addEventListener('fullscreenchange', (event) => {
-            let btn = document.getElementById("btn-fullscreen");
-            if (!document.fullscreenElement) {
-                btn.innerText = "फुल स्क्रीन मोड 🔲";
-            }
-        });
-
-        /* ========================================================== */
-
-        function startQuiz() {
-            let sub = document.getElementById("subject-select").value;
-            let ch = document.getElementById("chapter-select").value;
-            let qKey = document.getElementById("quiz-select").value;
-
-            if (!sub) { showModal("कृपया विषय चुनें!"); return; }
-            if (!ch) { showModal("कृपया अध्याय चुनें!"); return; }
-            if (!qKey) { showModal("कोई DPP चुना नहीं गया है। यदि उपलब्ध नहीं है, तो बाद में प्रयास करें।"); return; }
-
-            const chKey = `ch_${ch}`;
-
-            if (window.quizDatabase && window.quizDatabase[sub] && window.quizDatabase[sub][chKey] && window.quizDatabase[sub][chKey][qKey]) {
-                currentQuestions = window.quizDatabase[sub][chKey][qKey];
-                userAnswers = new Array(currentQuestions.length).fill(null);
-                currentQIndex = 0;
-                window.currentQuizFinished = false;
-
-                // Ensure Dark mode is default on start
-                applyDarkMode();
-
-                history.pushState({ screen: 'quiz' }, '');
-                showScreen('quiz-screen');
-                
-                startOverallTimer();
-                loadQuestion();
-            } else {
-                showModal("इस DPP के सवाल अभी जोड़े नहीं गए हैं!");
-            }
-        }
-
-        function startOverallTimer() {
-            clearInterval(timerInterval);
-            timeLeft = 1800; // 30 Minutes
-            
-            document.getElementById("time-warning").style.display = "none";
-            document.getElementById("timer-ui").classList.remove('timer-warning');
-
-            updateTimerDisplay();
-
-            timerInterval = setInterval(() => {
-                timeLeft--;
-                updateTimerDisplay();
-
-                if (timeLeft === 600) {
-                    document.getElementById("time-warning").style.display = "block";
-                    document.getElementById("timer-ui").classList.add('timer-warning');
-                }
-
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    showModal("समय समाप्त! आपका DPP स्वचालित रूप से सबमिट किया जा रहा है।");
-                    submitQuiz();
-                }
-            }, 1000);
-        }
-
-        function updateTimerDisplay() {
-            let m = Math.floor(timeLeft / 60);
-            let s = timeLeft % 60;
-            document.getElementById("time-left").innerText = `${m < 10 ? "0" + m : m}:${s < 10 ? "0" + s : s}`;
-        }
-
-        function loadQuestion() {
-            let q = currentQuestions[currentQIndex];
-            document.getElementById("q-counter").innerHTML = `प्रश्न ${currentQIndex + 1} / ${currentQuestions.length}`;
-            document.getElementById("q-text").innerHTML = `${currentQIndex + 1}. ${q.question}`;
-
-            let optsContainer = document.getElementById("options-container");
-            optsContainer.innerHTML = "";
-
-            q.options.forEach((opt, idx) => {
-                let isSelected = userAnswers[currentQIndex] === idx ? "selected" : "";
-                optsContainer.innerHTML += `<div class="option-item ${isSelected}" onclick="selectOption(${idx})">${String.fromCharCode(65+idx)}) ${opt}</div>`;
-            });
-
-            document.getElementById("btn-prev").style.visibility = currentQIndex === 0 ? "hidden" : "visible";
-            if (currentQIndex === currentQuestions.length - 1) {
-                document.getElementById("btn-next").style.display = "none";
-                document.getElementById("btn-submit").style.display = "block";
-            } else {
-                document.getElementById("btn-next").style.display = "block";
-                document.getElementById("btn-submit").style.display = "none";
-            }
-        }
-
-        function selectOption(idx) {
-            userAnswers[currentQIndex] = idx;
-            loadQuestion();
-        }
-
-        function nextQuestion() {
-            if (currentQIndex < currentQuestions.length - 1) {
-                currentQIndex++;
-                loadQuestion();
-            }
-        }
-
-        function prevQuestion() {
-            if (currentQIndex > 0) {
-                currentQIndex--;
-                loadQuestion();
-            }
-        }
-
-        function submitQuiz() {
-            clearInterval(timerInterval);
-            
-            // Remove Light Theme so that Result Screen displays in Dark Mode correctly
-            applyDarkMode(); 
-
-            let studentName = document.getElementById("student-name").value;
-            let studentId = document.getElementById("student-id").value;
-            let total = currentQuestions.length;
-            let attempted = userAnswers.filter(ans => ans !== null).length;
-            
-            let timeTakenSec = 1800 - timeLeft;
-            let m = Math.floor(timeTakenSec / 60);
-            let s = timeTakenSec % 60;
-            let timeTakenStr = `${m} मिनट ${s} सेकंड`;
-
-            document.getElementById("pre-submit-details").innerHTML = `
-                <div style="margin-bottom: 8px;"><strong style="color: #cbd5e1;">नाम:</strong> ${studentName}</div>
-                <div style="margin-bottom: 8px;"><strong style="color: #cbd5e1;">ID:</strong> ${studentId}</div>
-                <div style="margin-bottom: 8px;"><strong style="color: #cbd5e1;">इस DPP में कुल प्रश्न:</strong> ${total}</div>
-                <div style="margin-bottom: 8px;"><strong style="color: #cbd5e1;">आपने अटेम्प्ट किये:</strong> <span style="color:#38bdf8; font-weight:bold;">${attempted}</span></div>
-                <div style="margin-bottom: 8px;"><strong style="color: #cbd5e1;">कुल लिया गया समय:</strong> ${timeTakenStr}</div>
-            `;
-
-            document.getElementById("submit-loader").classList.add("hidden");
-            document.getElementById("btn-final-submit").classList.remove("hidden");
-
-            history.pushState({ screen: 'pre-submit' }, '');
-            showScreen('pre-submit-screen');
-        }
-
-        function startFinalSubmit() {
-            document.getElementById("btn-final-submit").classList.add("hidden");
-            document.getElementById("submit-loader").classList.remove("hidden");
-            
-            let counter = 5;
-            document.getElementById("submit-timer-text").innerText = counter;
-            
-            let countdown = setInterval(() => {
-                counter--;
-                document.getElementById("submit-timer-text").innerText = counter;
-                if(counter <= 0) {
-                    clearInterval(countdown);
-                    finalizeQuizSubmit();
-                }
-            }, 1000);
-        }
-
-        function finalizeQuizSubmit() {
-            window.currentQuizFinished = true; 
-            let score = 0;
-            currentQuestions.forEach((q, idx) => {
-                if (userAnswers[idx] === q.correct) score++;
-            });
-
-            let total = currentQuestions.length;
-            let percent = Math.round((score / total) * 100);
-
-            let studentName = document.getElementById("student-name").value;
-            let studentId = document.getElementById("student-id").value;
-            let subjectCode = document.getElementById("subject-select").value;
-            let subjectName = document.getElementById("subject-text").innerText;
-            let chapterCode = document.getElementById("chapter-select").value;
-            let chapterName = document.getElementById("chapter-text").innerText;
-            let dppKey = document.getElementById("quiz-select").value;
-            let dppName = document.getElementById("quiz-text").innerText;
-
-            let cooldownKey = `dpp_cooldown_${subjectCode}_${chapterCode}_${dppKey}`;
-            localStorage.setItem(cooldownKey, Date.now().toString());
-
-            let sheetData = {
-                name: studentName,
-                id: studentId,
-                score: `${score} / ${total}`,
-                subjectCode: subjectCode,
-                subjectName: subjectName,
-                chapterName: chapterName,
-                dppName: dppName
-            };
-
-            const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxZVqprhQ_Y4pdg0xwRixDZUHavrTVDkdbMlprX6hCsqvAboITOaOVHBZYfCZO1O2yySw/exec'; 
-
-            if(GOOGLE_SHEET_URL) {
-                fetch(GOOGLE_SHEET_URL, {
-                    method: 'POST',
-                    keepalive: true, 
-                    body: JSON.stringify(sheetData)
-                }).catch(e => console.log("डेटा भेजने में त्रुटि: ", e));
-            }
-
-            history.replaceState({ screen: 'result' }, '');
-            showScreen('result-screen');
-
-            document.getElementById("res-name").innerText = `विद्यार्थी: ${studentName}`;
-            document.getElementById("res-id-display").innerText = `ID: ${studentId}`;
-            document.getElementById("res-score").innerText = `${score} / ${total}`;
-            document.getElementById("res-percent").innerText = `कुल प्राप्तांक: ${percent}%`;
-
-            generateSummary();
-        }
-
-        // UPDATE: Home बटन दबाने पर अब सेटअप रिसेट हो जाएगा
-        function goHome() {
-            resetSetupScreen();
-            window.currentQuizFinished = false; // स्टेट को पुनः नार्मल करें
-            history.pushState({ screen: 'selection' }, '');
-            showScreen('selection-screen');
-        }
-
-        function openSummaryModal() {
-            document.getElementById("summary-modal").classList.remove("hidden");
-            history.pushState({ screen: history.state ? history.state.screen : 'result', summaryModal: true }, '');
-        }
-
-        function closeSummaryModal() {
-            if (history.state && history.state.summaryModal) { history.back(); } 
-            else { document.getElementById("summary-modal").classList.add("hidden"); }
-        }
-
-        function generateSummary() {
-            let container = document.getElementById("summary-content");
-            container.innerHTML = "";
-            
-            currentQuestions.forEach((q, idx) => {
-                let userAnsIdx = userAnswers[idx];
-                let isAttempted = userAnsIdx !== null;
-                let isCorrect = isAttempted && userAnsIdx === q.correct;
-                
-                let mark = isCorrect ? "✔️ सही" : "❌ गलत";
-                let markClass = isCorrect ? "ans-correct" : "ans-wrong";
-                
-                let userAnsText = isAttempted ? String.fromCharCode(65+userAnsIdx) + ") " + q.options[userAnsIdx] : "उत्तर नहीं दिया गया";
-                let correctAnsText = String.fromCharCode(65+q.correct) + ") " + q.options[q.correct];
-
-                let optionsHtml = `<div style="margin: 10px 0; font-size: 0.95rem; color: #94a3b8; line-height: 1.6;">`;
-                q.options.forEach((opt, oIdx) => {
-                    optionsHtml += `<div>${String.fromCharCode(65+oIdx)}) ${opt}</div>`;
-                });
-                optionsHtml += `</div>`;
-
-                let html = `
-                    <div class="summary-item">
-                        <div style="margin-bottom: 5px; color: #ffffff; font-size: 1.05rem;">
-                            <strong>प्रश्न ${idx + 1}:</strong> ${q.question} <span class="${markClass}">(${mark})</span>
+                let repliesHTML = '';
+                commentReplies.forEach(reply => {
+                    const isReplyAdmin = reply.role === 'admin';
+                    const rBadgeHTML = isReplyAdmin ? `<span class="admin-badge">Admin</span>` : '';
+                    const rAvatarClass = isReplyAdmin ? `avatar admin-avatar` : `avatar`;
+                    const rContentClass = isReplyAdmin ? `comment-content admin-comment` : `comment-content`;
+                    const rAvatarStyle = !isReplyAdmin ? `style="width:35px; height:35px; font-size:14px; background: rgba(255,255,255,0.7);"` : `style="width:35px; height:35px; font-size:14px;"`;
+
+                    const isReplyOwner = currentUserDisplayName && reply.userName === currentUserDisplayName;
+                    const userReplyActions = isReplyOwner ? `
+                        <button class="user-action-btn edit" onclick="editUserComment('${reply.id}')">Edit</button>
+                        <button class="user-action-btn delete" onclick="deleteUserComment('${reply.id}')">Delete</button>
+                    ` : '';
+
+                    repliesHTML += `
+                        <div class="comment-box">
+                            <div class="${rAvatarClass}" ${rAvatarStyle}>${reply.userName.charAt(0).toUpperCase()}</div>
+                            <div class="${rContentClass}">
+                                <div class="comment-header">
+                                    <span class="user-name">${reply.userName} ${rBadgeHTML}</span>
+                                </div>
+                                <div class="comment-text">${reply.text}</div>
+                                <div class="comment-actions-container">
+                                    <div class="left-actions">
+                                        <button class="delete-btn admin-delete-btn" style="${adminDelStyle}" onclick="deleteComment('${reply.id}')">Del (Admin)</button>
+                                        ${userReplyActions}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        ${optionsHtml}
-                        <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-top: 10px;">
-                            <div style="font-size: 0.95rem; margin-bottom: 5px;">
-                                <strong style="color: #cbd5e1;">छात्र द्वारा दिया गया उत्तर:</strong> 
-                                <span style="${!isCorrect ? 'color:#ef4444; font-weight:600;' : 'color:#10b981; font-weight:600;'}">${userAnsText}</span>
+                    `;
+                });
+
+                const isAdmin = comment.role === 'admin';
+                const badgeHTML = isAdmin ? `<span class="admin-badge">Admin</span>` : '';
+                const avatarClass = isAdmin ? `avatar admin-avatar` : `avatar`;
+                const contentClass = isAdmin ? `comment-content admin-comment` : `comment-content`;
+
+                const isOwner = currentUserDisplayName && comment.userName === currentUserDisplayName;
+                const userMainActions = isOwner ? `
+                    <button class="user-action-btn edit" onclick="editUserComment('${comment.id}')">Edit</button>
+                    <button class="user-action-btn delete" onclick="deleteUserComment('${comment.id}')">Delete</button>
+                ` : '';
+
+                const likesCount = comment.likes || 0;
+                const likeHTML = `
+                    <div class="right-actions">
+                        <button class="like-btn" onclick="toggleLike('${comment.id}', ${likesCount})">
+                            ❤️ <span style="font-weight: 700; color:#1f2937;">${likesCount}</span>
+                        </button>
+                    </div>
+                `;
+
+                const timeString = getTimeString(comment.timestamp);
+                const isPinned = comment.pinned || false;
+                
+                // Show 'Pinned' tag to all users if the message is pinned
+                const pinnedBadgeHTML = isPinned ? `<span class="pinned-badge">📍 Pinned</span>` : '';
+                const pinBtnText = isPinned ? '📍 Unpin' : '📌 Pin';
+
+                const commentElement = document.createElement('div');
+                commentElement.className = 'comment-box';
+                commentElement.innerHTML = `
+                    <div class="${avatarClass}">${comment.userName.charAt(0).toUpperCase()}</div>
+                    <div class="${contentClass}">
+                        
+                        <!-- Pinned And Timing Section with Animation -->
+                        <div class="message-top-right">
+                            <div class="time-ago-text">${timeString}</div>
+                            <div class="pin-wrapper">
+                                <button class="pin-btn" onclick="togglePin('${comment.id}', ${isPinned})">${pinBtnText}</button>
                             </div>
-                            <div style="color: #10b981; font-size: 0.95rem;">
-                                <strong>असली उत्तर:</strong> <span style="font-weight:600;">${correctAnsText}</span>
+                        </div>
+
+                        <div class="comment-header">
+                            <span class="user-name">${comment.userName} ${badgeHTML} ${pinnedBadgeHTML}</span>
+                        </div>
+                        <div class="comment-text">${comment.text}</div>
+                        
+                        <div class="comment-actions-container">
+                            <div class="left-actions">
+                                <button class="action-btn" onclick="toggleReplyBox('replyBox_${comment.id}')">Reply</button>
+                                <button class="delete-btn admin-delete-btn" style="${adminDelStyle}" onclick="deleteComment('${comment.id}')">Del (Admin)</button>
+                                ${userMainActions}
                             </div>
+                            ${likeHTML}
+                        </div>
+
+                        <div class="reply-input-wrapper" id="replyBox_${comment.id}">
+                            <textarea id="replyInput_${comment.id}" placeholder="Type your reply..." style="min-height: 50px; margin-bottom: 5px;"></textarea>
+                            <button class="submit-btn" style="padding: 6px 15px; font-size: 13px;" onclick="postReply('${comment.id}', 'replyInput_${comment.id}')">Send 📨</button>
+                            <div style="clear: both;"></div>
+                        </div>
+
+                        <div class="replies-container">
+                            ${repliesHTML}
                         </div>
                     </div>
                 `;
-                container.innerHTML += html;
+                commentsListEl.appendChild(commentElement);
             });
         }
     </script>
