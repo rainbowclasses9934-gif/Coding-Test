@@ -17,8 +17,8 @@
         /* 1. बैकग्राउंड: डार्क ब्लू-ग्रे ग्रेडिएंट */
         body { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; background-attachment: fixed; }
         
-        /* टॉप में फिट करने के लिए margin-top: 0 किया गया है */
-        .container { width: 100%; max-width: 600px; padding: 15px 15px 20px 15px; margin-top: 0; position: relative; z-index: 10; }
+        /* z-index 10 हटा दिया गया है ताकि डॉक और पॉप-अप ब्लर ओवरले के ऊपर आ सकें */
+        .container { width: 100%; max-width: 600px; padding: 15px 15px 20px 15px; margin-top: 0; position: relative; }
         
         /* 2. मेन कंटेनर (Glass Panel): सेमी-ट्रांसपेरेंट डार्क ब्लू विद हल्का वाइट बॉर्डर */
         .card { background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 25px; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7); margin-bottom: 20px; animation: fadeIn 0.4s ease-out; position: relative; }
@@ -179,7 +179,7 @@
             border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 25px; padding: 10px 25px;
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7); margin-bottom: 20px; animation: fadeIn 0.4s ease-out;
             display: flex; justify-content: space-between; align-items: center; height: 65px; 
-            position: relative; z-index: 200;
+            position: relative; z-index: 200; /* Z-index 200 keeps it above the 150 overlay */
         }
         
         .bell-wrapper {
@@ -205,14 +205,14 @@
         }
         .glass-btn-dock:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.05); }
         
-        /* Theme Selection Popup */
+        /* Theme Selection Popup (Now opens Downward) */
         .theme-popup-box {
-            position: absolute; bottom: 120%; left: 0; background: rgba(30, 40, 50, 0.95);
+            position: absolute; top: 120%; left: 0; background: rgba(30, 40, 50, 0.95);
             border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 6px;
             display: flex; flex-direction: column; gap: 5px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            z-index: 210; transform-origin: bottom; animation: popUpAnim 0.3s ease-out; min-width: 120px;
+            z-index: 210; transform-origin: top; animation: dropDownAnim 0.3s ease-out; min-width: 120px;
         }
-        @keyframes popUpAnim { from { opacity: 0; transform: scaleY(0); } to { opacity: 1; transform: scaleY(1); } }
+        @keyframes dropDownAnim { from { opacity: 0; transform: scaleY(0); } to { opacity: 1; transform: scaleY(1); } }
         
         .theme-opt {
             padding: 8px 12px; cursor: pointer; border-radius: 8px; color: #fff; font-size: 0.9rem; font-weight: 500; transition: 0.2s; text-align: center;
@@ -297,8 +297,8 @@
 </head>
 <body>
 
-    <!-- बैकग्राउंड ब्लर ओव्हरले (थीम पॉपअप के लिए) -->
-    <div id="theme-overlay" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); z-index: 150;" onclick="toggleThemePopup()"></div>
+    <!-- बैकग्राउंड ब्लर ओव्हरले (50% कम ब्लरनेस के साथ) -->
+    <div id="theme-overlay" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.15); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); z-index: 150;" onclick="toggleThemePopup()"></div>
 
     <div class="container">
 
