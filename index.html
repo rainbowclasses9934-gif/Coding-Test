@@ -177,12 +177,11 @@
         .theme-opt { padding: 8px 12px; cursor: pointer; border-radius: 8px; color: #fff; font-size: 0.9rem; font-weight: 500; transition: 0.2s; text-align: center; }
         .theme-opt:hover { background: rgba(56, 189, 248, 0.2); color: #38bdf8; }
 
-        /* ================= LIGHT MODE CSS (Updated for Result Card & Data) ================= */
+        /* ================= LIGHT MODE CSS ================= */
         body.light-mode-active { background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important; color: #0f172a !important; }
         body.light-mode-active .card, body.light-mode-active .dock-card, body.light-mode-active .summary-glass, body.light-mode-active .modal-glass { background: rgba(255, 255, 255, 0.95) !important; border: 1px solid rgba(0, 0, 0, 0.1) !important; box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08) !important; }
         body.light-mode-active .card:not(#result-screen)::before, body.light-mode-active .modal-glass::before { background: #ffffff !important; color: #2563eb !important; border-color: rgba(37, 99, 235, 0.3) !important; }
         
-        /* Updated general text exclusions so it doesn't affect the styled Result card */
         body.light-mode-active p:not(.rc-details-box p):not(.res-label), 
         body.light-mode-active label, 
         body.light-mode-active h2:not(.rc-title), 
@@ -206,9 +205,7 @@
         body.light-mode-active .theme-opt { color: #1e293b !important; }
         body.light-mode-active .theme-opt:hover { background: #f1f5f9 !important; color: #2563eb !important; }
 
-        /* ================= NEW CSS CLASSES FOR PRE-SUBMIT & RESULT CARD ================= */
-        
-        /* Pre-Submit Details Styling */
+        /* ================= PRE-SUBMIT CSS ================= */
         .pre-sub-label { color: #cbd5e1; transition: color 0.5s ease; }
         .pre-sub-val { color: #ffffff; transition: color 0.5s ease; }
         .attempted-count { color: #38bdf8; font-weight: bold; transition: color 0.5s ease; }
@@ -217,7 +214,7 @@
         body.light-mode-active .pre-sub-val { color: #0f172a !important; font-weight: 600; }
         body.light-mode-active .attempted-count { color: #2563eb !important; font-weight: 800; font-size: 1.1rem; }
 
-        /* Result Card (Rank Card) Styling */
+        /* ================= RESULT CARD & DOWNLOAD EXPORT FIX ================= */
         .score-receipt-card { padding: 30px 20px; border-radius: 20px; background: linear-gradient(135deg, #1e293b, #0f172a); border: 2px solid rgba(56, 189, 248, 0.5); position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: all 0.5s ease; }
         .rc-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #0f172a; color: #38bdf8; font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px; padding: 6px 16px; border: 1px solid #38bdf8; border-radius: 8px; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.6); z-index: 10; transition: all 0.5s ease; }
         .rc-title { color: #38bdf8; font-size: 1.8rem; letter-spacing: 0.5px; margin-top: 10px; transition: color 0.5s ease; }
@@ -227,15 +224,15 @@
         .score-badge { font-size: 4rem; font-weight: 800; color: #fbbf24; margin: 25px 0; text-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: color 0.5s ease; }
         .rc-percent { font-size: 1.4rem; font-weight: 700; color: #10b981; margin-bottom: 10px; transition: color 0.5s ease; }
 
-        /* Result Card Override for Light Mode */
-        body.light-mode-active .score-receipt-card { background: linear-gradient(135deg, #ffffff, #f1f5f9) !important; border: 2px solid #2563eb !important; box-shadow: 0 10px 30px rgba(37,99,235,0.15) !important; }
-        body.light-mode-active .rc-badge { background: #2563eb !important; color: #ffffff !important; border: 1px solid #1d4ed8 !important; box-shadow: 0 4px 10px rgba(37,99,235,0.3) !important; }
-        body.light-mode-active .rc-title { color: #1e293b !important; font-weight: 800; }
-        body.light-mode-active .rc-details-box { background: #f8fafc !important; border: 1px solid #cbd5e1 !important; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02); }
-        body.light-mode-active .rc-details-box p { color: #0f172a !important; font-weight: 600; }
-        body.light-mode-active .res-label { color: #475569 !important; font-weight: 600; }
-        body.light-mode-active .score-badge { color: #d97706 !important; text-shadow: 0 5px 15px rgba(217,119,6,0.2) !important; }
-        body.light-mode-active .rc-percent { color: #059669 !important; }
+        /* Light Mode + html2canvas Export Fix (Direct Class Appended) */
+        body.light-mode-active .score-receipt-card, .score-receipt-card.light-mode-export { background: linear-gradient(135deg, #ffffff, #f1f5f9) !important; border: 2px solid #2563eb !important; box-shadow: 0 10px 30px rgba(37,99,235,0.15) !important; }
+        body.light-mode-active .rc-badge, .score-receipt-card.light-mode-export .rc-badge { background: #2563eb !important; color: #ffffff !important; border: 1px solid #1d4ed8 !important; box-shadow: 0 4px 10px rgba(37,99,235,0.3) !important; }
+        body.light-mode-active .rc-title, .score-receipt-card.light-mode-export .rc-title { color: #1e293b !important; font-weight: 800; }
+        body.light-mode-active .rc-details-box, .score-receipt-card.light-mode-export .rc-details-box { background: #f8fafc !important; border: 1px solid #cbd5e1 !important; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02); }
+        body.light-mode-active .rc-details-box p, .score-receipt-card.light-mode-export .rc-details-box p { color: #0f172a !important; font-weight: 600; }
+        body.light-mode-active .res-label, .score-receipt-card.light-mode-export .res-label { color: #475569 !important; font-weight: 600; }
+        body.light-mode-active .score-badge, .score-receipt-card.light-mode-export .score-badge { color: #d97706 !important; text-shadow: 0 5px 15px rgba(217,119,6,0.2) !important; }
+        body.light-mode-active .rc-percent, .score-receipt-card.light-mode-export .rc-percent { color: #059669 !important; }
     </style>
 </head>
 <body>
@@ -353,7 +350,7 @@
             <button class="btn btn-success" id="btn-final-submit" onclick="startFinalSubmit()">OK (सबमिट करें)</button>
         </div>
 
-        <!-- रिजल्ट स्क्रीन (अपडेटेड CSS क्लासेस के साथ) -->
+        <!-- रिजल्ट स्क्रीन -->
         <div id="result-screen" class="card score-card hidden">
             
             <div id="download-wrapper" style="padding: 20px; background: transparent; display: inline-block; width: 100%;">
@@ -648,13 +645,17 @@
             let qText = document.getElementById("quiz-text");
             document.getElementById("quiz-select").value = ""; 
 
+            // छात्र की आईडी लें
+            let studentId = document.getElementById("student-id").value.trim().toLowerCase();
+
             let hasQuizzes = false;
             let hiddenDueToCooldown = false;
 
             if (window.quizDatabase && window.quizDatabase[sub] && window.quizDatabase[sub][`ch_${chNum}`]) {
                 let quizzes = window.quizDatabase[sub][`ch_${chNum}`];
                 for (let qKey in quizzes) {
-                    let cooldownKey = `dpp_cooldown_${sub}_${chNum}_${qKey}`;
+                    // अब आईडी के आधार पर चेक होगा
+                    let cooldownKey = `dpp_cooldown_${studentId}_${sub}_${chNum}_${qKey}`;
                     let savedTime = localStorage.getItem(cooldownKey);
                     let hide = false;
                     
@@ -679,6 +680,9 @@
             if(!sub) { showModal("कृपया पहले विषय चुनें!"); return; }
             if(!chNum) { showModal("कृपया पहले अध्याय चुनें!"); return; }
 
+            // छात्र की आईडी लें
+            let studentId = document.getElementById("student-id").value.trim().toLowerCase();
+
             let list = document.getElementById("options-list");
             list.innerHTML = "";
             document.getElementById("options-title").innerText = "DPP चुनें";
@@ -692,7 +696,8 @@
                 if(Object.keys(quizzes).length > 0) {
                     for (let qKey in quizzes) {
                         totalQuizzes++;
-                        let cooldownKey = `dpp_cooldown_${sub}_${chNum}_${qKey}`;
+                        // अब आईडी के आधार पर चेक होगा
+                        let cooldownKey = `dpp_cooldown_${studentId}_${sub}_${chNum}_${qKey}`;
                         let savedTime = localStorage.getItem(cooldownKey);
                         let hideQuiz = false;
                         
@@ -856,7 +861,6 @@
         function nextQuestion() { if (currentQIndex < currentQuestions.length - 1) { currentQIndex++; loadQuestion(); } }
         function prevQuestion() { if (currentQIndex > 0) { currentQIndex--; loadQuestion(); } }
 
-        /* अपडेटेड: सबमिट क्विज फंक्शन (नए CSS क्लास के साथ) */
         function submitQuiz() {
             clearInterval(timerInterval);
             let studentName = document.getElementById("student-name").value;
@@ -895,7 +899,6 @@
             }, 1000);
         }
 
-        /* अपडेटेड: फाइनलाइज फंक्शन (नए CSS क्लास के साथ) */
         function finalizeQuizSubmit() {
             window.currentQuizFinished = true; 
             let score = 0;
@@ -905,7 +908,7 @@
             let percent = Math.round((score / total) * 100);
 
             let studentName = document.getElementById("student-name").value;
-            let studentId = document.getElementById("student-id").value;
+            let studentId = document.getElementById("student-id").value.trim().toLowerCase(); // आईडी निकाली
             let subjectCode = document.getElementById("subject-select").value;
             let subjectName = document.getElementById("subject-text").innerText;
             let chapterCode = document.getElementById("chapter-select").value;
@@ -913,7 +916,8 @@
             let dppKey = document.getElementById("quiz-select").value;
             let dppName = document.getElementById("quiz-text").innerText;
 
-            let cooldownKey = `dpp_cooldown_${subjectCode}_${chapterCode}_${dppKey}`;
+            // Cooldown में छात्र की आईडी जोड़ दी
+            let cooldownKey = `dpp_cooldown_${studentId}_${subjectCode}_${chapterCode}_${dppKey}`;
             localStorage.setItem(cooldownKey, Date.now().toString());
 
             let sheetData = {
@@ -982,7 +986,7 @@
                         <div style="background: rgba(0,0,0,0.1); border: 1px solid rgba(150,150,150,0.2); padding: 10px; border-radius: 8px; margin-top: 10px;">
                             <div style="font-size: 0.95rem; margin-bottom: 5px;">
                                 <strong style="opacity: 0.8;">आपका उत्तर 👉</strong> 
-                                <span style="${!isCorrect ? 'color:#ef4444; font-weight:600;' : 'color:#10b981; font-weight:600 দলের;'}">${userAnsText}</span>
+                                <span style="${!isCorrect ? 'color:#ef4444; font-weight:600;' : 'color:#10b981; font-weight:600;'}">${userAnsText}</span>
                             </div>
                             <div style="color: #10b981; font-size: 0.95rem;">
                                 <strong>असली उत्तर 👉</strong> <span style="font-weight:600;">${correctAnsText}</span>
@@ -994,19 +998,29 @@
             });
         }
         
-        // --- अपडेटेड डाउनलोड फंक्शन (अब लाइट मोड/डार्क मोड के हिसाब से बैकग्राउंड लेगा) ---
+        // --- लाइट मोड एक्सपोर्ट फिक्स ---
         function downloadScoreCard() {
             let scoreCardWrapper = document.getElementById("download-wrapper");
+            let scoreCard = document.getElementById("score-receipt");
             
-            // अगर लाइट मोड चालू है तो बैकग्राउंड लाइट वाइट होगा, नहीं तो डार्क ब्लू
             let isLightMode = document.body.classList.contains('light-mode-active');
             let canvasBgColor = isLightMode ? "#f8fafc" : "#0f172a";
+
+            // html2canvas के लिए एक खास क्लास जोड़ दें, जिससे वाइट टेक्स्ट का इशू खत्म हो जाएगा
+            if (isLightMode) {
+                scoreCard.classList.add("light-mode-export");
+            }
 
             html2canvas(scoreCardWrapper, {
                 scale: 3, 
                 backgroundColor: canvasBgColor, 
                 useCORS: true
             }).then(canvas => {
+                // क्लास रिमूव कर दें
+                if (isLightMode) {
+                    scoreCard.classList.remove("light-mode-export");
+                }
+                
                 let studentName = document.getElementById("student-name").value.trim() || "Student";
                 let link = document.createElement('a');
                 link.download = studentName + '_DPP_Result.png';
@@ -1015,6 +1029,10 @@
             }).catch(err => {
                 console.error("Error generating score card:", err);
                 alert("स्कोरकार्ड डाउनलोड करने में कोई समस्या आई। कृपया फिर से प्रयास करें।");
+                
+                if (isLightMode) {
+                    scoreCard.classList.remove("light-mode-export");
+                }
             });
         }
     </script>
