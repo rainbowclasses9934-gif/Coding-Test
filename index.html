@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title> Teachers 👨‍🏫 & Students 👨‍👨‍👧‍👦 Community</title>
+    <title> Teachers 👨‍🏫 & Students 👨‍👩‍👧‍👦 Community</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -87,38 +87,70 @@
             border-radius: var(--radius-sm); outline: none; font-size: 14px; width: 100%; max-width: 300px;
         }
 
-        .comment-input-area { display: flex; gap: 10px; margin-bottom: 40px; } /* Gap reduced */
+        .comment-input-area { display: flex; gap: 10px; margin-bottom: 40px; }
 
-        /* Avatars Resize */
         .avatar {
             width: 35px; height: 35px; border-radius: 50%; background: rgba(255, 255, 255, 0.8);
             border: 1px solid rgba(255,255,255,0.8); color: #2563eb; display: flex;
             align-items: center; justify-content: center; font-weight: 600; font-size: 16px;
             flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-        .reply-avatar {
-            width: 28px !important; height: 28px !important; font-size: 13px !important;
-        }
+        .reply-avatar { width: 28px !important; height: 28px !important; font-size: 13px !important; }
 
-        .input-wrapper { flex-grow: 1; }
+        .input-wrapper { flex-grow: 1; display: flex; flex-direction: column; }
         textarea {
             width: 100%; min-height: 80px; padding: 12px; background: rgba(255, 255, 255, 0.5);
             border: 1px solid var(--border-color); border-radius: var(--radius-sm); resize: vertical;
             outline: none; font-size: 14px;
         }
 
+        /* Image Upload UI Tools */
+        .action-buttons-wrapper {
+            display: flex; justify-content: space-between; align-items: center; margin-top: 10px;
+        }
+        
+        .upload-section { display: flex; align-items: center; gap: 8px; }
+        
+        .image-upload-btn {
+            background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(0,0,0,0.1);
+            padding: 6px 12px; border-radius: var(--radius-sm); font-size: 14px; cursor: pointer;
+            transition: all 0.2s; display: flex; align-items: center; justify-content: center;
+        }
+        .image-upload-btn:hover { background: rgba(255, 255, 255, 0.9); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .image-status { font-size: 12px; color: #059669; font-weight: 600; display: none; }
+
         .submit-btn {
-            margin-top: 10px; background: var(--primary-color); color: white; border: none;
-            padding: 8px 18px; border-radius: var(--radius-sm); font-size: 14px; cursor: pointer; float: right;
+            background: var(--primary-color); color: white; border: none;
+            padding: 8px 20px; border-radius: var(--radius-sm); font-size: 14px; cursor: pointer; font-weight: 600;
         }
 
+        /* Image Display inside Comments */
+        .comment-image {
+            max-width: 100%; max-height: 300px; border-radius: 8px; margin-top: 10px;
+            cursor: zoom-in; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            object-fit: cover;
+        }
+
+        /* Fullscreen Image Modal */
+        .fullscreen-image-modal {
+            display: none; position: fixed; z-index: 9999999; top: 0; left: 0;
+            width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
+            align-items: center; justify-content: center;
+        }
+        .fullscreen-image-modal.show { display: flex; animation: fadeIn 0.3s; }
+        .fullscreen-content { max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .close-fullscreen {
+            position: absolute; top: 20px; right: 30px; color: white; font-size: 35px;
+            font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
+        .close-fullscreen:hover { color: #ef4444; }
+
         .comments-list { display: flex; flex-direction: column; gap: 20px; clear: both; }
-        .comment-box { display: flex; gap: 10px; width: 100%; } /* Gap reduced */
+        .comment-box { display: flex; gap: 10px; width: 100%; }
 
         .comment-content {
             background: rgba(255, 255, 255, 0.55); backdrop-filter: blur(10px);
-            padding: 12px 15px; /* Padding reduced to save space */
-            border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.6);
+            padding: 12px 15px; border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.6);
             flex-grow: 1; position: relative; width: 100%;
         }
 
@@ -147,7 +179,6 @@
         .action-btn { background: none; border: none; color: var(--text-muted); font-size: 12px; font-weight: 600; cursor: pointer; }
         .action-btn:hover { color: #2563eb; }
         
-        /* New View Reply Feature */
         .view-reply-wrapper { position: relative; display: inline-block; }
         .view-reply-btn { background: none; border: none; color: #2563eb; font-size: 12px; font-weight: 600; cursor: pointer; transition: color 0.2s; }
         .view-reply-btn:hover { color: #1d4ed8; text-decoration: underline; }
@@ -156,7 +187,6 @@
             font-size: 10px; font-weight: bold; padding: 2px 5px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
-        /* Owner Reply Delete (X) Button */
         .reply-owner-delete {
             position: absolute; top: 6px; right: 8px; background: rgba(239, 68, 68, 0.1); color: #ef4444;
             border: none; border-radius: 4px; width: 20px; height: 20px; font-size: 11px; font-weight: bold;
@@ -173,7 +203,6 @@
             padding: 4px 10px; font-size: 12px; cursor: pointer; display: flex; gap: 4px; align-items: center;
         }
 
-        /* Replies Container with Smooth Animation */
         .replies-container {
             margin-top: 12px; margin-left: 5px; border-left: 2px solid rgba(37, 99, 235, 0.2);
             padding-left: 12px; display: none; flex-direction: column; gap: 12px;
@@ -231,13 +260,28 @@
             <div class="avatar" id="mainAvatar">S</div> 
             <div class="input-wrapper">
                 <textarea id="mainCommentInput" placeholder="अपना सवाल या विचार यहाँ लिखें..."></textarea>
-                <button class="submit-btn" id="postMainBtn">Send 📨</button>
+                
+                <!-- NEW: Action Buttons (Upload Image + Send) -->
+                <div class="action-buttons-wrapper">
+                    <div class="upload-section">
+                        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                        <label for="imageInput" class="image-upload-btn" title="कोई फोटो चुनें">➕ फोटो</label>
+                        <span id="imageStatusText" class="image-status">✔️ Selected</span>
+                    </div>
+                    <button class="submit-btn" id="postMainBtn">Send 📨</button>
+                </div>
             </div>
         </div>
 
         <div class="comments-list" id="commentsList">
             <p style="text-align: center; color: var(--text-muted);">Loading Comments ⏳...</p>
         </div>
+    </div>
+
+    <!-- NEW: Fullscreen Image Modal -->
+    <div id="fullScreenImageModal" class="fullscreen-image-modal">
+        <span class="close-fullscreen" onclick="closeFullscreen()">&times;</span>
+        <img class="fullscreen-content" id="expandedImg">
     </div>
 
     <div class="modal-overlay" id="customModal">
@@ -284,6 +328,11 @@
         const adminPinInput = document.getElementById('adminPinInput');
         const deleteAllDockBtn = document.getElementById('deleteAllDockBtn');
         
+        // Image Upload Elements
+        const imageInput = document.getElementById('imageInput');
+        const imageStatusText = document.getElementById('imageStatusText');
+        let selectedBase64Image = null;
+
         let isAdminLoggedIn = false;
         let globalDocs = []; 
 
@@ -294,6 +343,18 @@
         const modalCancelBtn = document.getElementById('modalCancelBtn');
         const modalOkBtn = document.getElementById('modalOkBtn');
         let modalConfirmCallback = null;
+
+        // Fullscreen Modal functions
+        window.openFullscreen = function(imageSrc) {
+            const fsModal = document.getElementById('fullScreenImageModal');
+            const fsImg = document.getElementById('expandedImg');
+            fsImg.src = imageSrc;
+            fsModal.classList.add('show');
+        };
+
+        window.closeFullscreen = function() {
+            document.getElementById('fullScreenImageModal').classList.remove('show');
+        };
 
         function showModal(title, message, type, onConfirm = null) {
             modalTitle.innerText = title;
@@ -355,13 +416,53 @@
             });
         });
 
+        // Smart Image Compression Logic
+        imageInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 800; // Resizing so Firebase limit isn't hit
+                        const MAX_HEIGHT = 800;
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+                        } else {
+                            if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        
+                        // Convert to compressed Base64
+                        selectedBase64Image = canvas.toDataURL('image/jpeg', 0.7); 
+                        imageStatusText.style.display = 'inline-block';
+                    }
+                    img.src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            } else {
+                selectedBase64Image = null;
+                imageStatusText.style.display = 'none';
+            }
+        });
+
         postMainBtn.addEventListener('click', async () => {
             const text = mainInput.value.trim();
             const rawUserIdInput = nameInput.value;
             const normalizedInput = normalizeID(rawUserIdInput);
 
             if (!isAdminLoggedIn && !rawUserIdInput.trim()) { showModal("जानकारी", "कृपया अपना User ID दर्ज करें!", "alert"); return; }
-            if (!text) { showModal("जानकारी", "कृपया मैसेज बॉक्स में कुछ लिखें!", "alert"); return; }
+            if (!text && !selectedBase64Image) { showModal("जानकारी", "कृपया कुछ लिखें या कोई फोटो चुनें!", "alert"); return; }
+
+            postMainBtn.innerText = "Sending...⏳";
+            postMainBtn.disabled = true;
 
             let displayName = "";
             if (isAdminLoggedIn) {
@@ -370,16 +471,32 @@
                 else displayName = "Admin";
             } else {
                 if (studentData[normalizedInput]) displayName = studentData[normalizedInput]; 
-                else { showModal("एक्सेस मना है 🚫", "आपका User ID गलत है या सूची में पंजीकृत नहीं है।", "alert"); return; }
+                else { 
+                    showModal("एक्सेस मना है 🚫", "आपका User ID गलत है या सूची में पंजीकृत नहीं है।", "alert"); 
+                    postMainBtn.innerText = "Send 📨"; postMainBtn.disabled = false;
+                    return; 
+                }
             }
 
             try {
                 await addDoc(collection(db, "portal_comments"), {
-                    userName: displayName, text: text, role: isAdminLoggedIn ? 'admin' : 'student',
+                    userName: displayName, text: text, 
+                    imageUrl: selectedBase64Image || null, // Image saved here
+                    role: isAdminLoggedIn ? 'admin' : 'student',
                     parentId: null, likes: 0, pinned: false, timestamp: serverTimestamp()
                 });
+                
+                // Reset Fields after success
                 mainInput.value = ''; 
-            } catch (error) { showModal("सर्वर त्रुटि", "मैसेज नहीं गया!", "alert"); }
+                imageInput.value = '';
+                selectedBase64Image = null;
+                imageStatusText.style.display = 'none';
+            } catch (error) { 
+                showModal("सर्वर त्रुटि", "मैसेज नहीं गया! शायद इमेज बहुत बड़ी है।", "alert"); 
+            } finally {
+                postMainBtn.innerText = "Send 📨";
+                postMainBtn.disabled = false;
+            }
         });
 
         window.postReply = async function(parentId, inputId) {
@@ -446,7 +563,6 @@
 
         window.toggleReplyBox = function(boxId) { const box = document.getElementById(boxId); if(box) box.classList.toggle('active'); };
         
-        /* New Toggle Replies Function */
         window.toggleReplies = function(commentId) {
             const box = document.getElementById('repliesBox_' + commentId);
             if(box) box.classList.toggle('show');
@@ -511,14 +627,13 @@
                     const rContentClass = isReplyAdmin ? `comment-content admin-comment` : `comment-content`;
 
                     const isReplyOwner = currentUserDisplayName && reply.userName === currentUserDisplayName;
-                    if(isReplyOwner) hasUserReplied = true; // Auto expand logic trigger
+                    if(isReplyOwner) hasUserReplied = true; 
 
                     const userReplyActions = isReplyOwner ? `
                         <button class="user-action-btn edit" onclick="editUserComment('${reply.id}')">Edit</button>
                         <button class="user-action-btn delete" onclick="deleteUserComment('${reply.id}')">Del</button>
                     ` : '';
 
-                    // Owner Delete 'X' Button on Top Right (If logged-in user owns main message)
                     const ownerDeleteHTML = isMainOwner ? `<button class="reply-owner-delete" onclick="deleteUserComment('${reply.id}')" title="Delete this reply">✕</button>` : '';
 
                     repliesHTML += `
@@ -541,7 +656,6 @@
                     `;
                 });
 
-                // Auto-expand class calculation
                 const repliesContainerClass = hasUserReplied ? 'replies-container show' : 'replies-container';
 
                 const isAdmin = comment.role === 'admin';
@@ -568,7 +682,6 @@
                 const pinnedBadgeHTML = isPinned ? `<span class="pinned-badge">📍</span>` : '';
                 const pinBtnText = isPinned ? '📍 Unpin' : '📌 Pin';
 
-                // View Replies HTML Logic with count badge
                 let viewRepliesBtnHTML = '';
                 if(replyCount > 0) {
                     viewRepliesBtnHTML = `
@@ -577,6 +690,12 @@
                             <span class="reply-count-badge">${replyCount}</span>
                         </div>
                     `;
+                }
+
+                // NEW: Attach Shared Image HTML if it exists in Firebase Document
+                let sharedImageHTML = '';
+                if (comment.imageUrl) {
+                    sharedImageHTML = `<img src="${comment.imageUrl}" class="comment-image" onclick="openFullscreen(this.src)" title="Click to view full screen">`;
                 }
 
                 const commentElement = document.createElement('div');
@@ -595,7 +714,12 @@
                         <div class="comment-header">
                             <span class="user-name">${comment.userName} ${badgeHTML} ${pinnedBadgeHTML}</span>
                         </div>
+                        
+                        <!-- Text -->
                         <div class="comment-text">${comment.text}</div>
+                        
+                        <!-- Display Image If Attached -->
+                        ${sharedImageHTML}
                         
                         <div class="comment-actions-container">
                             <div class="left-actions">
