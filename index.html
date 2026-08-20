@@ -7,7 +7,7 @@
     <!-- HTML To Canvas Library (For Score Card Download) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        /* CSS: प्रीमियम प्योर डार्क थीम & ग्लास इफ़ेक्ट (Glassmorphism) */
+        /* CSS: प्रीमियम स्लेट डार्क थीम (Eye-Soothing) & ग्लास इफ़ेक्ट (Glassmorphism) */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; }
         input { user-select: auto; }
         
@@ -16,12 +16,10 @@
             transition: all 0.5s ease-in-out;
         }
 
-        /* प्योर डार्क बैकग्राउंड */
+        /* प्रोफेशनल स्लेट डार्क बैकग्राउंड (आँखों को चुभने वाला काला नहीं) */
         body { 
-            background: #000000;
-            /* ग्लास इफ़ेक्ट को उभारने के लिए बहुत ही हल्का डार्क रेडियल ग्रेडिएंट */
-            background-image: radial-gradient(circle at 50% 0%, #111111 0%, #000000 70%);
-            color: #ffffff; 
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f8fafc; 
             min-height: 100vh; 
             display: flex; 
             flex-direction: column; 
@@ -31,15 +29,15 @@
         
         .container { width: 100%; max-width: 600px; padding: 15px 15px 20px 15px; margin-top: 0; position: relative; z-index: 1; }
         
-        /* असली ट्रांसपेरेंट ग्लास इफ़ेक्ट वाले कार्ड्स */
+        /* असली ट्रांसपेरेंट ग्लास इफ़ेक्ट वाले कार्ड्स (सॉफ्ट ब्लर के साथ) */
         .card { 
-            background: rgba(20, 20, 20, 0.45); 
-            backdrop-filter: blur(18px); 
-            -webkit-backdrop-filter: blur(18px); 
+            background: rgba(30, 41, 59, 0.5); 
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px); 
             border: 1px solid rgba(255, 255, 255, 0.08); 
             border-radius: 20px; 
             padding: 25px; 
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6); 
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25); 
             margin-bottom: 20px; 
             animation: fadeIn 0.4s ease-out; 
             position: relative; 
@@ -47,15 +45,15 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         
         .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; font-weight: 500; margin-bottom: 10px; color: #e2e8f0; font-size: 0.95rem; }
+        .input-group label { display: block; font-weight: 500; margin-bottom: 10px; color: #cbd5e1; font-size: 0.95rem; }
         
-        .input-group input { width: 100%; padding: 14px 18px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; font-size: 1rem; color: #ffffff; outline: none; backdrop-filter: blur(8px); transition: all 0.3s ease; }
-        .input-group input::placeholder { color: rgba(255, 255, 255, 0.4); }
-        .input-group input:focus { border-color: #38bdf8; box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); background: rgba(255, 255, 255, 0.1); }
+        .input-group input { width: 100%; padding: 14px 18px; background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; font-size: 1rem; color: #ffffff; outline: none; backdrop-filter: blur(8px); transition: all 0.3s ease; }
+        .input-group input::placeholder { color: rgba(255, 255, 255, 0.3); }
+        .input-group input:focus { border-color: #38bdf8; box-shadow: 0 0 15px rgba(56, 189, 248, 0.15); background: rgba(15, 23, 42, 0.7); }
         
-        .glass-select-box { width: 100%; padding: 14px 18px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; font-size: 1rem; color: #ffffff; cursor: pointer; backdrop-filter: blur(8px); transition: all 0.3s ease; display: flex; justify-content: space-between; align-items: center; }
-        .glass-select-box:hover { border-color: #38bdf8; background: rgba(255, 255, 255, 0.08); box-shadow: 0 0 12px rgba(56, 189, 248, 0.15); }
-        .select-icon { font-size: 0.8rem; color: #a1a1aa; }
+        .glass-select-box { width: 100%; padding: 14px 18px; background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; font-size: 1rem; color: #ffffff; cursor: pointer; backdrop-filter: blur(8px); transition: all 0.3s ease; display: flex; justify-content: space-between; align-items: center; }
+        .glass-select-box:hover { border-color: #38bdf8; background: rgba(15, 23, 42, 0.6); box-shadow: 0 0 12px rgba(56, 189, 248, 0.15); }
+        .select-icon { font-size: 0.8rem; color: #94a3b8; }
         
         .btn { width: 100%; background: linear-gradient(135deg, #3b82f6, #2563eb); color: #ffffff; border: none; padding: 15px; border-radius: 12px; font-size: 1rem; font-weight: 600; letter-spacing: 0.5px; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25); }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4); filter: brightness(1.1); }
@@ -64,23 +62,23 @@
         .btn-success { background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.25); }
         .btn-success:hover { box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4); }
 
-        .btn-secondary { background: linear-gradient(135deg, #3f3f46, #27272a); box-shadow: 0 6px 20px rgba(63, 63, 70, 0.35); }
-        .btn-secondary:hover { box-shadow: 0 8px 25px rgba(63, 63, 70, 0.5); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .btn-secondary { background: linear-gradient(135deg, #475569, #334155); box-shadow: 0 6px 20px rgba(51, 65, 85, 0.3); }
+        .btn-secondary:hover { box-shadow: 0 8px 25px rgba(51, 65, 85, 0.4); border: 1px solid rgba(255, 255, 255, 0.15); }
         
-        .timer-box { font-size: 1rem; font-weight: 600; color: #38bdf8; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.2); padding: 6px 14px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px; float: right; backdrop-filter: blur(8px); box-shadow: 0 0 10px rgba(56, 189, 248, 0.1); transition: all 0.3s ease; }
+        .timer-box { font-size: 1rem; font-weight: 600; color: #38bdf8; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.2); padding: 6px 14px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px; float: right; backdrop-filter: blur(8px); box-shadow: 0 0 10px rgba(56, 189, 248, 0.05); transition: all 0.3s ease; }
         
         @keyframes alertPulse {
-            0% { box-shadow: 0 0 8px rgba(255, 76, 76, 0.3); border-color: rgba(255, 76, 76, 0.3); }
-            50% { box-shadow: 0 0 20px rgba(255, 76, 76, 0.6); border-color: rgba(255, 76, 76, 0.8); }
-            100% { box-shadow: 0 0 8px rgba(255, 76, 76, 0.3); border-color: rgba(255, 76, 76, 0.3); }
+            0% { box-shadow: 0 0 8px rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.5); border-color: rgba(239, 68, 68, 0.7); }
+            100% { box-shadow: 0 0 8px rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.3); }
         }
-        .timer-warning { animation: alertPulse 1s infinite !important; color: #ff4c4c !important; background: rgba(255, 76, 76, 0.1) !important; }
+        .timer-warning { animation: alertPulse 1s infinite !important; color: #f87171 !important; background: rgba(239, 68, 68, 0.1) !important; }
 
-        .question-text { font-size: 1.15rem; font-weight: 500; margin-top: 45px; margin-bottom: 25px; clear: both; line-height: 1.7; color: #f8fafc; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .question-text { font-size: 1.15rem; font-weight: 500; margin-top: 45px; margin-bottom: 25px; clear: both; line-height: 1.7; color: #f8fafc; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
         
-        .option-item { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); padding: 15px 18px; border-radius: 12px; margin-bottom: 14px; cursor: pointer; font-size: 1rem; color: #d1d5db; backdrop-filter: blur(8px); transition: all 0.3s ease; }
-        .option-item:hover { background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.4); transform: translateX(5px); color: #ffffff; }
-        .option-item.selected { background: rgba(59, 130, 246, 0.15); border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.2); font-weight: 600; color: #ffffff; transform: scale(1.01); }
+        .option-item { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06); padding: 15px 18px; border-radius: 12px; margin-bottom: 14px; cursor: pointer; font-size: 1rem; color: #cbd5e1; backdrop-filter: blur(8px); transition: all 0.3s ease; }
+        .option-item:hover { background: rgba(56, 189, 248, 0.08); border-color: rgba(56, 189, 248, 0.3); transform: translateX(5px); color: #ffffff; }
+        .option-item.selected { background: rgba(56, 189, 248, 0.15); border-color: #38bdf8; box-shadow: 0 0 15px rgba(56, 189, 248, 0.15); font-weight: 600; color: #ffffff; transform: scale(1.01); }
         
         .nav-btns { display: flex; justify-content: space-between; gap: 15px; margin-top: 30px; }
         .nav-btns button { width: 48%; }
@@ -88,21 +86,21 @@
         .hidden { display: none !important; }
         .score-card { text-align: center; }
         
-        /* Modal & Popup - Glassmorphism */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 1000; animation: modalFade 0.3s ease-out; }
-        .modal-glass { background: rgba(15, 15, 15, 0.55); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 35px; max-width: 400px; width: 88%; text-align: center; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8); animation: modalScale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; position: relative; }
+        /* Modal & Popup - Premium Glassmorphism */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 1000; animation: modalFade 0.3s ease-out; }
+        .modal-glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 35px; max-width: 400px; width: 88%; text-align: center; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4); animation: modalScale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; position: relative; }
         
         .options-glass { padding: 25px !important; max-height: 80vh; }
         .options-list { overflow-y: auto; max-height: 55vh; text-align: left; padding-right: 8px; margin-bottom: 15px; }
         .options-list::-webkit-scrollbar { width: 5px; }
-        .options-list::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.3); border-radius: 10px; }
-        .options-list::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
-        .options-list::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.5); }
+        .options-list::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
+        .options-list::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
+        .options-list::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
         
-        .option-card { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); padding: 14px 18px; border-radius: 12px; margin-bottom: 10px; cursor: pointer; font-size: 0.95rem; color: #d1d5db; transition: all 0.25s ease; backdrop-filter: blur(5px); }
-        .option-card:hover { background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.5); color: #ffffff; transform: translateX(5px); }
+        .option-card { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); padding: 14px 18px; border-radius: 12px; margin-bottom: 10px; cursor: pointer; font-size: 0.95rem; color: #cbd5e1; transition: all 0.25s ease; backdrop-filter: blur(5px); }
+        .option-card:hover { background: rgba(56, 189, 248, 0.1); border-color: rgba(56, 189, 248, 0.4); color: #ffffff; transform: translateX(5px); }
         
-        .modal-icon { font-size: 2.8rem; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2)); }
+        .modal-icon { font-size: 2.8rem; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.1)); }
         .modal-glass p { font-size: 1.05rem; color: #e2e8f0; margin-bottom: 25px; line-height: 1.6; }
         
         @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
@@ -115,7 +113,7 @@
             top: -12px; 
             left: 50%;
             transform: translateX(-50%);
-            background: #000000; 
+            background: #0f172a; 
             color: #38bdf8; 
             font-size: 0.65rem; 
             font-weight: 700;
@@ -123,7 +121,7 @@
             padding: 4px 14px;
             border: 1px solid rgba(56, 189, 248, 0.3); 
             border-radius: 6px; 
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
             white-space: nowrap;
             z-index: 100;
         }
@@ -138,21 +136,21 @@
         .summary-glass {
             animation: slideUpPop 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
             max-width: 550px; width: 90%; max-height: 85vh; overflow: hidden; padding: 25px; display: flex;
-            flex-direction: column; background: rgba(15, 15, 15, 0.6); backdrop-filter: blur(24px);
+            flex-direction: column; background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; 
-            position: relative; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+            position: relative; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
         }
         
         .summary-content-scroll { overflow-y: auto; max-height: 65vh; padding-right: 8px; text-align: left; }
         .summary-content-scroll::-webkit-scrollbar { width: 5px; }
-        .summary-content-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.3); border-radius: 10px; }
-        .summary-content-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
-        .summary-content-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.5); }
+        .summary-content-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
+        .summary-content-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
+        .summary-content-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
 
-        .summary-item { border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; margin-bottom: 15px; }
+        .summary-item { border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 15px; margin-bottom: 15px; }
         .summary-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
         .ans-correct { color: #10b981; font-weight: bold; }
-        .ans-wrong { color: #ef4444; font-weight: bold; }
+        .ans-wrong { color: #f43f5e; font-weight: bold; }
         
         @keyframes wigglePulse {
             0%, 100% { transform: scale(1) rotate(0deg); }
@@ -163,10 +161,10 @@
             50% { transform: scale(1) rotate(0deg); }
         }
         .reminder-card {
-            background: rgba(217, 119, 6, 0.2); color: #fbbf24; padding: 15px 20px;
+            background: rgba(245, 158, 11, 0.15); color: #fbbf24; padding: 15px 20px;
             border-radius: 12px; margin-top: 25px; font-size: 1rem; font-weight: bold; text-align: center;
-            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.1); animation: wigglePulse 2.5s infinite;
-            border: 1px solid rgba(245, 158, 11, 0.3); backdrop-filter: blur(8px);
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.05); animation: wigglePulse 2.5s infinite;
+            border: 1px solid rgba(245, 158, 11, 0.25); backdrop-filter: blur(8px);
         }
 
         .timer-anim { animation: pulseTimer 1s infinite ease-in-out; }
@@ -178,16 +176,16 @@
 
         /* डॉक कार्ड ग्लास इफ़ेक्ट */
         .dock-card {
-            background: rgba(20, 20, 20, 0.45); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+            background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
             border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 25px; padding: 10px 25px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7); margin-bottom: 20px; animation: fadeIn 0.4s ease-out;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3); margin-bottom: 20px; animation: fadeIn 0.4s ease-out;
             display: flex; justify-content: flex-end; align-items: center; height: 65px; 
             position: relative; z-index: 200;
         }
         
         .bell-wrapper { font-size: 1.8rem; position: relative; cursor: pointer; animation: bellRing 2.5s infinite ease-in-out; display: none; transition: transform 0.2s; }
         .bell-wrapper:hover { transform: scale(1.1); }
-        .red-dot { position: absolute; top: 2px; right: 2px; width: 12px; height: 12px; background: #ef4444; border-radius: 50%; box-shadow: 0 0 8px #ef4444; border: 2px solid #000; }
+        .red-dot { position: absolute; top: 2px; right: 2px; width: 12px; height: 12px; background: #ef4444; border-radius: 50%; box-shadow: 0 0 8px #ef4444; border: 2px solid #0f172a; }
 
         @keyframes bellRing {
             0% { transform: rotate(0); } 10% { transform: rotate(15deg); } 20% { transform: rotate(-15deg); }
@@ -203,13 +201,13 @@
         .attempted-count { color: #38bdf8; font-weight: bold; transition: color 0.5s ease; }
 
         /* ================= RESULT CARD ================= */
-        .score-receipt-card { padding: 30px 20px; border-radius: 20px; background: rgba(15, 15, 15, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(56, 189, 248, 0.3); position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.8); transition: all 0.5s ease; }
-        .rc-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #000; color: #38bdf8; font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px; padding: 6px 16px; border: 1px solid rgba(56, 189, 248, 0.5); border-radius: 8px; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.9); z-index: 10; }
+        .score-receipt-card { padding: 30px 20px; border-radius: 20px; background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(56, 189, 248, 0.3); position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.3); transition: all 0.5s ease; }
+        .rc-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #0f172a; color: #38bdf8; font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px; padding: 6px 16px; border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 8px; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.4); z-index: 10; }
         .rc-title { color: #38bdf8; font-size: 1.8rem; letter-spacing: 0.5px; margin-top: 10px; }
-        .rc-details-box { margin-top: 25px; background: rgba(0, 0, 0, 0.4); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); text-align: left; display: inline-block; width: 95%; }
+        .rc-details-box { margin-top: 25px; background: rgba(15, 23, 42, 0.5); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.06); text-align: left; display: inline-block; width: 95%; }
         .rc-details-box p { color: #e2e8f0; font-weight: 500; font-size: 1rem; margin-bottom: 8px; }
-        .res-label { color: #64748b; font-weight: 500; }
-        .score-badge { font-size: 4rem; font-weight: 800; color: #fbbf24; margin: 25px 0; text-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+        .res-label { color: #94a3b8; font-weight: 500; }
+        .score-badge { font-size: 4rem; font-weight: 800; color: #fbbf24; margin: 25px 0; text-shadow: 0 8px 25px rgba(0,0,0,0.4); }
         .rc-percent { font-size: 1.4rem; font-weight: 700; color: #10b981; margin-bottom: 10px; }
     </style>
 </head>
@@ -219,8 +217,8 @@
 
         <!-- INSTRUCTION SCREEN -->
         <div id="instruction-screen" class="card hidden">
-            <h2 style="margin-bottom: 20px; text-align: center; color: #ef4444; font-size: 1.6rem; letter-spacing: 0.5px; font-weight: bold;"> 🚨 आपके लिए सन्देश 🚨</h2>
-            <div style="font-size: 1.05rem; color: #e2e8f0; line-height: 1.7; margin-bottom: 25px; background: rgba(0, 0, 0, 0.4); padding: 15px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05);">
+            <h2 style="margin-bottom: 20px; text-align: center; color: #f43f5e; font-size: 1.6rem; letter-spacing: 0.5px; font-weight: bold;"> 🚨 आपके लिए सन्देश 🚨</h2>
+            <div style="font-size: 1.05rem; color: #e2e8f0; line-height: 1.7; margin-bottom: 25px; background: rgba(15, 23, 42, 0.5); padding: 15px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05);">
                 <p style="margin-bottom: 15px; text-align: justify;">
                     प्रिय छात्रों, आज केमिस्ट्री का DPP नहीं दिया गया है आज सिर्फ आपको फिजिक्स का DPP भी बनाना है।
                 </p>
@@ -274,7 +272,7 @@
             <button class="btn" onclick="startQuiz()">Start DPP</button>
         </div>
 
-        <!-- DOCK CONTAINER (Light Mode Removed) -->
+        <!-- DOCK CONTAINER -->
         <div id="dock-container" class="dock-card hidden">
             <div id="notification-bell" class="bell-wrapper" onclick="openNotificationModal()">
                 🔔<span id="bell-dot" class="red-dot"></span>
@@ -288,7 +286,7 @@
                 <div class="timer-box" id="timer-ui">⏱️ <span id="time-left">30:00</span></div>
             </div>
             
-            <div id="time-warning" style="display: none; clear: both; margin-top: 50px; margin-bottom: -15px; color: #ff4c4c; background: rgba(255,0,0,0.1); border: 1px solid rgba(255,76,76,0.3); padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; animation: alertPulse 1s infinite;">
+            <div id="time-warning" style="display: none; clear: both; margin-top: 50px; margin-bottom: -15px; color: #f87171; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; animation: alertPulse 1s infinite;">
                 ⚠️ आपके पास सिर्फ 10 मिनट शेष हैं! कृपया जल्दी करें।
             </div>
 
@@ -309,7 +307,7 @@
         <!-- प्री-सबमिट स्क्रीन -->
         <div id="pre-submit-screen" class="card hidden">
             <h2 style="margin-bottom: 25px; text-align: center; color: #38bdf8; font-size: 1.4rem; letter-spacing: 0.5px;"> DPP Submission Details </h2>
-            <div id="pre-submit-details" style="font-size: 1.05rem; line-height: 1.9; margin-bottom: 20px; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+            <div id="pre-submit-details" style="font-size: 1.05rem; line-height: 1.9; margin-bottom: 20px; background: rgba(15, 23, 42, 0.5); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
             </div>
             <div id="submit-loader" class="hidden" style="text-align: center; margin-top: 20px; padding: 15px;">
                 <h3 style="color: #fbbf24; font-size: 1.2rem;">आपका रिजल्ट सबमिट हो रहा है...</h3>
@@ -386,7 +384,7 @@
         <div class="modal-glass">
             <div style="font-size: 3rem; margin-bottom: 10px; animation: bellRing 2s infinite;">🔔</div>
             <h3 style="margin-bottom: 20px; color: #38bdf8; font-size: 1.3rem; font-weight: 600;">आपके लिए खास संदेश</h3>
-            <div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; margin-bottom: 25px;">
+            <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 20px; margin-bottom: 25px;">
                 <p id="student-msg-text" style="color: #e2e8f0; font-size: 1.05rem; line-height: 1.6; margin: 0;"></p>
             </div>
             <button class="btn btn-secondary" style="padding: 12px;" onclick="closeNotificationModal()">बंद करें</button>
@@ -682,9 +680,9 @@
 
             if (!hasQuizzes) {
                 if (totalQuizzes > 0 && hiddenQuizzesCount === totalQuizzes) {
-                    list.innerHTML = `<div style="text-align:center; color:#ffffff; padding: 20px;">आपने इस अध्याय के सभी DPP हाल ही में बना लिए हैं。<br><br><span style="color:#fbbf24;">कृपया 5 घंटे बाद पुनः प्रयास करें।</span></div>`;
+                    list.innerHTML = `<div style="text-align:center; color:#f8fafc; padding: 20px;">आपने इस अध्याय के सभी DPP हाल ही में बना लिए हैं。<br><br><span style="color:#fbbf24;">कृपया 5 घंटे बाद पुनः प्रयास करें।</span></div>`;
                 } else {
-                    list.innerHTML = `<div style="text-align:center; color:#ffffff; padding: 20px;">अभी इस अध्याय में कोई DPP नहीं डाला गया है。<br><br>कृपया बाद में प्रयास करें।</div>`;
+                    list.innerHTML = `<div style="text-align:center; color:#f8fafc; padding: 20px;">अभी इस अध्याय में कोई DPP नहीं डाला गया है。<br><br>कृपया बाद में प्रयास करें।</div>`;
                 }
             }
 
@@ -932,7 +930,7 @@
                         <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; margin-top: 10px;">
                             <div style="font-size: 0.95rem; margin-bottom: 5px;">
                                 <strong style="opacity: 0.8;">आपका उत्तर 👉</strong> 
-                                <span style="${!isCorrect ? 'color:#ef4444; font-weight:600;' : 'color:#10b981; font-weight:600;'}">${userAnsText}</span>
+                                <span style="${!isCorrect ? 'color:#f43f5e; font-weight:600;' : 'color:#10b981; font-weight:600;'}">${userAnsText}</span>
                             </div>
                             <div style="color: #10b981; font-size: 0.95rem;">
                                 <strong>असली उत्तर 👉</strong> <span style="font-weight:600;">${correctAnsText}</span>
@@ -946,7 +944,9 @@
         
         function downloadScoreCard() {
             let scoreCardWrapper = document.getElementById("download-wrapper");
-            let canvasBgColor = "#000000";
+            
+            // अब डाउनलोड होने वाली इमेज का बैकग्राउंड भी नए स्लेट थीम (Slate Dark) जैसा होगा।
+            let canvasBgColor = "#0f172a"; 
 
             html2canvas(scoreCardWrapper, {
                 scale: 3, 
