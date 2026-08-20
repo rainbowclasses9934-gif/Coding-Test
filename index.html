@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RAINBOW CLASSES - DPP Portal</title>
+    <!-- HTML To Canvas Library (For Score Card Download) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         /* CSS: न्यू डार्क ब्लू-ग्रे थीम (Rainbow Classes Custom Theme) */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; }
@@ -396,7 +398,7 @@
                 ⚠️ आपके पास सिर्फ 10 मिनट शेष हैं! कृपया जल्दी करें।
             </div>
 
-            <div class="question-text" id="q-text">प्रश्न लोड আসতে रहा है...</div>
+            <div class="question-text" id="q-text">प्रश्न लोड हो रहा है...</div>
             <div id="options-container"></div>
             
             <div class="nav-btns">
@@ -427,18 +429,28 @@
             <button class="btn btn-success" id="btn-final-submit" onclick="startFinalSubmit()">OK (सबमिट करें)</button>
         </div>
 
-        <!-- रिजल्ट स्क्रीन -->
+        <!-- रिजल्ट स्क्रीन (अद्यतन किया गया) -->
         <div id="result-screen" class="card score-card hidden">
-            <h2 style="color: #38bdf8; font-size: 1.6rem; letter-spacing: 0.5px;">🧾Your Result🫣</h2>
-            <p id="res-name" style="margin-top: 15px; color: #ffffff; font-weight: 500; font-size: 1.15rem;"></p>
-            <div class="score-badge" id="res-score">0 / 0</div>
-            <p id="res-percent" style="font-size: 1.3rem; font-weight: 600; color: #10b981;"></p>
+            
+            <!-- यह हिस्सा इमेज में कैप्चर होगा -->
+            <div id="score-receipt" style="padding: 10px; border-radius: 15px; background: transparent;">
+                <h2 style="color: #38bdf8; font-size: 1.6rem; letter-spacing: 0.5px;">🧾Your Result🫣</h2>
+                <p id="res-name" style="margin-top: 15px; color: #ffffff; font-weight: 500; font-size: 1.15rem;"></p>
+                <div class="score-badge" id="res-score">0 / 0</div>
+                <p id="res-percent" style="font-size: 1.3rem; font-weight: 600; color: #10b981;"></p>
+            </div>
             <br>
             
-            <button class="btn btn-secondary" onclick="openSummaryModal()" style="margin-top: 15px; margin-bottom: 10px;">View Summary / Answer 📝</button>
-            <button class="btn" onclick="goHome()" style="margin-top: 10px;">Home 🏠</button>
+            <!-- एक्शन बटन्स -->
+            <div id="action-buttons">
+                <!-- नया डाउनलोड बटन -->
+                <button class="btn" onclick="downloadScoreCard()" style="margin-bottom: 15px; background: linear-gradient(135deg, #d946ef, #9333ea); box-shadow: 0 6px 20px rgba(147, 51, 234, 0.35);">Download Score Card 📥</button>
+                
+                <button class="btn btn-secondary" onclick="openSummaryModal()" style="margin-bottom: 10px;">View Summary / Answer 📝</button>
+                <button class="btn" onclick="goHome()" style="margin-top: 10px;">Home 🏠</button>
+            </div>
 
-            <div class="reminder-card">
+            <div class="reminder-card" id="reminder-msg">
                 यदि आप आज के सभी डीपीपी नहीं बनाए हैं तो कृपया सभी डीपीपी बनाएं
             </div>
         </div>
@@ -1111,7 +1123,7 @@
                 let isAttempted = userAnsIdx !== null;
                 let isCorrect = isAttempted && userAnsIdx === q.correct;
                 
-                let mark = isCorrect ? "✔️ सही" : "❌ गलत";
+                let mark = isCorrect ? "✅ सही" : "❌ गलत";
                 let markClass = isCorrect ? "ans-correct" : "ans-wrong";
                 
                 let userAnsText = isAttempted ? String.fromCharCode(65+userAnsIdx) + ") " + q.options[userAnsIdx] : "उत्तर नहीं दिया गया";
@@ -1131,16 +1143,56 @@
                         ${optionsHtml}
                         <div style="background: rgba(0,0,0,0.1); border: 1px solid rgba(150,150,150,0.2); padding: 10px; border-radius: 8px; margin-top: 10px;">
                             <div style="font-size: 0.95rem; margin-bottom: 5px;">
-                                <strong style="opacity: 0.8;">छात्र द्वारा दिया गया उत्तर:</strong> 
+                                <strong style="opacity: 0.8;">आपका उत्तर 👉</strong> 
                                 <span style="${!isCorrect ? 'color:#ef4444; font-weight:600;' : 'color:#10b981; font-weight:600;'}">${userAnsText}</span>
                             </div>
                             <div style="color: #10b981; font-size: 0.95rem;">
-                                <strong>असली उत्तर:</strong> <span style="font-weight:600;">${correctAnsText}</span>
+                                <strong>असली उत्तर 👉</strong> <span style="font-weight:600;">${correctAnsText}</span>
                             </div>
                         </div>
                     </div>
                 `;
                 container.innerHTML += html;
+            });
+        }
+        
+        // --- नया डाउनलोड स्कोरकार्ड फंक्शन ---
+        function downloadScoreCard() {
+            // 1. बटन्स और रिमाइंडर मैसेज को छुपाएं ताकि वे डाउनलोड होने वाली इमेज में ना आएं
+            let actionBtns = document.getElementById("action-buttons");
+            let reminderMsg = document.getElementById("reminder-msg");
+            
+            actionBtns.style.display = "none";
+            reminderMsg.style.display = "none";
+
+            // 2. रिजल्ट कार्ड को टारगेट करें
+            let scoreCard = document.getElementById("result-screen");
+
+            // 3. html2canvas से इमेज बनाएं (लाइट/डार्क थीम के अनुसार बैकग्राउंड सेट करें)
+            let themeBgColor = document.body.classList.contains('light-mode-active') ? "#f8fafc" : "#0f172a";
+            
+            html2canvas(scoreCard, {
+                scale: 2, // इमेज की क्वालिटी और शार्पनेस बढ़ाने के लिए
+                backgroundColor: themeBgColor, 
+                useCORS: true,
+                borderRadius: 20
+            }).then(canvas => {
+                
+                // 4. इमेज बनने के तुरंत बाद बटन्स वापस दिखा दें (छात्रों को पता भी नहीं चलेगा कि बटन्स गायब हुए थे)
+                actionBtns.style.display = "block";
+                reminderMsg.style.display = "block";
+
+                // 5. छात्र के नाम के साथ इमेज फोन में डाउनलोड करवाएं
+                let studentName = document.getElementById("student-name").value.trim() || "Student";
+                let link = document.createElement('a');
+                link.download = studentName + '_DPP_ScoreCard.png';
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            }).catch(err => {
+                console.error("Error generating score card:", err);
+                actionBtns.style.display = "block";
+                reminderMsg.style.display = "block";
+                alert("स्कोरकार्ड डाउनलोड करने में कोई समस्या आई। कृपया फिर से प्रयास करें।");
             });
         }
     </script>
