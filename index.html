@@ -65,8 +65,6 @@
         .hidden { display: none !important; }
         .score-card { text-align: center; }
         
-        .score-badge { font-size: 3.5rem; font-weight: 800; color: #fbbf24; margin: 25px 0; text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; justify-content: center; align-items: center; z-index: 1000; animation: modalFade 0.3s ease-out; }
         .modal-glass { background: rgba(30, 40, 50, 0.95); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 35px; max-width: 400px; width: 88%; text-align: center; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8); animation: modalScale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; position: relative; }
         
@@ -179,11 +177,20 @@
         .theme-opt { padding: 8px 12px; cursor: pointer; border-radius: 8px; color: #fff; font-size: 0.9rem; font-weight: 500; transition: 0.2s; text-align: center; }
         .theme-opt:hover { background: rgba(56, 189, 248, 0.2); color: #38bdf8; }
 
-        /* ================= LIGHT MODE CSS ================= */
+        /* ================= LIGHT MODE CSS (Updated for Result Card & Data) ================= */
         body.light-mode-active { background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important; color: #0f172a !important; }
         body.light-mode-active .card, body.light-mode-active .dock-card, body.light-mode-active .summary-glass, body.light-mode-active .modal-glass { background: rgba(255, 255, 255, 0.95) !important; border: 1px solid rgba(0, 0, 0, 0.1) !important; box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08) !important; }
         body.light-mode-active .card:not(#result-screen)::before, body.light-mode-active .modal-glass::before { background: #ffffff !important; color: #2563eb !important; border-color: rgba(37, 99, 235, 0.3) !important; }
-        body.light-mode-active p, body.light-mode-active label, body.light-mode-active h2, body.light-mode-active h3, body.light-mode-active .question-text, body.light-mode-active strong, body.light-mode-active div:not(.theme-popup-box):not(.option-item):not(#score-receipt):not(#score-receipt div):not(#score-receipt p) { color: #1e293b !important; }
+        
+        /* Updated general text exclusions so it doesn't affect the styled Result card */
+        body.light-mode-active p:not(.rc-details-box p):not(.res-label), 
+        body.light-mode-active label, 
+        body.light-mode-active h2:not(.rc-title), 
+        body.light-mode-active h3, 
+        body.light-mode-active .question-text, 
+        body.light-mode-active strong:not(.pre-sub-label),
+        body.light-mode-active .summary-item div { color: #1e293b !important; }
+        
         body.light-mode-active .input-group input, body.light-mode-active .glass-select-box { background: #f1f5f9 !important; border-color: #cbd5e1 !important; color: #0f172a !important; }
         body.light-mode-active .input-group input:focus { border-color: #2563eb !important; background: #ffffff !important; box-shadow: 0 0 10px rgba(37,99,235,0.1) !important; }
         body.light-mode-active .input-group input::placeholder { color: #94a3b8 !important; }
@@ -198,6 +205,37 @@
         body.light-mode-active .theme-popup-box { background: #ffffff !important; border-color: #e2e8f0 !important; }
         body.light-mode-active .theme-opt { color: #1e293b !important; }
         body.light-mode-active .theme-opt:hover { background: #f1f5f9 !important; color: #2563eb !important; }
+
+        /* ================= NEW CSS CLASSES FOR PRE-SUBMIT & RESULT CARD ================= */
+        
+        /* Pre-Submit Details Styling */
+        .pre-sub-label { color: #cbd5e1; transition: color 0.5s ease; }
+        .pre-sub-val { color: #ffffff; transition: color 0.5s ease; }
+        .attempted-count { color: #38bdf8; font-weight: bold; transition: color 0.5s ease; }
+        
+        body.light-mode-active .pre-sub-label { color: #475569 !important; }
+        body.light-mode-active .pre-sub-val { color: #0f172a !important; font-weight: 600; }
+        body.light-mode-active .attempted-count { color: #2563eb !important; font-weight: 800; font-size: 1.1rem; }
+
+        /* Result Card (Rank Card) Styling */
+        .score-receipt-card { padding: 30px 20px; border-radius: 20px; background: linear-gradient(135deg, #1e293b, #0f172a); border: 2px solid rgba(56, 189, 248, 0.5); position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: all 0.5s ease; }
+        .rc-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #0f172a; color: #38bdf8; font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px; padding: 6px 16px; border: 1px solid #38bdf8; border-radius: 8px; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.6); z-index: 10; transition: all 0.5s ease; }
+        .rc-title { color: #38bdf8; font-size: 1.8rem; letter-spacing: 0.5px; margin-top: 10px; transition: color 0.5s ease; }
+        .rc-details-box { margin-top: 25px; background: rgba(0, 0, 0, 0.4); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: left; display: inline-block; width: 95%; transition: all 0.5s ease; }
+        .rc-details-box p { color: #ffffff; font-weight: 500; font-size: 1rem; margin-bottom: 8px; transition: color 0.5s ease; }
+        .res-label { color: #94a3b8; font-weight: 500; transition: color 0.5s ease; }
+        .score-badge { font-size: 4rem; font-weight: 800; color: #fbbf24; margin: 25px 0; text-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: color 0.5s ease; }
+        .rc-percent { font-size: 1.4rem; font-weight: 700; color: #10b981; margin-bottom: 10px; transition: color 0.5s ease; }
+
+        /* Result Card Override for Light Mode */
+        body.light-mode-active .score-receipt-card { background: linear-gradient(135deg, #ffffff, #f1f5f9) !important; border: 2px solid #2563eb !important; box-shadow: 0 10px 30px rgba(37,99,235,0.15) !important; }
+        body.light-mode-active .rc-badge { background: #2563eb !important; color: #ffffff !important; border: 1px solid #1d4ed8 !important; box-shadow: 0 4px 10px rgba(37,99,235,0.3) !important; }
+        body.light-mode-active .rc-title { color: #1e293b !important; font-weight: 800; }
+        body.light-mode-active .rc-details-box { background: #f8fafc !important; border: 1px solid #cbd5e1 !important; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02); }
+        body.light-mode-active .rc-details-box p { color: #0f172a !important; font-weight: 600; }
+        body.light-mode-active .res-label { color: #475569 !important; font-weight: 600; }
+        body.light-mode-active .score-badge { color: #d97706 !important; text-shadow: 0 5px 15px rgba(217,119,6,0.2) !important; }
+        body.light-mode-active .rc-percent { color: #059669 !important; }
     </style>
 </head>
 <body>
@@ -315,30 +353,28 @@
             <button class="btn btn-success" id="btn-final-submit" onclick="startFinalSubmit()">OK (सबमिट करें)</button>
         </div>
 
-        <!-- रिजल्ट स्क्रीन (पूरी तरह से नया डिज़ाइन किया गया) -->
+        <!-- रिजल्ट स्क्रीन (अपडेटेड CSS क्लासेस के साथ) -->
         <div id="result-screen" class="card score-card hidden">
             
-            <!-- यह रैपर खास तौर पर इमेज को बिना काटे डाउनलोड करने के लिए है -->
             <div id="download-wrapper" style="padding: 20px; background: transparent; display: inline-block; width: 100%;">
                 
                 <!-- प्रीमियम रिजल्ट कार्ड जो डाउनलोड होगा -->
-                <div id="score-receipt" style="padding: 30px 20px; border-radius: 20px; background: linear-gradient(135deg, #1e293b, #0f172a); border: 2px solid rgba(56, 189, 248, 0.5); position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                <div id="score-receipt" class="score-receipt-card">
                     
-                    <!-- कार्ड के अंदर ही बैज, ताकि यह कभी न कटे -->
-                    <div style="position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #0f172a; color: #38bdf8; font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px; padding: 6px 16px; border: 1px solid #38bdf8; border-radius: 8px; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.6); z-index: 10;">
+                    <div id="rc-badge" class="rc-badge">
                         RAINBOW CLASSES
                     </div>
 
-                    <h2 style="color: #38bdf8; font-size: 1.8rem; letter-spacing: 0.5px; margin-top: 10px;">🧾 Your Result 🫣</h2>
+                    <h2 class="rc-title">🧾 Your Result 🫣</h2>
                     
-                    <div style="margin-top: 25px; background: rgba(0, 0, 0, 0.4); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); text-align: left; display: inline-block; width: 95%;">
-                        <p id="res-name" style="color: #ffffff; font-weight: 600; font-size: 1.15rem; margin-bottom: 8px;"></p>
-                        <p id="res-chapter" style="color: #ffffff; font-weight: 500; font-size: 1rem; margin-bottom: 8px;"></p>
-                        <p id="res-dpp" style="color: #ffffff; font-weight: 500; font-size: 1rem;"></p>
+                    <div id="rc-details-box" class="rc-details-box">
+                        <p id="res-name"></p>
+                        <p id="res-chapter"></p>
+                        <p id="res-dpp"></p>
                     </div>
 
-                    <div class="score-badge" id="res-score" style="font-size: 4rem; margin: 25px 0;">0 / 0</div>
-                    <p id="res-percent" style="font-size: 1.4rem; font-weight: 700; color: #10b981; margin-bottom: 10px;"></p>
+                    <div class="score-badge" id="res-score">0 / 0</div>
+                    <p id="res-percent" class="rc-percent"></p>
                 </div>
             </div>
             
@@ -820,6 +856,7 @@
         function nextQuestion() { if (currentQIndex < currentQuestions.length - 1) { currentQIndex++; loadQuestion(); } }
         function prevQuestion() { if (currentQIndex > 0) { currentQIndex--; loadQuestion(); } }
 
+        /* अपडेटेड: सबमिट क्विज फंक्शन (नए CSS क्लास के साथ) */
         function submitQuiz() {
             clearInterval(timerInterval);
             let studentName = document.getElementById("student-name").value;
@@ -832,10 +869,10 @@
             let timeTakenStr = `${m} मिनट ${s} सेकंड`;
 
             document.getElementById("pre-submit-details").innerHTML = `
-                <div style="margin-bottom: 8px;"><strong style="color: #cbd5e1;">नाम:</strong> ${studentName}</div>
-                <div style="margin-bottom: 8px;"><strong style="color: #cbd5e1;">इस DPP में कुल प्रश्न:</strong> ${total}</div>
-                <div style="margin-bottom: 8px;"><strong style="color: #cbd5e1;">आपने अटेम्प्ट किये:</strong> <span style="color:#38bdf8; font-weight:bold;">${attempted}</span></div>
-                <div style="margin-bottom: 8px;"><strong style="color: #cbd5e1;">कुल लिया गया समय:</strong> ${timeTakenStr}</div>
+                <div style="margin-bottom: 8px;"><strong class="pre-sub-label">नाम:</strong> <span class="pre-sub-val">${studentName}</span></div>
+                <div style="margin-bottom: 8px;"><strong class="pre-sub-label">इस DPP में कुल प्रश्न:</strong> <span class="pre-sub-val">${total}</span></div>
+                <div style="margin-bottom: 8px;"><strong class="pre-sub-label">आपने अटेम्प्ट किये:</strong> <span class="attempted-count">${attempted}</span></div>
+                <div style="margin-bottom: 8px;"><strong class="pre-sub-label">कुल लिया गया समय:</strong> <span class="pre-sub-val">${timeTakenStr}</span></div>
             `;
 
             document.getElementById("submit-loader").classList.add("hidden");
@@ -858,6 +895,7 @@
             }, 1000);
         }
 
+        /* अपडेटेड: फाइनलाइज फंक्शन (नए CSS क्लास के साथ) */
         function finalizeQuizSubmit() {
             window.currentQuizFinished = true; 
             let score = 0;
@@ -892,9 +930,9 @@
             showScreen('result-screen');
 
             // --- RESULT CARD DATA INJECTION ---
-            document.getElementById("res-name").innerHTML = `<span style="color:#94a3b8; font-weight:500;">Name:</span> ${studentName}`;
-            document.getElementById("res-chapter").innerHTML = `<span style="color:#94a3b8; font-weight:500;">Chapter:</span> ${chapterName}`;
-            document.getElementById("res-dpp").innerHTML = `<span style="color:#94a3b8; font-weight:500;">DPP:</span> ${dppName}`;
+            document.getElementById("res-name").innerHTML = `<span class="res-label">Name:</span> ${studentName}`;
+            document.getElementById("res-chapter").innerHTML = `<span class="res-label">Chapter:</span> ${chapterName}`;
+            document.getElementById("res-dpp").innerHTML = `<span class="res-label">DPP:</span> ${dppName}`;
             
             document.getElementById("res-score").innerText = `${score} / ${total}`;
             document.getElementById("res-percent").innerText = `कुल प्राप्तांक: ${percent}%`;
@@ -956,15 +994,17 @@
             });
         }
         
-        // --- अपडेटेड और परफेक्ट डाउनलोड फंक्शन ---
+        // --- अपडेटेड डाउनलोड फंक्शन (अब लाइट मोड/डार्क मोड के हिसाब से बैकग्राउंड लेगा) ---
         function downloadScoreCard() {
-            // डाउनलोड करते समय हम उस पूरे रैपर को टारगेट कर रहे हैं, जिससे ऊपर का बैज नहीं कटेगा
             let scoreCardWrapper = document.getElementById("download-wrapper");
+            
+            // अगर लाइट मोड चालू है तो बैकग्राउंड लाइट वाइट होगा, नहीं तो डार्क ब्लू
+            let isLightMode = document.body.classList.contains('light-mode-active');
+            let canvasBgColor = isLightMode ? "#f8fafc" : "#0f172a";
 
-            // इमेज को एकदम HD बनाने के लिए scale 3 सेट किया है
             html2canvas(scoreCardWrapper, {
                 scale: 3, 
-                backgroundColor: "#0f172a", // डार्क प्रीमियम बैकग्राउंड इमेज के लिए
+                backgroundColor: canvasBgColor, 
                 useCORS: true
             }).then(canvas => {
                 let studentName = document.getElementById("student-name").value.trim() || "Student";
