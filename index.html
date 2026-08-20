@@ -182,6 +182,7 @@
         body.light-mode-active .card, body.light-mode-active .dock-card, body.light-mode-active .summary-glass, body.light-mode-active .modal-glass { background: rgba(255, 255, 255, 0.95) !important; border: 1px solid rgba(0, 0, 0, 0.1) !important; box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08) !important; }
         body.light-mode-active .card:not(#result-screen)::before, body.light-mode-active .modal-glass::before { background: #ffffff !important; color: #2563eb !important; border-color: rgba(37, 99, 235, 0.3) !important; }
         
+        /* रिजल्ट कार्ड के अंदर के एलिमेंट्स को लाइट मोड से बचाने के लिए :not() का उपयोग किया गया है */
         body.light-mode-active p:not(.rc-details-box p):not(.res-label), 
         body.light-mode-active label, 
         body.light-mode-active h2:not(.rc-title), 
@@ -214,7 +215,7 @@
         body.light-mode-active .pre-sub-val { color: #0f172a !important; font-weight: 600; }
         body.light-mode-active .attempted-count { color: #2563eb !important; font-weight: 800; font-size: 1.1rem; }
 
-        /* ================= RESULT CARD & DOWNLOAD EXPORT FIX ================= */
+        /* ================= RESULT CARD (हमेशा डार्क मोड में रहेगा) ================= */
         .score-receipt-card { padding: 30px 20px; border-radius: 20px; background: linear-gradient(135deg, #1e293b, #0f172a); border: 2px solid rgba(56, 189, 248, 0.5); position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: all 0.5s ease; }
         .rc-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #0f172a; color: #38bdf8; font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px; padding: 6px 16px; border: 1px solid #38bdf8; border-radius: 8px; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.6); z-index: 10; transition: all 0.5s ease; }
         .rc-title { color: #38bdf8; font-size: 1.8rem; letter-spacing: 0.5px; margin-top: 10px; transition: color 0.5s ease; }
@@ -223,16 +224,6 @@
         .res-label { color: #94a3b8; font-weight: 500; transition: color 0.5s ease; }
         .score-badge { font-size: 4rem; font-weight: 800; color: #fbbf24; margin: 25px 0; text-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: color 0.5s ease; }
         .rc-percent { font-size: 1.4rem; font-weight: 700; color: #10b981; margin-bottom: 10px; transition: color 0.5s ease; }
-
-        /* Light Mode + html2canvas Export Fix (Direct Class Appended) */
-        body.light-mode-active .score-receipt-card, .score-receipt-card.light-mode-export { background: linear-gradient(135deg, #ffffff, #f1f5f9) !important; border: 2px solid #2563eb !important; box-shadow: 0 10px 30px rgba(37,99,235,0.15) !important; }
-        body.light-mode-active .rc-badge, .score-receipt-card.light-mode-export .rc-badge { background: #2563eb !important; color: #ffffff !important; border: 1px solid #1d4ed8 !important; box-shadow: 0 4px 10px rgba(37,99,235,0.3) !important; }
-        body.light-mode-active .rc-title, .score-receipt-card.light-mode-export .rc-title { color: #1e293b !important; font-weight: 800; }
-        body.light-mode-active .rc-details-box, .score-receipt-card.light-mode-export .rc-details-box { background: #f8fafc !important; border: 1px solid #cbd5e1 !important; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02); }
-        body.light-mode-active .rc-details-box p, .score-receipt-card.light-mode-export .rc-details-box p { color: #0f172a !important; font-weight: 600; }
-        body.light-mode-active .res-label, .score-receipt-card.light-mode-export .res-label { color: #475569 !important; font-weight: 600; }
-        body.light-mode-active .score-badge, .score-receipt-card.light-mode-export .score-badge { color: #d97706 !important; text-shadow: 0 5px 15px rgba(217,119,6,0.2) !important; }
-        body.light-mode-active .rc-percent, .score-receipt-card.light-mode-export .rc-percent { color: #059669 !important; }
     </style>
 </head>
 <body>
@@ -998,29 +989,18 @@
             });
         }
         
-        // --- लाइट मोड एक्सपोर्ट फिक्स ---
+        // --- डार्क मोड में स्कोरकार्ड डाउनलोड करने के लिए फिक्स ---
         function downloadScoreCard() {
             let scoreCardWrapper = document.getElementById("download-wrapper");
-            let scoreCard = document.getElementById("score-receipt");
             
-            let isLightMode = document.body.classList.contains('light-mode-active');
-            let canvasBgColor = isLightMode ? "#f8fafc" : "#0f172a";
-
-            // html2canvas के लिए एक खास क्लास जोड़ दें, जिससे वाइट टेक्स्ट का इशू खत्म हो जाएगा
-            if (isLightMode) {
-                scoreCard.classList.add("light-mode-export");
-            }
+            // हमेशा डार्क मोड का बैकग्राउंड सेट करें ताकि डाउनलोड एकदम प्रोफेशनल दिखे
+            let canvasBgColor = "#0f172a";
 
             html2canvas(scoreCardWrapper, {
                 scale: 3, 
                 backgroundColor: canvasBgColor, 
                 useCORS: true
             }).then(canvas => {
-                // क्लास रिमूव कर दें
-                if (isLightMode) {
-                    scoreCard.classList.remove("light-mode-export");
-                }
-                
                 let studentName = document.getElementById("student-name").value.trim() || "Student";
                 let link = document.createElement('a');
                 link.download = studentName + '_DPP_Result.png';
@@ -1029,10 +1009,6 @@
             }).catch(err => {
                 console.error("Error generating score card:", err);
                 alert("स्कोरकार्ड डाउनलोड करने में कोई समस्या आई। कृपया फिर से प्रयास करें।");
-                
-                if (isLightMode) {
-                    scoreCard.classList.remove("light-mode-export");
-                }
             });
         }
     </script>
