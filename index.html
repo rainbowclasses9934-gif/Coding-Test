@@ -149,6 +149,26 @@
         .comments-list { display: flex; flex-direction: column; gap: 20px; clear: both; }
         .comment-box { display: flex; gap: 10px; width: 100%; }
 
+        /* --- Date Divider Styles --- */
+        .date-divider {
+            text-align: center;
+            margin: 15px 0 5px 0;
+            position: relative;
+            width: 100%;
+        }
+        .date-divider span {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(10px);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            display: inline-block;
+        }
+
         .comment-content {
             background: rgba(255, 255, 255, 0.55); backdrop-filter: blur(10px);
             padding: 12px 15px; border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.6);
@@ -162,7 +182,7 @@
         }
 
         .message-top-right { position: absolute; top: 8px; right: 12px; display: flex; align-items: center; gap: 6px; }
-        .time-ago-text { font-size: 11px; color: var(--text-muted); background: rgba(255, 255, 255, 0.5); padding: 2px 6px; border-radius: 4px; }
+        .time-ago-text { font-size: 11px; color: var(--text-muted); background: rgba(255, 255, 255, 0.5); padding: 2px 6px; border-radius: 4px; font-weight: 500; }
         .view-count-text { font-size: 11px; color: #6b7280; font-weight: 500; font-family: 'Inter', sans-serif; }
 
         .pinned-badge { background: rgba(37, 99, 235, 0.1); color: #2563eb; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
@@ -177,7 +197,6 @@
         .action-btn { background: none; border: none; color: var(--text-muted); font-size: 12px; font-weight: 600; cursor: pointer; }
         .action-btn:hover { color: #2563eb; }
         
-        /* Updated margin-right to prevent badge overlapping adjacent edit/delete buttons */
         .view-reply-wrapper { position: relative; display: inline-block; margin-right: 15px; }
         .view-reply-btn { background: none; border: none; color: #2563eb; font-size: 12px; font-weight: 600; cursor: pointer; transition: color 0.2s; }
         .view-reply-btn:hover { color: #1d4ed8; text-decoration: underline; }
@@ -209,6 +228,17 @@
         }
         .replies-container.show { display: flex; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Reply Time Style --- */
+        .reply-bottom-right {
+            text-align: right;
+            margin-top: 4px;
+        }
+        .reply-time-text {
+            font-size: 10px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
 
         .reply-input-wrapper { display: none; margin-top: 10px; }
         .reply-input-wrapper.active { display: block; }
@@ -969,18 +999,33 @@
             try { await updateDoc(doc(db, "portal_comments", commentId), { pinned: !currentPinStatus }); } catch (error) { console.error("Pinning error", error); }
         };
 
-        function getTimeString(timestamp) {
-            if (!timestamp) return 'अभी-अभी'; 
-            const now = Date.now();
-            const past = timestamp.toMillis();
-            const diffSec = Math.floor((now - past) / 1000);
-            if (diffSec < 60) return `${Math.max(1, diffSec)} सेकंड`;
-            const diffMin = Math.floor(diffSec / 60);
-            if (diffMin < 60) return `${diffMin} मिनट`;
-            const diffHour = Math.floor(diffMin / 60);
-            if (diffHour < 24) return `${diffHour} घंटे`;
-            const diffDay = Math.floor(diffHour / 24);
-            return `${diffDay} दिन`;
+        /* --- NEW TIME FORMATTING FUNCTIONS --- */
+        function formatExactTime(timestamp) {
+            // If just sent, use current time instead of waiting for server sync
+            const date = timestamp ? timestamp.toDate() : new Date();
+            let hours = date.getHours();
+            let minutes = date.getMinutes();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // 0 को 12 में बदलें
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            return hours + ':' + minutes + ' ' + ampm;
+        }
+
+        function formatDateHeader(timestamp) {
+            const date = timestamp ? timestamp.toDate() : new Date();
+            const today = new Date();
+            
+            // Check if it's today
+            if (date.getDate() === today.getDate() &&
+                date.getMonth() === today.getMonth() &&
+                date.getFullYear() === today.getFullYear()) {
+                return 'Today';
+            }
+            
+            // Return formatted date like "20 August 2026"
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            return date.toLocaleDateString('en-IN', options);
         }
 
         const q = query(collection(db, "portal_comments"), orderBy("timestamp", "desc"));
@@ -1017,6 +1062,8 @@
             
             const adminDelStyle = isAdminLoggedIn ? 'display: inline-block;' : 'display: none;';
 
+            let lastDateHeader = ""; // Track date headers to show dividers
+
             mainComments.forEach(comment => {
                 const commentReplies = replies.filter(r => r.parentId === comment.id);
                 commentReplies.sort((a, b) => (a.timestamp?.toMillis() || 0) - (b.timestamp?.toMillis() || 0));
@@ -1041,6 +1088,9 @@
 
                     const ownerDeleteHTML = isMainOwner ? `<button class="reply-owner-delete" onclick="deleteUserComment('${reply.id}')" title="Delete this reply">✕</button>` : '';
 
+                    // Reply Time Format
+                    const replyExactTime = formatExactTime(reply.timestamp);
+
                     repliesHTML += `
                         <div class="comment-box">
                             <div class="${rContentClass}" style="position:relative; padding-top:14px;">
@@ -1054,6 +1104,9 @@
                                         <button class="delete-btn admin-delete-btn" style="${adminDelStyle}" onclick="deleteComment('${reply.id}')">Del (Admin)</button>
                                         ${userReplyActions}
                                     </div>
+                                </div>
+                                <div class="reply-bottom-right">
+                                    <span class="reply-time-text">${replyExactTime}</span>
                                 </div>
                             </div>
                         </div>
@@ -1080,7 +1133,10 @@
                     </div>
                 `;
 
-                const timeString = getTimeString(comment.timestamp);
+                // Main Comment Formatting Options
+                const exactTimeString = formatExactTime(comment.timestamp);
+                const currentHeader = formatDateHeader(comment.timestamp);
+
                 const viewsCount = comment.views || 0;
                 const isPinned = comment.pinned || false;
                 const pinnedBadgeHTML = isPinned ? `<span class="pinned-badge">📍</span>` : '';
@@ -1122,6 +1178,16 @@
                     </div>
                 `;
 
+                // --- Insert Date Divider Logic ---
+                // Pinned messages and unpinned messages might trigger a new date block
+                if (currentHeader !== lastDateHeader) {
+                    const dividerDiv = document.createElement('div');
+                    dividerDiv.className = 'date-divider';
+                    dividerDiv.innerHTML = `<span>${currentHeader}</span>`;
+                    commentsListEl.appendChild(dividerDiv);
+                    lastDateHeader = currentHeader;
+                }
+
                 const commentElement = document.createElement('div');
                 commentElement.className = 'comment-box';
                 commentElement.setAttribute('data-comment-id', comment.id);
@@ -1129,7 +1195,7 @@
                     <div class="${contentClass}">
                         
                         <div class="message-top-right">
-                            <span class="time-ago-text">${timeString}</span>
+                            <span class="time-ago-text">${exactTimeString}</span>
                             <span class="view-count-text">view ${viewsCount}</span>
                         </div>
 
