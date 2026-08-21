@@ -1,1124 +1,554 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Teachers & Students Community</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Attendance System</title>
+    <!-- html2pdf library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        :root {
-            --text-main: #1f2937;
-            --text-muted: #4b5563;
-            --primary-color: rgba(37, 99, 235, 0.8);
-            --primary-hover: rgba(29, 78, 216, 0.9);
-            --border-color: rgba(255, 255, 255, 0.4);
-            --radius-md: 16px;
-            --radius-sm: 10px;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-        }
-
-        html, body {
-            overscroll-behavior: none;
-            overscroll-behavior-y: none;
+        /* CSS Reset & Body Styling */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            -webkit-tap-highlight-color: transparent; 
+            user-select: none; 
+            -webkit-user-select: none;
         }
 
         body {
-            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
-            color: var(--text-main);
-            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #ffffff;
             min-height: 100vh;
-            background-attachment: fixed;
-            -webkit-tap-highlight-color: transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 30px;
+            padding-bottom: 30px;
         }
 
-        /* --- Top Fixed Dock --- */
-        .top-dock {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0;
-            width: 100%;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.35);
+        /* Glass Panel Box */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 15px;
-            z-index: 99999;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            width: 92%;
+            max-width: 450px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
 
-        .dock-logo { 
-            font-size: 14px; 
-            font-weight: 700; 
-            color: #111827; 
-            transition: all 0.3s ease; 
-            white-space: nowrap; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
-            max-width: 130px; 
+        h2, h3 { text-align: center; margin-bottom: 20px; letter-spacing: 1px; }
+
+        /* Input Fields */
+        input[type="text"], input[type="date"] {
+            width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.25); background: rgba(0,0,0,0.2); 
+            color: #fff; font-size: 15px; outline: none;
+            user-select: text; 
+            -webkit-user-select: text;
         }
+        input::placeholder { color: rgba(255,255,255,0.6); }
 
-        .admin-dock-controls { display: flex; align-items: center; gap: 6px; }
-
-        .user-id-input {
-            padding: 5px 8px; background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(5px);
-            border: 1px solid var(--border-color); border-radius: 20px; outline: none;
-            font-size: 11px; width: 60px; text-align: center; font-weight: 600;
-            transition: all 0.4s;
+        /* Buttons with Zoom Out Click Effect */
+        .btn { 
+            padding: 14px; border: none; border-radius: 8px; cursor: pointer; 
+            color: white; width: 100%; font-weight: bold; font-size: 16px; 
+            transition: transform 0.15s ease; margin-bottom: 10px;
+            display: inline-block;
+            text-align: center;
         }
-
-        .admin-pin-input {
-            padding: 5px 12px; background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(5px);
-            border: 1px solid var(--border-color); border-radius: 20px; outline: none;
-            font-size: 11px; width: 95px; text-align: center; font-weight: 600;
-            transition: all 0.4s;
+        .btn:active { 
+            transform: scale(0.92); 
         }
-
-        .delete-all-clear-btn {
-            width: 0; padding: 5px 0; opacity: 0; background: rgba(220, 38, 38, 0.85); color: white;
-            border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 20px; cursor: pointer;
-            font-size: 11px; font-weight: 600; text-align: center; overflow: hidden;
-            transition: all 0.4s; display: flex; align-items: center; justify-content: center;
-        }
-        .delete-all-clear-btn.show { width: 60px; padding: 5px 10px; opacity: 1; }
-
-        .portal-container {
-            max-width: 800px; margin: 70px auto 90px auto; background: rgba(255, 255, 255, 0.35);
-            backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: var(--radius-md); padding: 30px 20px; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-        }
-
-        .header-section { margin-bottom: 25px; text-align: center; }
-        .header-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; color: #111827; }
-        .header-subtitle { color: var(--text-muted); font-size: 13px; line-height: 1.5; }
-
-        .avatar {
-            width: 35px; height: 35px; border-radius: 50%; background: rgba(255, 255, 255, 0.8);
-            border: 1px solid rgba(255,255,255,0.8); color: #2563eb; display: flex;
-            align-items: center; justify-content: center; font-weight: 600; font-size: 16px;
-            flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        .reply-avatar { width: 28px !important; height: 28px !important; font-size: 13px !important; }
-
-        /* Image Display inside Comments */
-        .comment-image {
-            max-width: 100%; max-height: 300px; border-radius: 8px; margin-top: 10px;
-            cursor: zoom-in; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            object-fit: cover;
-        }
-
-        /* Audio Player Styling */
-        .audio-player-box {
-            display: flex; align-items: center; gap: 10px;
-            background: rgba(255, 255, 255, 0.75);
-            border: 1px solid rgba(37, 99, 235, 0.2);
-            padding: 6px 12px; border-radius: 20px; margin-top: 10px;
-            max-width: 260px; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-        }
-        .audio-play-btn {
-            width: 32px; height: 32px; border-radius: 50%;
-            background: #2563eb; color: white; border: none;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 13px; flex-shrink: 0; transition: all 0.2s;
-        }
-        .audio-play-btn:hover { background: #1d4ed8; transform: scale(1.05); }
-        .audio-info { display: flex; flex-direction: column; justify-content: center; }
-        .audio-label { font-size: 11px; font-weight: 600; color: #1f2937; }
-        .audio-time-status { font-size: 10px; color: var(--text-muted); }
-
-        /* Fullscreen Image Modal */
-        .fullscreen-image-modal {
-            display: none; position: fixed; z-index: 9999999; top: 0; left: 0;
-            width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
-            align-items: center; justify-content: center;
-        }
-        .fullscreen-image-modal.show { display: flex; animation: fadeIn 0.3s; }
-        .fullscreen-content { max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .close-fullscreen {
-            position: absolute; top: 20px; right: 30px; color: white; font-size: 35px;
-            font-weight: bold; cursor: pointer; transition: 0.3s;
-        }
-        .close-fullscreen:hover { color: #ef4444; }
-
-        .comments-list { display: flex; flex-direction: column; gap: 20px; clear: both; }
-        .comment-box { display: flex; gap: 10px; width: 100%; }
-
-        .comment-content {
-            background: rgba(255, 255, 255, 0.55); backdrop-filter: blur(10px);
-            padding: 12px 15px; border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.6);
-            flex-grow: 1; position: relative; width: 100%;
-        }
-
-        .admin-comment { background: rgba(254, 242, 242, 0.65) !important; }
-        .admin-avatar { background: rgba(239, 68, 68, 0.9) !important; color: white !important; border: none; }
-        .admin-badge {
-            background: rgba(239, 68, 68, 0.9); color: white; font-size: 10px; padding: 2px 6px;
-            border-radius: 4px; margin-left: 6px; display: inline-block;
-        }
-
-        .message-top-right { position: absolute; top: 8px; right: 12px; display: flex; align-items: center; gap: 6px; }
-        .time-ago-text { font-size: 11px; color: var(--text-muted); background: rgba(255, 255, 255, 0.5); padding: 2px 6px; border-radius: 4px; }
-        .view-count-text { font-size: 11px; color: #6b7280; font-weight: 500; font-family: 'Inter', sans-serif; }
-
-        .pinned-badge { background: rgba(37, 99, 235, 0.1); color: #2563eb; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
-
-        .comment-header { display: flex; align-items: center; margin-bottom: 6px; }
-        .user-name { font-weight: 600; font-size: 14px; }
-        .comment-text { font-size: 14px; line-height: 1.5; color: #374151; white-space: pre-wrap; word-wrap: break-word;}
-
-        .comment-actions-container { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; flex-wrap: wrap; gap: 8px; }
-        .left-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-
-        .action-btn { background: none; border: none; color: var(--text-muted); font-size: 12px; font-weight: 600; cursor: pointer; }
-        .action-btn:hover { color: #2563eb; }
+        .btn-green { background: #38ef7d; color: #000; box-shadow: 0 4px 15px rgba(56, 239, 125, 0.3); }
+        .btn-blue { background: #3498db; box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3); }
+        .btn-orange { background: #e67e22; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3); }
         
-        .view-reply-wrapper { position: relative; display: inline-block; }
-        .view-reply-btn { background: none; border: none; color: #2563eb; font-size: 12px; font-weight: 600; cursor: pointer; transition: color 0.2s; }
-        .view-reply-btn:hover { color: #1d4ed8; text-decoration: underline; }
-        .reply-count-badge {
-            position: absolute; top: -10px; right: -15px; background: #ef4444; color: white;
-            font-size: 10px; font-weight: bold; padding: 2px 5px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        #attendance-screen { display: none; }
+
+        /* Attendance Checkbox List */
+        .attendance-list-container { 
+            max-height: 50vh; overflow-y: auto; background: rgba(0,0,0,0.2); 
+            padding: 10px; border-radius: 8px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.1);
+            overflow-x: hidden;
         }
-
-        .reply-owner-delete {
-            position: absolute; top: 6px; right: 8px; background: rgba(239, 68, 68, 0.1); color: #ef4444;
-            border: none; border-radius: 4px; width: 20px; height: 20px; font-size: 11px; font-weight: bold;
-            cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+        .roll-row { 
+            display: flex; justify-content: space-between; padding: 10px 8px; 
+            border-bottom: 1px solid rgba(255,255,255,0.1); align-items: center;
+            transition: all 0.3s ease;
         }
-        .reply-owner-delete:hover { background: #ef4444; color: white; }
+        .roll-row label { cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 16px; width: 100%; }
+        .roll-row input[type="checkbox"] { width: 18px; height: 18px; accent-color: #38ef7d; cursor: pointer;}
 
-        .user-action-btn { background: none; border: none; font-size: 12px; font-weight: 600; cursor: pointer; }
-        .user-action-btn.edit { color: #2563eb; } .user-action-btn.delete { color: #ef4444; }
-        .delete-btn { background: none; border: none; color: #ef4444; font-size: 12px; cursor: pointer; display: none; }
-
-        .like-btn {
-            background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(255,255,255,0.9); border-radius: 20px;
-            padding: 4px 10px; font-size: 12px; cursor: pointer; display: flex; gap: 4px; align-items: center;
-        }
-
-        .replies-container {
-            margin-top: 12px; margin-left: 5px; border-left: 2px solid rgba(37, 99, 235, 0.2);
-            padding-left: 12px; display: none; flex-direction: column; gap: 12px;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        .replies-container.show { display: flex; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
-
-        .reply-input-wrapper { display: none; margin-top: 10px; }
-        .reply-input-wrapper.active { display: block; }
-        .reply-input-wrapper textarea {
-            width: 100%; min-height: 50px; padding: 10px; background: rgba(255, 255, 255, 0.5);
-            border: 1px solid var(--border-color); border-radius: var(--radius-sm); resize: vertical;
-            outline: none; font-size: 13px; margin-bottom: 5px;
-        }
-        .reply-input-wrapper .submit-btn { padding: 6px 15px; font-size: 13px; }
-
-        /* Modal Styles */
+        /* --- STYLISH GLASS POPUP MODAL --- */
         .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(8px); z-index: 999999;
-            align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s;
-        }
-        .modal-overlay.show { display: flex; opacity: 1; }
-        .modal-box {
-            background: rgba(255, 255, 255, 0.95); border-radius: var(--radius-md); padding: 25px;
-            width: 90%; max-width: 400px; text-align: center;
-        }
-        .modal-title { font-size: 18px; margin-bottom: 10px; }
-        .modal-message { font-size: 14px; color: #4b5563; margin-bottom: 20px; }
-        #modalEditInput { display: none; width: 100%; min-height: 80px; margin-bottom: 20px; padding: 10px; border-radius: var(--radius-sm); border: 1px solid #ccc; font-size: 14px; }
-        .modal-actions { display: flex; justify-content: center; gap: 10px; }
-        .modal-btn { padding: 8px 20px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; border: none; }
-        .btn-cancel { background: #e5e7eb; color: #374151; }
-        .btn-ok { background: var(--primary-color); color: white; }
-        .btn-ok-danger { background: #dc2626; color: white; }
-
-        .admin-action-dock {
-            display: none; width: 100%; margin-top: 12px;
-            justify-content: center; gap: 15px; align-items: center;
-        }
-        .admin-mode .admin-action-dock {
-            display: flex; animation: fadeIn 0.3s;
-        }
-        .admin-dock-btn {
-            background: #fff; border: 1px solid rgba(0, 0, 0, 0.15);
-            padding: 6px 15px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600;
-            cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .admin-dock-btn:hover { background: #f9fafb; }
-        .admin-dock-btn.pin { color: #2563eb; }
-        .admin-dock-btn.delete { color: #dc2626; }
-
-        /* --- Bottom Dock Message Box --- */
-        .bottom-dock {
-            position: fixed; 
-            bottom: 0; 
-            left: 0; 
-            width: 100%;
-            background: rgba(255, 255, 255, 0.45);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-top: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.05);
-            display: flex; 
-            align-items: flex-end; 
-            padding: 10px 15px; 
-            padding-bottom: calc(10px + env(safe-area-inset-bottom));
-            gap: 10px; 
-            z-index: 99999;
-        }
-
-        .upload-section-bottom { 
-            display: flex; 
-            align-items: center; 
-            position: relative; 
-            margin-bottom: 2px;
-        }
-        
-        .image-upload-btn-bottom {
-            background: rgba(255, 255, 255, 0.8); 
-            border: 1px solid var(--border-color);
-            width: 40px; 
-            height: 40px; 
-            border-radius: 50%; 
-            font-size: 18px; 
-            cursor: pointer;
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            flex-shrink: 0;
-            transition: all 0.2s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .image-status-bottom {
-            position: absolute; 
-            top: -12px; 
-            left: 20px; 
-            font-size: 10px; 
-            color: #059669; 
-            font-weight: bold; 
-            background: white; 
-            padding: 2px 5px; 
-            border-radius: 10px; 
-            display: none; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .input-wrapper-bottom {
-            flex-grow: 1;
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        #mainCommentInput {
-            width: 100%; 
-            background: rgba(255, 255, 255, 0.8); 
-            border: 1px solid var(--border-color);
-            border-radius: 20px; 
-            padding: 10px 40px 10px 15px; /* Right padding for mic button */
-            font-size: 15px; 
-            outline: none;
-            resize: none; 
-            height: 42px; 
-            max-height: 100px; 
-            line-height: 20px;
-            overflow-y: hidden; 
-            box-sizing: border-box; 
-            font-family: 'Inter', sans-serif;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
-            margin-bottom: 1px;
-        }
-
-        .mic-btn-bottom {
-            position: absolute;
-            right: 8px;
-            bottom: 6px;
-            background: none;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: none;
             justify-content: center;
-            border-radius: 50%;
-            transition: all 0.2s;
-            user-select: none;
+            align-items: center;
+            z-index: 9999;
+        }
+        .glass-modal {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 16px;
+            padding: 25px;
+            width: 88%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+            color: #ffffff;
+            animation: modalPop 0.2s ease-out;
+        }
+        @keyframes modalPop {
+            from { transform: scale(0.85); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
-        .mic-btn-bottom.recording {
-            animation: pulse-red 1.2s infinite;
-            background: rgba(239, 68, 68, 0.15);
-        }
+        /* Scrollbar styling */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 10px; }
 
-        @keyframes pulse-red {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-            100% { transform: scale(1); }
+        /* PDF Export Styling - HIDDEN FROM UI */
+        #pdf-export-area { 
+            display: none; background: #fff; color: #000; 
+            padding: 10px 30px 30px 30px; 
+            font-family: Arial, sans-serif; width: 100%; 
         }
-
-        .send-btn-bottom {
-            background: var(--primary-color); 
-            color: white; 
-            border: none;
-            width: 42px; 
-            height: 42px; 
-            border-radius: 50%; 
-            font-size: 20px; 
-            cursor: pointer;
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            flex-shrink: 0;
-            transition: all 0.2s;
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
-            margin-bottom: 1px;
+        .pdf-header { text-align: center; margin-bottom: 20px; font-weight: bold; font-size: 20px; text-decoration: underline; }
+        .pdf-meta-container { 
+            display: flex; justify-content: space-between; margin-bottom: 25px; 
+            font-size: 14px; border-bottom: 2px solid #444; padding-bottom: 15px; line-height: 1.6;
         }
-
-        .submit-btn {
-            background: var(--primary-color); color: white; border: none;
-            padding: 8px 20px; border-radius: var(--radius-sm); font-size: 14px; cursor: pointer; font-weight: 600;
-        }
-
+        .pdf-table { width: auto; border-collapse: collapse; margin: 0; }
+        .pdf-table th, .pdf-table td { border: none; padding: 5px 0; font-size: 15px; }
+        .pdf-table tr { page-break-inside: avoid !important; break-inside: avoid !important; }
     </style>
 </head>
 <body>
 
-    <div class="top-dock">
-        <div class="dock-logo" id="dockLogoText">RAINBOW CLASSES</div>
-        <div class="admin-dock-controls">
-            <input type="text" id="userNameInput" class="user-id-input" placeholder="ID">
-            <input type="password" id="adminPinInput" class="admin-pin-input" placeholder="ADMIN 🔐">
-            <div id="deleteAllDockBtn" class="delete-all-clear-btn">Clear</div>
-        </div>
+    <!-- HOME SCREEN -->
+    <div id="home-screen" class="glass-panel">
+        <h2>Attendance Setup</h2>
+        <input type="text" id="inputBranch" placeholder="Branch (e.g. Civil)">
+        <input type="text" id="inputClass" placeholder="Class Name (e.g. Communication Skills)">
+        <input type="date" id="inputDate">
+        <input type="text" id="inputTeacher" placeholder="Teacher's Name">
+        <input type="text" id="inputCr" placeholder="CR's Name">
+        <!-- New Dynamic Roll Number Range Box -->
+        <input type="text" id="inputRollPattern" placeholder="Roll Range (e.g. 2026-CE-1 to 100, 2025 CE 10 to 20)">
+        
+        <button class="btn btn-green" onclick="proceedToAttendance()">Start New Attendance</button>
+        <!-- Save Load Button -->
+        <button class="btn btn-blue" id="loadSavedBtn" onclick="loadSavedAttendance()" style="display: none;">Load Saved Attendance 📂</button>
     </div>
 
-    <div class="portal-container">
-        <div class="header-section">
-            <h1 class="header-title">Teachers & Students Community</h1>
-            <p class="header-subtitle">अभी यह सभी छात्रों के लिए उपलब्ध नहीं है। संतोष सर के द्वारा जिन बच्चो को इसमें जोड़ा जायेगा वे बच्चे यहाँ आपस में संपर्क मे रहेंगे, ये एक-दूसरे के साथ संपर्क मे रहेंगे। पढ़ाई से संबंधित बाते कर सकेंगे।</p>
-        </div>
-
-        <div class="comments-list" id="commentsList">
-            <p style="text-align: center; color: var(--text-muted);">Loading Comments ⏳...</p>
-        </div>
-    </div>
-
-    <!-- BOTTOM FIXED DOCK -->
-    <div class="bottom-dock">
-        <div class="upload-section-bottom">
-            <input type="file" id="imageInput" accept="image/*" style="display: none;">
-            <label for="imageInput" class="image-upload-btn-bottom" title="कोई फोटो चुनें">➕</label>
-            <span id="imageStatusText" class="image-status-bottom">✔️</span>
+    <!-- ATTENDANCE SCREEN -->
+    <div id="attendance-screen" class="glass-panel">
+        <h3>Mark Attendance <br><span style="font-size:12px; font-weight:normal; color:#ccc;">(Tick to Mark Present)</span></h3>
+        <div class="attendance-list-container" id="attendance-list">
+            <!-- Checkboxes generated by JS dynamically -->
         </div>
         
-        <div class="input-wrapper-bottom">
-            <textarea id="mainCommentInput" placeholder="Type..." rows="1"></textarea>
-            <button type="button" id="micBtn" class="mic-btn-bottom" title="ऑडियो रिकॉर्ड करें">🎤</button>
+        <button class="btn btn-blue" onclick="saveAttendance()">Save Attendance 💾</button>
+        <button class="btn btn-green" onclick="downloadPdf()">Download PDF 📄</button>
+        <button class="btn btn-orange" onclick="goBackToHome()">Back to Home</button>
+    </div>
+
+    <!-- GLASS POPUP MODAL -->
+    <div id="glass-modal-overlay" class="modal-overlay">
+        <div class="glass-modal">
+            <h3 id="modal-title" style="margin-bottom: 12px;">Notice</h3>
+            <div id="modal-msg" style="margin-bottom: 20px; font-size: 15px; line-height: 1.5;"></div>
+            <div id="modal-buttons"></div>
         </div>
-
-        <button class="send-btn-bottom" id="postMainBtn">📨</button>
     </div>
 
-    <div id="fullScreenImageModal" class="fullscreen-image-modal">
-        <span class="close-fullscreen" onclick="closeFullscreen()">&times;</span>
-        <img class="fullscreen-content" id="expandedImg">
-    </div>
-
-    <div class="modal-overlay" id="customModal">
-        <div class="modal-box">
-            <h3 class="modal-title" id="modalTitle">संदेश</h3>
-            <p class="modal-message" id="modalMessage">यहाँ टेक्स्ट होगा</p>
-            <textarea id="modalEditInput"></textarea>
-            <div class="modal-actions">
-                <button class="modal-btn btn-cancel" id="modalCancelBtn">Cancel</button>
-                <button class="modal-btn btn-ok" id="modalOkBtn">OK</button>
+    <!-- PDF EXPORT STRUCTURE (HIDDEN) -->
+    <div id="pdf-export-area">
+        <div class="pdf-header">CLASS ATTENDANCE REPORT</div>
+        <div class="pdf-meta-container">
+            <div>
+                <strong>Branch:</strong> <span id="pdf-branch"></span><br>
+                <strong>Class:</strong> <span id="pdf-class"></span><br>
+                <strong>Teacher:</strong> <span id="pdf-teacher"></span>
+            </div>
+            <div style="text-align: right;">
+                <strong>Date:</strong> <span id="pdf-date"></span><br>
+                <strong>CR Name:</strong> <span id="pdf-cr"></span><br>
+                <strong>Present Students:</strong> <span id="pdf-present-count">0</span>
             </div>
         </div>
+        
+        <table class="pdf-table">
+            <thead>
+                <tr>
+                    <th style="text-align: left; text-decoration: underline; padding-right: 15px; white-space: nowrap; width: 1%;">Roll Number</th>
+                    <th style="text-align: left; text-decoration: underline;">Status</th>
+                </tr>
+            </thead>
+            <tbody id="pdf-table-body">
+                <!-- PDF Rows generated by JS -->
+            </tbody>
+        </table>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, deleteDoc, doc, getDocs, updateDoc, increment } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+    <script>
+        // Global variables
+        let rollNumbers = [];
+        let hasUnsavedChanges = false;
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCpbl_PZ6veAe1Wvg1vJCYzBM3sqaH-Pss",
-            authDomain: "students-community-4c135.firebaseapp.com",
-            projectId: "students-community-4c135",
-            storageBucket: "students-community-4c135.firebasestorage.app",
-            messagingSenderId: "236504122314",
-            appId: "1:236504122314:web:8e3b7055a89c80facc0533",
-            measurementId: "G-GJ9T111X0G"
+        // Initial setup and History State Handling
+        window.onload = () => {
+            history.replaceState({ screen: 'home' }, '');
+            document.getElementById('inputDate').value = new Date().toISOString().split('T')[0];
+
+            if (localStorage.getItem('savedAttendanceData')) {
+                document.getElementById('loadSavedBtn').style.display = 'block';
+            }
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        // Glass Modal Helper Functions
+        function openGlassModal(title, messageHtml, buttonsHtml) {
+            document.getElementById('modal-title').innerHTML = title;
+            document.getElementById('modal-msg').innerHTML = messageHtml;
+            document.getElementById('modal-buttons').innerHTML = buttonsHtml;
+            
+            const overlay = document.getElementById('glass-modal-overlay');
+            if (overlay.style.display !== 'flex') {
+                overlay.style.display = 'flex';
+                history.pushState({ screen: 'modal' }, '');
+            }
+        }
 
-        const studentData = {
-            "cm2007": "Chandramani", "omi2009": "Munna Kumar", "pk2010": "Priyanshu kumar", 
-            "234051190003": "PRIYE RANJAN KUMAR", "skroy": "Santosh sir", "harry": "Kishan Raj",
-            "nroy99991": "Nisha Kumari", "sak123": "Sakshi Kumari"
-        };
+        function closeGlassModal() {
+            const overlay = document.getElementById('glass-modal-overlay');
+            overlay.style.display = 'none';
+        }
 
-        function normalizeID(id) { return id.toLowerCase().replace(/\s+/g, ''); }
+        function showGlassAlert(msg) {
+            openGlassModal("Notice", msg, `<button class="btn btn-green" onclick="closeGlassModal()">OK</button>`);
+        }
 
-        const commentsListEl = document.getElementById('commentsList');
-        const postMainBtn = document.getElementById('postMainBtn');
-        const mainInput = document.getElementById('mainCommentInput');
-        const nameInput = document.getElementById('userNameInput');
-        const dockLogoText = document.getElementById('dockLogoText');
-        const adminPinInput = document.getElementById('adminPinInput');
-        const deleteAllDockBtn = document.getElementById('deleteAllDockBtn');
-        const micBtn = document.getElementById('micBtn');
-        
-        const imageInput = document.getElementById('imageInput');
-        const imageStatusText = document.getElementById('imageStatusText');
-        let selectedBase64Image = null;
+        // Helper function to create valid DOM IDs from custom roll numbers
+        function getSafeId(rollStr) {
+            return "roll_" + String(rollStr).replace(/[^a-zA-Z0-9]/g, '_');
+        }
 
-        // Audio Recording Variables
-        let mediaRecorder = null;
-        let audioChunks = [];
-        let selectedBase64Audio = null;
-        let audioState = 'idle'; // 'idle' | 'recording' | 'recorded'
+        // Parse new custom roll number pattern (e.g. "2026-CE-1 to 100, 2025 CE 10 to 20")
+        function parseRollPattern(pattern) {
+            if (!pattern) return [];
+            let parts = pattern.split(',');
+            let result = [];
 
-        let isAdminLoggedIn = false;
-        let globalDocs = []; 
+            parts.forEach(part => {
+                part = part.trim();
+                if(!part) return;
 
-        const modal = document.getElementById('customModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalMessage = document.getElementById('modalMessage');
-        const modalEditInput = document.getElementById('modalEditInput');
-        const modalCancelBtn = document.getElementById('modalCancelBtn');
-        const modalOkBtn = document.getElementById('modalOkBtn');
-        let modalConfirmCallback = null;
-
-        let isPopupActive = false;
-
-        // Scroll View Counting Logic
-        const viewedMessages = new Set();
-        let viewObserver = null;
-
-        function setupViewObserver() {
-            if (viewObserver) viewObserver.disconnect();
-
-            viewObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const elem = entry.target;
-                        const commentId = elem.getAttribute('data-comment-id');
-                        if (!commentId || viewedMessages.has(commentId)) return;
-
-                        elem.dataset.isIntersecting = 'true';
+                // Split by "to" ignoring case and extra spaces
+                let toSplit = part.split(/\s*to\s*/i);
+                
+                if (toSplit.length === 2) {
+                    let leftPart = toSplit[0].trim();
+                    let rightPart = toSplit[1].trim();
+                    
+                    // Match prefix and starting number (e.g., "2026-CE-1" -> prefix: "2026-CE-", start: "1")
+                    let match = leftPart.match(/^(.*?)(\d+)$/);
+                    
+                    if (match) {
+                        let prefix = match[1];
+                        let start = parseInt(match[2], 10);
+                        let end = parseInt(rightPart, 10);
                         
-                        // Timer for 1 second read requirement
-                        const timer = setTimeout(async () => {
-                            if (elem.dataset.isIntersecting === 'true' && !viewedMessages.has(commentId)) {
-                                viewedMessages.add(commentId);
-                                try {
-                                    await updateDoc(doc(db, "portal_comments", commentId), {
-                                        views: increment(1)
-                                    });
-                                } catch (e) {
-                                    console.error("View count error:", e);
-                                }
+                        if (!isNaN(start) && !isNaN(end)) {
+                            let min = Math.min(start, end);
+                            let max = Math.max(start, end);
+                            for (let i = min; i <= max; i++) {
+                                result.push(prefix + i);
                             }
-                        }, 1000);
-
-                        elem.dataset.timerId = timer;
-                    } else {
-                        const elem = entry.target;
-                        elem.dataset.isIntersecting = 'false';
-                        if (elem.dataset.timerId) {
-                            clearTimeout(parseInt(elem.dataset.timerId));
                         }
+                    } else {
+                        // If standard parsing fails, just add as is
+                        result.push(part);
+                    }
+                } else {
+                    // It's a single custom roll number without range
+                    result.push(part);
+                }
+            });
+
+            // Remove duplicates maintaining order
+            return Array.from(new Set(result));
+        }
+
+        // Render Checkboxes in Attendance List (Preserving selected ticks by default)
+        function renderAttendanceList(preserveState = true) {
+            const container = document.getElementById('attendance-list');
+            
+            // Save current checked roll numbers before updating HTML
+            const previouslyChecked = new Set();
+            if (preserveState) {
+                rollNumbers.forEach(roll => {
+                    const safeId = getSafeId(roll);
+                    const chk = document.getElementById(safeId);
+                    if (chk && chk.checked) {
+                        previouslyChecked.add(roll);
                     }
                 });
-            }, { threshold: 0.6 });
-
-            document.querySelectorAll('.comment-box[data-comment-id]').forEach(el => {
-                viewObserver.observe(el);
-            });
-        }
-
-        // Auto-expanding text box logic
-        mainInput.addEventListener('input', function() {
-            this.style.height = '42px';
-            const newHeight = this.scrollHeight;
-            if (newHeight > 100) { 
-                this.style.height = '100px';
-                this.style.overflowY = 'auto';
-            } else {
-                this.style.height = newHeight + 'px';
-                this.style.overflowY = 'hidden';
             }
-        });
 
-        // Audio Recording Handler
-        micBtn.addEventListener('click', async () => {
-            if (audioState === 'idle') {
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    mediaRecorder = new MediaRecorder(stream);
-                    audioChunks = [];
-
-                    mediaRecorder.ondataavailable = (event) => {
-                        if (event.data.size > 0) audioChunks.push(event.data);
-                    };
-
-                    mediaRecorder.onstop = () => {
-                        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                        const reader = new FileReader();
-                        reader.onloadend = () => {
-                            selectedBase64Audio = reader.result;
-                            audioState = 'recorded';
-                            micBtn.innerText = '✔️';
-                            micBtn.classList.remove('recording');
-                            micBtn.title = 'ऑडियो रिकॉर्ड हो गया! (री-रिकॉर्ड करने के लिए दोबारा क्लिक करें)';
-                        };
-                        reader.readAsDataURL(audioBlob);
-                        stream.getTracks().forEach(track => track.stop());
-                    };
-
-                    mediaRecorder.start();
-                    audioState = 'recording';
-                    micBtn.innerText = '🔴';
-                    micBtn.classList.add('recording');
-                    micBtn.title = 'रिकॉर्डिंग हो रही है... बंद करने के लिए क्लिक करें';
-                } catch (err) {
-                    showModal("माइक एक्सेस", "माइक की अनुमति नहीं मिली या डिवाइस सपोर्ट नहीं करता।", "alert");
-                }
-            } else if (audioState === 'recording') {
-                if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-                    mediaRecorder.stop();
-                }
-            } else if (audioState === 'recorded') {
-                selectedBase64Audio = null;
-                audioState = 'idle';
-                micBtn.innerText = '🎤';
-                micBtn.title = 'ऑडियो रिकॉर्ड करें';
-            }
-        });
-
-        window.toggleAudioPlay = function(commentId) {
-            const audio = document.getElementById('audio_' + commentId);
-            const btn = document.getElementById('playBtn_' + commentId);
-            const status = document.getElementById('audioStatus_' + commentId);
-            if (!audio || !btn) return;
-
-            document.querySelectorAll('audio').forEach(a => {
-                if (a.id !== 'audio_' + commentId && !a.paused) {
-                    a.pause();
-                    const otherId = a.id.replace('audio_', '');
-                    const otherBtn = document.getElementById('playBtn_' + otherId);
-                    const otherStatus = document.getElementById('audioStatus_' + otherId);
-                    if (otherBtn) otherBtn.innerText = '▶';
-                    if (otherStatus) otherStatus.innerText = 'Click to play';
-                }
+            container.innerHTML = '';
+            
+            rollNumbers.forEach(roll => {
+                const safeId = getSafeId(roll);
+                container.innerHTML += `
+                <div class="roll-row" id="row_${safeId}">
+                    <label>
+                        <input type="checkbox" id="${safeId}" onchange="handleCheckboxClick(this, '${roll}')"> 
+                        ${roll}
+                    </label>
+                </div>`;
             });
 
-            if (audio.paused) {
-                audio.play();
-                btn.innerText = '⏸';
-                if(status) status.innerText = 'Playing...';
-            } else {
-                audio.pause();
-                btn.innerText = '▶';
-                if(status) status.innerText = 'Paused';
+            // Restore previously checked state
+            if (preserveState) {
+                previouslyChecked.forEach(roll => {
+                    const safeId = getSafeId(roll);
+                    const chk = document.getElementById(safeId);
+                    if (chk) {
+                        chk.checked = true;
+                    }
+                });
             }
-
-            audio.onended = () => {
-                btn.innerText = '▶';
-                if(status) status.innerText = 'Click to play';
-            };
-        };
-
-        window.addEventListener('popstate', function(e) {
-            if (isPopupActive) {
-                document.getElementById('fullScreenImageModal').classList.remove('show');
-                modal.classList.remove('show');
-                modalEditInput.style.display = 'none';
-                isPopupActive = false;
-            }
-        });
-
-        window.openFullscreen = function(imageSrc) {
-            const fsModal = document.getElementById('fullScreenImageModal');
-            const fsImg = document.getElementById('expandedImg');
-            fsImg.src = imageSrc;
-            fsModal.classList.add('show');
-            isPopupActive = true;
-            history.pushState({ popup: true }, '');
-        };
-
-        window.closeFullscreen = function() {
-            document.getElementById('fullScreenImageModal').classList.remove('show');
-            if (isPopupActive) {
-                isPopupActive = false;
-                history.back(); 
-            }
-        };
-
-        function showModal(title, message, type, onConfirm = null) {
-            modalTitle.innerText = title;
-            modalMessage.innerText = message;
-            modalEditInput.style.display = 'none';
-            modalMessage.style.display = 'block';
-
-            if (type === 'alert') {
-                modalCancelBtn.style.display = 'none';
-                modalOkBtn.className = 'modal-btn btn-ok';
-                modalOkBtn.innerText = 'OK';
-            } else if (type === 'danger-confirm') {
-                modalCancelBtn.style.display = 'inline-block';
-                modalOkBtn.className = 'modal-btn btn-ok-danger';
-                modalOkBtn.innerText = 'Delete';
-            } else if (type === 'edit-confirm') {
-                modalCancelBtn.style.display = 'inline-block';
-                modalOkBtn.className = 'modal-btn btn-ok';
-                modalOkBtn.innerText = 'Save';
-                modalEditInput.style.display = 'block';
-                modalMessage.style.display = 'none';
-            }
-
-            modal.classList.add('show');
-            modalConfirmCallback = onConfirm;
-            isPopupActive = true;
-            history.pushState({ popup: true }, '');
         }
 
-        function closeMyModal() {
-            modal.classList.remove('show'); 
-            modalEditInput.style.display = 'none';
-            if (isPopupActive) {
-                isPopupActive = false;
+        // Mark unsaved changes
+        function handleCheckboxClick(checkboxElem, roll) {
+            hasUnsavedChanges = true; 
+        }
+
+        // Move to Attendance screen
+        function proceedToAttendance() {
+            const branch = document.getElementById('inputBranch').value.trim();
+            const className = document.getElementById('inputClass').value.trim();
+            const pattern = document.getElementById('inputRollPattern').value.trim();
+
+            if (branch === '' || className === '') {
+                showGlassAlert("Please fill in Branch and Class details.");
+                return;
+            }
+
+            if (pattern === '') {
+                showGlassAlert("Please enter Roll Range (e.g. 2026-CE-1 to 100).");
+                return;
+            }
+
+            rollNumbers = parseRollPattern(pattern);
+
+            if (rollNumbers.length === 0) {
+                showGlassAlert("Invalid Roll Pattern! Please use correct format.");
+                return;
+            }
+
+            renderAttendanceList(true); // Keeps existing ticked boxes intact
+
+            document.getElementById('home-screen').style.display = 'none';
+            document.getElementById('attendance-screen').style.display = 'block';
+
+            history.pushState({ screen: 'attendance' }, '');
+        }
+
+        // Direct function to return to home without checks
+        function goBackToHomeDirect() {
+            hasUnsavedChanges = false;
+            document.getElementById('attendance-screen').style.display = 'none';
+            document.getElementById('home-screen').style.display = 'block';
+        }
+
+        // Go Back to Home Screen with unsaved check
+        function goBackToHome() {
+            if (hasUnsavedChanges) {
+                promptUnsavedWarning();
+                return;
+            }
+            goBackToHomeDirect();
+            if (history.state && history.state.screen === 'attendance') {
                 history.back();
             }
         }
 
-        modalCancelBtn.onclick = () => { closeMyModal(); };
-        modalOkBtn.onclick = () => { closeMyModal(); if(modalConfirmCallback) modalConfirmCallback(); };
-
-        // Animate Header Name on ID Input
-        nameInput.addEventListener('input', () => {
-            const rawId = nameInput.value.trim();
-            const normalized = normalizeID(rawId);
-            let displayName = "RAINBOW CLASSES";
-
-            if (studentData[normalized]) {
-                displayName = studentData[normalized];
-            } else if (rawId && isAdminLoggedIn) {
-                displayName = rawId; 
-            }
-
-            if (dockLogoText.innerText !== displayName) {
-                dockLogoText.style.opacity = '0';
-                dockLogoText.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    dockLogoText.innerText = displayName;
-                    dockLogoText.style.opacity = '1';
-                    dockLogoText.style.transform = 'scale(1)';
-                }, 200);
-            }
-            renderComments(); 
-        });
-
-        adminPinInput.addEventListener('input', () => {
-            if (adminPinInput.value.trim().toLowerCase() === 'xyz') {
-                isAdminLoggedIn = true;
-                deleteAllDockBtn.classList.add('show');
-                commentsListEl.classList.add('admin-mode');
-            } else {
-                isAdminLoggedIn = false;
-                deleteAllDockBtn.classList.remove('show');
-                commentsListEl.classList.remove('admin-mode');
-            }
-            renderComments();
-        });
-
-        deleteAllDockBtn.addEventListener('click', () => {
-            showModal("चेतावनी!", "क्या आप वाकई सभी मैसेज हमेशा के लिए हटाना चाहते हैं?", "danger-confirm", async () => {
-                try {
-                    const q = query(collection(db, "portal_comments"));
-                    const querySnapshot = await getDocs(q);
-                    querySnapshot.forEach(async (docSnap) => { await deleteDoc(doc(db, "portal_comments", docSnap.id)); });
-                } catch (error) { showModal("त्रुटि", "मैसेज हटाने में समस्या आई।", "alert"); }
-            });
-        });
-
-        imageInput.addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = new Image();
-                    img.onload = function() {
-                        const canvas = document.createElement('canvas');
-                        const MAX_WIDTH = 800; 
-                        const MAX_HEIGHT = 800;
-                        let width = img.width;
-                        let height = img.height;
-
-                        if (width > height) {
-                            if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
-                        } else {
-                            if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
-                        }
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, width, height);
-                        
-                        selectedBase64Image = canvas.toDataURL('image/jpeg', 0.7); 
-                        imageStatusText.style.display = 'block';
-                    }
-                    img.src = e.target.result;
-                }
-                reader.readAsDataURL(file);
-            } else {
-                selectedBase64Image = null;
-                imageStatusText.style.display = 'none';
-            }
-        });
-
-        postMainBtn.addEventListener('click', async () => {
-            const text = mainInput.value.trim();
-            const rawUserIdInput = nameInput.value;
-            const normalizedInput = normalizeID(rawUserIdInput);
-
-            if (!isAdminLoggedIn && !rawUserIdInput.trim()) { showModal("जानकारी", "कृपया अपना User ID दर्ज करें!", "alert"); return; }
-            if (!text && !selectedBase64Image && !selectedBase64Audio) { showModal("जानकारी", "कृपया कुछ लिखें, फोटो चुनें या ऑडियो रिकॉर्ड करें!", "alert"); return; }
-
-            postMainBtn.innerText = "⏳";
-            postMainBtn.disabled = true;
-
-            let displayName = "";
-            if (isAdminLoggedIn) {
-                if (rawUserIdInput.trim() && studentData[normalizedInput]) displayName = studentData[normalizedInput]; 
-                else if (rawUserIdInput.trim()) displayName = rawUserIdInput.trim(); 
-                else displayName = "Admin";
-            } else {
-                if (studentData[normalizedInput]) displayName = studentData[normalizedInput]; 
-                else { 
-                    showModal("एक्सेस मना है 🚫", "आपका User ID गलत है या सूची में पंजीकृत नहीं है।", "alert"); 
-                    postMainBtn.innerText = "📨"; postMainBtn.disabled = false;
-                    return; 
-                }
-            }
-
-            try {
-                await addDoc(collection(db, "portal_comments"), {
-                    userName: displayName, text: text, 
-                    imageUrl: selectedBase64Image || null,
-                    audioUrl: selectedBase64Audio || null,
-                    views: 0,
-                    role: isAdminLoggedIn ? 'admin' : 'student',
-                    parentId: null, likes: 0, pinned: false, timestamp: serverTimestamp()
-                });
-                
-                mainInput.value = ''; 
-                mainInput.style.height = '42px';
-                mainInput.style.overflowY = 'hidden';
-                imageInput.value = '';
-                selectedBase64Image = null;
-                imageStatusText.style.display = 'none';
-
-                // Reset Audio Recording State
-                selectedBase64Audio = null;
-                audioState = 'idle';
-                micBtn.innerText = '🎤';
-                micBtn.classList.remove('recording');
-                micBtn.title = 'ऑडियो रिकॉर्ड करें';
-
-            } catch (error) { 
-                showModal("सर्वर त्रुटि", "मैसेज नहीं गया! शायद फाइल बहुत बड़ी है।", "alert"); 
-            } finally {
-                postMainBtn.innerText = "📨";
-                postMainBtn.disabled = false;
-            }
-        });
-
-        window.postReply = async function(parentId, inputId) {
-            const replyInput = document.getElementById(inputId);
-            const text = replyInput.value.trim();
-            const rawUserIdInput = nameInput.value; 
-            const normalizedInput = normalizeID(rawUserIdInput);
-
-            if (!isAdminLoggedIn && !rawUserIdInput.trim()) { showModal("जानकारी", "रिप्लाई करने से पहले ऊपर अपना User ID दर्ज करें!", "alert"); return; }
-            if (!text) { showModal("जानकारी", "कृपया रिप्लाई बॉक्स में कुछ लिखें!", "alert"); return; }
-
-            let displayName = "";
-            if (isAdminLoggedIn) {
-                if (rawUserIdInput.trim() && studentData[normalizedInput]) displayName = studentData[normalizedInput];
-                else if (rawUserIdInput.trim()) displayName = rawUserIdInput.trim(); 
-                else displayName = "Admin";
-            } else {
-                if (studentData[normalizedInput]) displayName = studentData[normalizedInput];
-                else { showModal("एक्सेस मना है 🚫", "आपका User ID गलत है या सूची में पंजीकृत नहीं है।", "alert"); return; }
-            }
-
-            try {
-                await addDoc(collection(db, "portal_comments"), {
-                    userName: displayName, text: text, role: isAdminLoggedIn ? 'admin' : 'student', 
-                    parentId: parentId, timestamp: serverTimestamp()
-                });
-                replyInput.value = '';
-                toggleReplyBox('replyBox_' + parentId); 
-            } catch (error) { console.error(error); }
-        };
-        
-        window.deleteComment = async function(commentId) {
-            if (!isAdminLoggedIn) return; 
-            try { await deleteDoc(doc(db, "portal_comments", commentId)); } catch (error) { console.error(error); }
-        };
-
-        window.deleteUserComment = function(commentId) {
-            showModal("मैसेज डिलीट", "क्या आप वाकई यह मैसेज/रिप्लाई डिलीट करना चाहते हैं?", "danger-confirm", async () => {
-                try { await deleteDoc(doc(db, "portal_comments", commentId)); } catch (error) { showModal("त्रुटि", "डिलीट करने में समस्या आई।", "alert"); }
-            });
-        };
-
-        window.editUserComment = function(commentId) {
-            const comment = globalDocs.find(d => d.id === commentId);
-            if(!comment) return;
-            modalEditInput.value = comment.text;
-            showModal("मैसेज एडिट करें ✏️", "", "edit-confirm", async () => {
-                const newText = modalEditInput.value.trim();
-                if(newText && newText !== comment.text) {
-                    try { await updateDoc(doc(db, "portal_comments", commentId), { text: newText }); } 
-                    catch (error) { showModal("त्रुटि", "अपडेट करने में समस्या आई।", "alert"); }
-                }
-            });
-        };
-
-        window.toggleLike = async function(commentId, currentLikes) {
-            const likeKey = 'liked_' + commentId;
-            const isLiked = localStorage.getItem(likeKey);
-            let newLikes = currentLikes || 0;
-            if (isLiked) { localStorage.removeItem(likeKey); newLikes = Math.max(0, newLikes - 1); } 
-            else { localStorage.setItem(likeKey, 'true'); newLikes = newLikes + 1; }
-            try { await updateDoc(doc(db, "portal_comments", commentId), { likes: newLikes }); } catch (error) { console.error(error); }
-        };
-
-        window.toggleReplyBox = function(boxId) { const box = document.getElementById(boxId); if(box) box.classList.toggle('active'); };
-        
-        window.toggleReplies = function(commentId) {
-            const box = document.getElementById('repliesBox_' + commentId);
-            if(box) box.classList.toggle('show');
-        };
-
-        window.togglePin = async function(commentId, currentPinStatus) {
-            if (!isAdminLoggedIn) return;
-            try { await updateDoc(doc(db, "portal_comments", commentId), { pinned: !currentPinStatus }); } catch (error) { console.error("Pinning error", error); }
-        };
-
-        function getTimeString(timestamp) {
-            if (!timestamp) return 'अभी-अभी'; 
-            const now = Date.now();
-            const past = timestamp.toMillis();
-            const diffSec = Math.floor((now - past) / 1000);
-            if (diffSec < 60) return `${Math.max(1, diffSec)} सेकंड`;
-            const diffMin = Math.floor(diffSec / 60);
-            if (diffMin < 60) return `${diffMin} मिनट`;
-            const diffHour = Math.floor(diffMin / 60);
-            if (diffHour < 24) return `${diffHour} घंटे`;
-            const diffDay = Math.floor(diffHour / 24);
-            return `${diffDay} दिन`;
+        // Prompt user to save attendance on exit
+        function promptUnsavedWarning() {
+            openGlassModal(
+                "⚠️ अटेंडेंस सेव करें",
+                "आप अपना अटेंडेंस सेव कर लें!",
+                `<button class="btn btn-blue" onclick="saveAttendanceFromModal()">Save Attendance 💾</button>
+                 <button class="btn btn-orange" onclick="closeGlassModal(); goBackToHomeDirect();">Discard & Exit</button>`
+            );
         }
 
-        const q = query(collection(db, "portal_comments"), orderBy("timestamp", "desc"));
-        onSnapshot(q, (snapshot) => {
-            globalDocs = [];
-            snapshot.forEach(doc => { globalDocs.push({ id: doc.id, ...doc.data() }); });
-            renderComments();
-        });
+        // Save Attendance triggered from glass modal
+        function saveAttendanceFromModal() {
+            saveAttendance();
+            closeGlassModal();
+            goBackToHomeDirect();
+        }
 
-        function renderComments() {
-            let mainComments = globalDocs.filter(d => !d.parentId);
-            const replies = globalDocs.filter(d => d.parentId);
+        // SAVE ATTENDANCE FUNCTION
+        function saveAttendance() {
+            const attendanceData = {
+                branch: document.getElementById('inputBranch').value,
+                className: document.getElementById('inputClass').value,
+                date: document.getElementById('inputDate').value,
+                teacher: document.getElementById('inputTeacher').value,
+                cr: document.getElementById('inputCr').value,
+                rollPattern: document.getElementById('inputRollPattern').value,
+                rollNumbers: rollNumbers,
+                presentRolls: []
+            };
 
-            if (mainComments.length === 0) {
-                commentsListEl.innerHTML = '<p style="text-align: center; color: var(--text-muted); font-weight: 500;">अभी कोई चर्चा नहीं हुई है। अपना पहला मैसेज भेजें!</p>';
+            // Collect all ticked roll numbers
+            rollNumbers.forEach(roll => {
+                const safeId = getSafeId(roll);
+                const chk = document.getElementById(safeId);
+                if (chk && chk.checked) {
+                    attendanceData.presentRolls.push(roll);
+                }
+            });
+
+            localStorage.setItem('savedAttendanceData', JSON.stringify(attendanceData));
+            hasUnsavedChanges = false;
+            
+            showGlassAlert("Attendance Saved Successfully! <br>(डेटा सेव हो गया है।)");
+            
+            document.getElementById('loadSavedBtn').style.display = 'block';
+        }
+
+        // LOAD SAVED ATTENDANCE FUNCTION
+        function loadSavedAttendance() {
+            const savedDataString = localStorage.getItem('savedAttendanceData');
+            if (savedDataString) {
+                const data = JSON.parse(savedDataString);
+                
+                document.getElementById('inputBranch').value = data.branch || '';
+                document.getElementById('inputClass').value = data.className || '';
+                document.getElementById('inputDate').value = data.date || new Date().toISOString().split('T')[0];
+                document.getElementById('inputTeacher').value = data.teacher || '';
+                document.getElementById('inputCr').value = data.cr || '';
+                document.getElementById('inputRollPattern').value = data.rollPattern || '';
+
+                if (data.rollNumbers && data.rollNumbers.length > 0) {
+                    rollNumbers = data.rollNumbers;
+                } else if (data.rollPattern) {
+                    rollNumbers = parseRollPattern(data.rollPattern);
+                }
+
+                renderAttendanceList(false); // Clear previous ticks to load exact saved ones
+
+                // Tick saved roll numbers
+                if (data.presentRolls) {
+                    data.presentRolls.forEach(roll => {
+                        const safeId = getSafeId(roll);
+                        const checkbox = document.getElementById(safeId);
+                        if(checkbox) {
+                            checkbox.checked = true;
+                        }
+                    });
+                }
+
+                hasUnsavedChanges = false;
+                document.getElementById('home-screen').style.display = 'none';
+                document.getElementById('attendance-screen').style.display = 'block';
+                
+                history.pushState({ screen: 'attendance' }, '');
+            }
+        }
+
+        // Generate and Download PDF
+        function downloadPdf() {
+            document.getElementById('pdf-branch').innerText = document.getElementById('inputBranch').value;
+            document.getElementById('pdf-class').innerText = document.getElementById('inputClass').value;
+            document.getElementById('pdf-teacher').innerText = document.getElementById('inputTeacher').value;
+            document.getElementById('pdf-cr').innerText = document.getElementById('inputCr').value;
+            document.getElementById('pdf-date').innerText = document.getElementById('inputDate').value;
+
+            const tbody = document.getElementById('pdf-table-body');
+            tbody.innerHTML = '';
+            
+            let presentCount = 0;
+
+            rollNumbers.forEach(roll => {
+                const safeId = getSafeId(roll);
+                const chk = document.getElementById(safeId);
+                const isPresent = chk ? chk.checked : false; 
+                
+                if (isPresent) {
+                    presentCount++;
+                }
+
+                const statusText = isPresent 
+                    ? '<span style="color: #444; margin-right: 4px; font-size: 1.1em;">&#10142;</span><span style="color: #0b8043; font-weight: bold;">Present</span>' 
+                    : '';
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="font-weight: bold; text-align: left; padding-right: 15px; white-space: nowrap; width: 1%;">${roll}</td>
+                        <td style="text-align: left;">${statusText}</td>
+                    </tr>`;
+            });
+
+            // Set the Present Students Count
+            document.getElementById('pdf-present-count').innerText = presentCount;
+
+            const element = document.getElementById('pdf-export-area');
+            element.style.display = 'block';
+
+            // PDF margin is set here: [top, right, bottom, left]
+            const opt = {
+                margin:       [5, 10, 10, 10], 
+                filename:     `Attendance_${document.getElementById('inputDate').value}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak:    { mode: ['css', 'legacy'] } 
+            };
+
+            html2pdf().from(element).set(opt).save().then(() => {
+                element.style.display = 'none';
+            });
+        }
+
+        // Back Button Event Listener
+        window.addEventListener('popstate', (e) => {
+            const overlay = document.getElementById('glass-modal-overlay');
+
+            if (overlay.style.display === 'flex') {
+                overlay.style.display = 'none';
                 return;
             }
 
-            const pinnedComments = mainComments.filter(c => c.pinned);
-            const unpinnedComments = mainComments.filter(c => !c.pinned);
-            mainComments = [...pinnedComments, ...unpinnedComments];
-
-            commentsListEl.innerHTML = '';
-            const currentUserDisplayName = studentData[normalizeID(nameInput.value.trim())];
-            const adminDelStyle = isAdminLoggedIn ? 'display: inline-block;' : 'display: none;';
-
-            mainComments.forEach(comment => {
-                const commentReplies = replies.filter(r => r.parentId === comment.id);
-                commentReplies.sort((a, b) => (a.timestamp?.toMillis() || 0) - (b.timestamp?.toMillis() || 0));
-                
-                const replyCount = commentReplies.length;
-                const isMainOwner = currentUserDisplayName && comment.userName === currentUserDisplayName;
-                let hasUserReplied = false;
-
-                let repliesHTML = '';
-                commentReplies.forEach(reply => {
-                    const isReplyAdmin = reply.role === 'admin';
-                    const rBadgeHTML = isReplyAdmin ? `<span class="admin-badge">Admin</span>` : '';
-                    const rAvatarClass = isReplyAdmin ? `avatar admin-avatar reply-avatar` : `avatar reply-avatar`;
-                    const rContentClass = isReplyAdmin ? `comment-content admin-comment` : `comment-content`;
-
-                    const isReplyOwner = currentUserDisplayName && reply.userName === currentUserDisplayName;
-                    if(isReplyOwner) hasUserReplied = true; 
-
-                    const userReplyActions = isReplyOwner ? `
-                        <button class="user-action-btn edit" onclick="editUserComment('${reply.id}')">Edit</button>
-                        <button class="user-action-btn delete" onclick="deleteUserComment('${reply.id}')">Del</button>
-                    ` : '';
-
-                    const ownerDeleteHTML = isMainOwner ? `<button class="reply-owner-delete" onclick="deleteUserComment('${reply.id}')" title="Delete this reply">✕</button>` : '';
-
-                    repliesHTML += `
-                        <div class="comment-box">
-                            <div class="${rAvatarClass}">${reply.userName.charAt(0).toUpperCase()}</div>
-                            <div class="${rContentClass}" style="position:relative; padding-top:14px;">
-                                ${ownerDeleteHTML}
-                                <div class="comment-header">
-                                    <span class="user-name">${reply.userName} ${rBadgeHTML}</span>
-                                </div>
-                                <div class="comment-text">${reply.text}</div>
-                                <div class="comment-actions-container">
-                                    <div class="left-actions">
-                                        <button class="delete-btn admin-delete-btn" style="${adminDelStyle}" onclick="deleteComment('${reply.id}')">Del (Admin)</button>
-                                        ${userReplyActions}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                const repliesContainerClass = hasUserReplied ? 'replies-container show' : 'replies-container';
-
-                const isAdmin = comment.role === 'admin';
-                const badgeHTML = isAdmin ? `<span class="admin-badge">Admin</span>` : '';
-                const avatarClass = isAdmin ? `avatar admin-avatar` : `avatar`;
-                const contentClass = isAdmin ? `comment-content admin-comment` : `comment-content`;
-
-                const userMainActions = isMainOwner ? `
-                    <button class="user-action-btn edit" onclick="editUserComment('${comment.id}')">Edit</button>
-                    <button class="user-action-btn delete" onclick="deleteUserComment('${comment.id}')">Del</button>
-                ` : '';
-
-                const likesCount = comment.likes || 0;
-                const likeHTML = `
-                    <div class="right-actions">
-                        <button class="like-btn" onclick="toggleLike('${comment.id}', ${likesCount})">
-                            ❤️ <span style="font-weight: 700; color:#1f2937;">${likesCount}</span>
-                        </button>
-                    </div>
-                `;
-
-                const timeString = getTimeString(comment.timestamp);
-                const viewsCount = comment.views || 0;
-                const isPinned = comment.pinned || false;
-                const pinnedBadgeHTML = isPinned ? `<span class="pinned-badge">📍</span>` : '';
-                const pinBtnText = isPinned ? '📍Unpin' : '📌Pin';
-
-                let viewRepliesBtnHTML = '';
-                if(replyCount > 0) {
-                    viewRepliesBtnHTML = `
-                        <div class="view-reply-wrapper">
-                            <button class="view-reply-btn" onclick="toggleReplies('${comment.id}')">View Replies</button>
-                            <span class="reply-count-badge">${replyCount}</span>
-                        </div>
-                    `;
+            const attendanceScreen = document.getElementById('attendance-screen');
+            if (attendanceScreen.style.display === 'block') {
+                if (hasUnsavedChanges) {
+                    history.pushState({ screen: 'attendance' }, '');
+                    promptUnsavedWarning();
+                } else {
+                    goBackToHomeDirect();
                 }
-
-                let sharedImageHTML = '';
-                if (comment.imageUrl) {
-                    sharedImageHTML = `<img src="${comment.imageUrl}" class="comment-image" onclick="openFullscreen(this.src)" title="Click to view full screen">`;
-                }
-
-                let sharedAudioHTML = '';
-                if (comment.audioUrl) {
-                    sharedAudioHTML = `
-                        <div class="audio-player-box">
-                            <button class="audio-play-btn" id="playBtn_${comment.id}" onclick="toggleAudioPlay('${comment.id}')" title="Listen Voice Note">▶</button>
-                            <div class="audio-info">
-                                <span class="audio-label">Voice Message 🎵</span>
-                                <span class="audio-time-status" id="audioStatus_${comment.id}">Click to play</span>
-                            </div>
-                            <audio id="audio_${comment.id}" src="${comment.audioUrl}" preload="metadata"></audio>
-                        </div>
-                    `;
-                }
-
-                const adminDockHTML = `
-                    <div class="admin-action-dock">
-                        <button class="admin-dock-btn pin" onclick="togglePin('${comment.id}', ${isPinned})">${pinBtnText}</button>
-                        <button class="admin-dock-btn delete" onclick="deleteComment('${comment.id}')">🗑️delete(Admin)</button>
-                    </div>
-                `;
-
-                const commentElement = document.createElement('div');
-                commentElement.className = 'comment-box';
-                commentElement.setAttribute('data-comment-id', comment.id);
-                commentElement.innerHTML = `
-                    <div class="${avatarClass}">${comment.userName.charAt(0).toUpperCase()}</div>
-                    <div class="${contentClass}">
-                        
-                        <div class="message-top-right">
-                            <span class="time-ago-text">${timeString}</span>
-                            <span class="view-count-text">view ${viewsCount}</span>
-                        </div>
-
-                        <div class="comment-header">
-                            <span class="user-name">${comment.userName} ${badgeHTML} ${pinnedBadgeHTML}</span>
-                        </div>
-                        
-                        <div class="comment-text">${comment.text || ''}</div>
-                        
-                        ${sharedAudioHTML}
-                        ${sharedImageHTML}
-                        
-                        <div class="comment-actions-container">
-                            <div class="left-actions">
-                                <button class="action-btn" onclick="toggleReplyBox('replyBox_${comment.id}')">Reply</button>
-                                ${viewRepliesBtnHTML}
-                                ${userMainActions}
-                            </div>
-                            ${likeHTML}
-                        </div>
-
-                        ${adminDockHTML}
-
-                        <div class="reply-input-wrapper" id="replyBox_${comment.id}">
-                            <textarea id="replyInput_${comment.id}" placeholder="Type your reply..."></textarea>
-                            <button class="submit-btn" onclick="postReply('${comment.id}', 'replyInput_${comment.id}')">Send 📨</button>
-                            <div style="clear: both;"></div>
-                        </div>
-
-                        <div class="${repliesContainerClass}" id="repliesBox_${comment.id}">
-                            ${repliesHTML}
-                        </div>
-                    </div>
-                `;
-                commentsListEl.appendChild(commentElement);
-            });
-
-            // Initialize intersection observer for scroll-based view tracking
-            setupViewObserver();
-        }
+            }
+        });
     </script>
 </body>
 </html>
