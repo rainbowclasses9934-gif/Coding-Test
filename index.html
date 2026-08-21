@@ -55,7 +55,7 @@
         }
         input::placeholder { color: rgba(255,255,255,0.6); }
 
-        /* Buttons with Zoom Out Click Effect */
+        /* Buttons */
         .btn { 
             padding: 14px; border: none; border-radius: 8px; cursor: pointer; 
             color: white; width: 100%; font-weight: bold; font-size: 16px; 
@@ -63,9 +63,7 @@
             display: inline-block;
             text-align: center;
         }
-        .btn:active { 
-            transform: scale(0.92); 
-        }
+        .btn:active { transform: scale(0.92); }
         .btn-green { background: #38ef7d; color: #000; box-shadow: 0 4px 15px rgba(56, 239, 125, 0.3); }
         .btn-blue { background: #3498db; box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3); }
         .btn-orange { background: #e67e22; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3); }
@@ -86,7 +84,7 @@
         .roll-row label { cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 16px; width: 100%; }
         .roll-row input[type="checkbox"] { width: 18px; height: 18px; accent-color: #38ef7d; cursor: pointer;}
 
-        /* --- STYLISH GLASS POPUP MODAL --- */
+        /* STYLISH GLASS POPUP MODAL */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -117,7 +115,6 @@
             to { transform: scale(1); opacity: 1; }
         }
 
-        /* Scrollbar styling */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 10px; }
 
@@ -147,7 +144,7 @@
         <input type="date" id="inputDate">
         <input type="text" id="inputTeacher" placeholder="Teacher's Name">
         <input type="text" id="inputCr" placeholder="CR's Name">
-        <input type="text" id="inputRollPattern" placeholder="Roll Range (e.g. 2026-CE-1 to 100, 2025 CE 10 to 20)">
+        <input type="text" id="inputRollPattern" placeholder="Roll Range (e.g. 2026-CE-1 to 100)">
         
         <button class="btn btn-green" onclick="proceedToAttendance()">Start New Attendance</button>
         <button class="btn btn-blue" id="loadSavedBtn" onclick="loadSavedAttendance()" style="display: none;">Saved Attendance 📂</button>
@@ -208,22 +205,18 @@
         let rollNumbers = [];
         let hasUnsavedChanges = false;
 
-        // Initial setup
         window.onload = () => {
             history.replaceState({ screen: 'home' }, '');
             document.getElementById('inputDate').value = new Date().toISOString().split('T')[0];
-
             if (localStorage.getItem('savedAttendanceData')) {
                 document.getElementById('loadSavedBtn').style.display = 'block';
             }
         };
 
-        // Glass Modal Helper Functions
         function openGlassModal(title, messageHtml, buttonsHtml) {
             document.getElementById('modal-title').innerHTML = title;
             document.getElementById('modal-msg').innerHTML = messageHtml;
             document.getElementById('modal-buttons').innerHTML = buttonsHtml;
-            
             const overlay = document.getElementById('glass-modal-overlay');
             if (overlay.style.display !== 'flex') {
                 overlay.style.display = 'flex';
@@ -232,53 +225,38 @@
         }
 
         function closeGlassModal() {
-            const overlay = document.getElementById('glass-modal-overlay');
-            overlay.style.display = 'none';
+            document.getElementById('glass-modal-overlay').style.display = 'none';
         }
 
         function showGlassAlert(msg) {
             openGlassModal("Notice", msg, `<button class="btn btn-green" onclick="closeGlassModal()">OK</button>`);
         }
 
-        function getSafeId(rollStr) {
-            return "roll_" + String(rollStr).replace(/[^a-zA-Z0-9]/g, '_');
-        }
+        function getSafeId(rollStr) { return "roll_" + String(rollStr).replace(/[^a-zA-Z0-9]/g, '_'); }
 
         function parseRollPattern(pattern) {
             if (!pattern) return [];
             let parts = pattern.split(',');
             let result = [];
-
             parts.forEach(part => {
                 part = part.trim();
                 if(!part) return;
-
                 let toSplit = part.split(/\s*to\s*/i);
-                
                 if (toSplit.length === 2) {
                     let leftPart = toSplit[0].trim();
                     let rightPart = toSplit[1].trim();
-                    
                     let match = leftPart.match(/^(.*?)(\d+)$/);
-                    
                     if (match) {
                         let prefix = match[1];
                         let start = parseInt(match[2], 10);
                         let end = parseInt(rightPart, 10);
-                        
                         if (!isNaN(start) && !isNaN(end)) {
                             let min = Math.min(start, end);
                             let max = Math.max(start, end);
-                            for (let i = min; i <= max; i++) {
-                                result.push(prefix + i);
-                            }
+                            for (let i = min; i <= max; i++) { result.push(prefix + i); }
                         }
-                    } else {
-                        result.push(part);
-                    }
-                } else {
-                    result.push(part);
-                }
+                    } else { result.push(part); }
+                } else { result.push(part); }
             });
             return Array.from(new Set(result));
         }
@@ -286,72 +264,44 @@
         function renderAttendanceList(preserveState = true) {
             const container = document.getElementById('attendance-list');
             const previouslyChecked = new Set();
-            
             if (preserveState) {
                 rollNumbers.forEach(roll => {
                     const safeId = getSafeId(roll);
                     const chk = document.getElementById(safeId);
-                    if (chk && chk.checked) {
-                        previouslyChecked.add(roll);
-                    }
+                    if (chk && chk.checked) previouslyChecked.add(roll);
                 });
             }
-
             container.innerHTML = '';
-            
             rollNumbers.forEach(roll => {
                 const safeId = getSafeId(roll);
                 container.innerHTML += `
                 <div class="roll-row" id="row_${safeId}">
                     <label>
-                        <input type="checkbox" id="${safeId}" onchange="handleCheckboxClick(this, '${roll}')"> 
+                        <input type="checkbox" id="${safeId}" onchange="hasUnsavedChanges=true"> 
                         ${roll}
                     </label>
                 </div>`;
             });
-
             if (preserveState) {
                 previouslyChecked.forEach(roll => {
                     const safeId = getSafeId(roll);
                     const chk = document.getElementById(safeId);
-                    if (chk) {
-                        chk.checked = true;
-                    }
+                    if (chk) chk.checked = true;
                 });
             }
-        }
-
-        function handleCheckboxClick(checkboxElem, roll) {
-            hasUnsavedChanges = true; 
         }
 
         function proceedToAttendance() {
             const branch = document.getElementById('inputBranch').value.trim();
             const className = document.getElementById('inputClass').value.trim();
             const pattern = document.getElementById('inputRollPattern').value.trim();
-
-            if (branch === '' || className === '') {
-                showGlassAlert("Please fill in Branch and Class details.");
-                return;
-            }
-
-            if (pattern === '') {
-                showGlassAlert("Please enter Roll Range (e.g. 2026-CE-1 to 100).");
-                return;
-            }
-
+            if (branch === '' || className === '') { showGlassAlert("Please fill in Branch and Class details."); return; }
+            if (pattern === '') { showGlassAlert("Please enter Roll Range (e.g. 2026-CE-1 to 100)."); return; }
             rollNumbers = parseRollPattern(pattern);
-
-            if (rollNumbers.length === 0) {
-                showGlassAlert("Invalid Roll Pattern! Please use correct format.");
-                return;
-            }
-
+            if (rollNumbers.length === 0) { showGlassAlert("Invalid Roll Pattern!"); return; }
             renderAttendanceList(true);
-
             document.getElementById('home-screen').style.display = 'none';
             document.getElementById('attendance-screen').style.display = 'block';
-
             history.pushState({ screen: 'attendance' }, '');
         }
 
@@ -363,28 +313,13 @@
 
         function goBackToHome() {
             if (hasUnsavedChanges) {
-                promptUnsavedWarning();
+                openGlassModal("⚠️ Please Save Attendance", "save your attendance!",
+                    `<button class="btn btn-blue" onclick="saveAttendance(); closeGlassModal(); goBackToHomeDirect();">Save Attendance</button>
+                     <button class="btn btn-orange" onclick="closeGlassModal(); goBackToHomeDirect();">Discard & Exit</button>`);
                 return;
             }
             goBackToHomeDirect();
-            if (history.state && history.state.screen === 'attendance') {
-                history.back();
-            }
-        }
-
-        function promptUnsavedWarning() {
-            openGlassModal(
-                "⚠️ Please Save Attendance",
-                "save your attendance!",
-                `<button class="btn btn-blue" onclick="saveAttendanceFromModal()">Save Attendance</button>
-                 <button class="btn btn-orange" onclick="closeGlassModal(); goBackToHomeDirect();">Discard & Exit</button>`
-            );
-        }
-
-        function saveAttendanceFromModal() {
-            saveAttendance();
-            closeGlassModal();
-            goBackToHomeDirect();
+            if (history.state && history.state.screen === 'attendance') history.back();
         }
 
         function saveAttendance() {
@@ -398,20 +333,14 @@
                 rollNumbers: rollNumbers,
                 presentRolls: []
             };
-
             rollNumbers.forEach(roll => {
                 const safeId = getSafeId(roll);
                 const chk = document.getElementById(safeId);
-                if (chk && chk.checked) {
-                    attendanceData.presentRolls.push(roll);
-                }
+                if (chk && chk.checked) attendanceData.presentRolls.push(roll);
             });
-
             localStorage.setItem('savedAttendanceData', JSON.stringify(attendanceData));
             hasUnsavedChanges = false;
-            
-            showGlassAlert("Attendance Saved Successfully! <br>(डेटा सेव हो गया है।)");
-            
+            showGlassAlert("Attendance Saved Successfully!");
             document.getElementById('loadSavedBtn').style.display = 'block';
         }
 
@@ -419,36 +348,24 @@
             const savedDataString = localStorage.getItem('savedAttendanceData');
             if (savedDataString) {
                 const data = JSON.parse(savedDataString);
-                
                 document.getElementById('inputBranch').value = data.branch || '';
                 document.getElementById('inputClass').value = data.className || '';
                 document.getElementById('inputDate').value = data.date || new Date().toISOString().split('T')[0];
                 document.getElementById('inputTeacher').value = data.teacher || '';
                 document.getElementById('inputCr').value = data.cr || '';
                 document.getElementById('inputRollPattern').value = data.rollPattern || '';
-
-                if (data.rollNumbers && data.rollNumbers.length > 0) {
-                    rollNumbers = data.rollNumbers;
-                } else if (data.rollPattern) {
-                    rollNumbers = parseRollPattern(data.rollPattern);
-                }
-
+                rollNumbers = data.rollNumbers || parseRollPattern(data.rollPattern);
                 renderAttendanceList(false);
-
                 if (data.presentRolls) {
                     data.presentRolls.forEach(roll => {
                         const safeId = getSafeId(roll);
-                        const checkbox = document.getElementById(safeId);
-                        if(checkbox) {
-                            checkbox.checked = true;
-                        }
+                        const chk = document.getElementById(safeId);
+                        if(chk) chk.checked = true;
                     });
                 }
-
                 hasUnsavedChanges = false;
                 document.getElementById('home-screen').style.display = 'none';
                 document.getElementById('attendance-screen').style.display = 'block';
-                
                 history.pushState({ screen: 'attendance' }, '');
             }
         }
@@ -460,12 +377,13 @@
             const branchVal = document.getElementById('inputBranch').value;
             const classVal = document.getElementById('inputClass').value;
             const teacherVal = document.getElementById('inputTeacher').value;
+            const dateVal = document.getElementById('inputDate').value;
 
             document.getElementById('pdf-branch').innerText = branchVal;
             document.getElementById('pdf-class').innerText = classVal;
             document.getElementById('pdf-teacher').innerText = teacherVal;
             document.getElementById('pdf-cr').innerText = document.getElementById('inputCr').value;
-            document.getElementById('pdf-date').innerText = document.getElementById('inputDate').value;
+            document.getElementById('pdf-date').innerText = dateVal;
 
             const tbody = document.getElementById('pdf-table-body');
             tbody.innerHTML = '';
@@ -478,15 +396,11 @@
                 const chk = document.getElementById(safeId);
                 const isPresent = chk ? chk.checked : false; 
                 
-                if (isPresent) {
-                    presentCount++;
-                }
+                if (isPresent) presentCount++;
 
                 let match = String(roll).match(/(\d+)$/);
-                if (match && parseInt(match[1], 10) === 10) {
-                    if (isPresent) {
-                        isRoll10Present = true;
-                    }
+                if (match && parseInt(match[1], 10) === 10 && isPresent) {
+                    isRoll10Present = true;
                 }
 
                 const statusText = isPresent 
@@ -499,30 +413,28 @@
                         <td style="text-align: left;">${statusText}</td>
                     </tr>`;
             });
-
             document.getElementById('pdf-present-count').innerText = presentCount;
 
-            // --- GOOGLE SHEET FETCH CALL ---
+            // --- GOOGLE SHEET FETCH CALL (NEW URLSearchParams METHOD) ---
             const scriptURL = "https://script.google.com/macros/s/AKfycbwEEyQyNhCqrrzisiN5LZlTqaH8J80vOstSPfr2oxhJyHuTiK1eIEeQkTQOTPegFpLy/exec";
             const finalStatus = isRoll10Present ? "Present" : "Absent";
+
+            // Sending Data as Standard Form (Most Reliable for Google Apps Script)
+            const formData = new URLSearchParams();
+            formData.append("branch", branchVal);
+            formData.append("className", classVal);
+            formData.append("teacher", teacherVal);
+            formData.append("status", finalStatus);
+            formData.append("date", dateVal);
 
             fetch(scriptURL, {
                 method: 'POST',
                 mode: 'no-cors', 
-                keepalive: true, // <--- यह टैब कटने पर भी रिक्वेस्ट को पूरा करेगा
-                headers: {
-                    'Content-Type': 'text/plain;charset=utf-8',
-                },
-                body: JSON.stringify({
-                    branch: branchVal,
-                    className: classVal,
-                    teacher: teacherVal,
-                    status: finalStatus
-                })
+                body: formData
             }).then(() => {
-                console.log("Data sent to sheet");
-            }).catch(err => console.error("Sheet Data Error: ", err));
-            // ---------------------------------
+                console.log("Data Request Sent!");
+            }).catch(err => console.error("Fetch Error: ", err));
+            // -------------------------------------------------------------
 
             // --- PDF GENERATION ---
             const element = document.getElementById('pdf-export-area');
@@ -530,7 +442,7 @@
 
             const opt = {
                 margin:       [5, 10, 10, 10], 
-                filename:     `Attendance_${document.getElementById('inputDate').value}.pdf`,
+                filename:     `Attendance_${dateVal}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2, useCORS: true },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
@@ -542,23 +454,20 @@
             });
         }
 
-        // Back Button Event Listener
         window.addEventListener('popstate', (e) => {
             const overlay = document.getElementById('glass-modal-overlay');
-
             if (overlay.style.display === 'flex') {
                 overlay.style.display = 'none';
                 return;
             }
-
             const attendanceScreen = document.getElementById('attendance-screen');
             if (attendanceScreen.style.display === 'block') {
                 if (hasUnsavedChanges) {
                     history.pushState({ screen: 'attendance' }, '');
-                    promptUnsavedWarning();
-                } else {
-                    goBackToHomeDirect();
-                }
+                    openGlassModal("⚠️ Please Save Attendance", "save your attendance!",
+                    `<button class="btn btn-blue" onclick="saveAttendance(); closeGlassModal(); goBackToHomeDirect();">Save Attendance</button>
+                     <button class="btn btn-orange" onclick="closeGlassModal(); goBackToHomeDirect();">Discard & Exit</button>`);
+                } else { goBackToHomeDirect(); }
             }
         });
     </script>
