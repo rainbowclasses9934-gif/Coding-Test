@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title> Teachers 👨‍🏫 & Students 👨‍👩‍👧‍👦 Community</title>
+    <title>Teachers & Students Community</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -24,6 +24,11 @@
             font-family: 'Inter', sans-serif;
         }
 
+        html, body {
+            overscroll-behavior: none;
+            overscroll-behavior-y: none;
+        }
+
         body {
             background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
             color: var(--text-main);
@@ -31,7 +36,6 @@
             min-height: 100vh;
             background-attachment: fixed;
             -webkit-tap-highlight-color: transparent;
-            overscroll-behavior-y: none;
         }
 
         /* --- Top Fixed Dock --- */
@@ -40,7 +44,7 @@
             top: 0 !important;
             left: 0;
             width: 100%;
-            height: 45px;
+            height: 50px;
             background: rgba(255, 255, 255, 0.35);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
@@ -53,13 +57,30 @@
             z-index: 99999;
         }
 
-        .dock-logo { font-size: 15px; font-weight: 700; color: #111827; }
-        .admin-dock-controls { display: flex; align-items: center; gap: 8px; }
+        .dock-logo { 
+            font-size: 14px; 
+            font-weight: 700; 
+            color: #111827; 
+            transition: all 0.3s ease; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+            max-width: 130px; 
+        }
+
+        .admin-dock-controls { display: flex; align-items: center; gap: 6px; }
+
+        .user-id-input {
+            padding: 5px 8px; background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(5px);
+            border: 1px solid var(--border-color); border-radius: 20px; outline: none;
+            font-size: 11px; width: 60px; text-align: center; font-weight: 600;
+            transition: all 0.4s;
+        }
 
         .admin-pin-input {
             padding: 5px 12px; background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(5px);
             border: 1px solid var(--border-color); border-radius: 20px; outline: none;
-            font-size: 11px; width: 110px; text-align: center; font-weight: 600;
+            font-size: 11px; width: 95px; text-align: center; font-weight: 600;
             transition: all 0.4s;
         }
 
@@ -69,25 +90,17 @@
             font-size: 11px; font-weight: 600; text-align: center; overflow: hidden;
             transition: all 0.4s; display: flex; align-items: center; justify-content: center;
         }
-        .delete-all-clear-btn.show { width: 65px; padding: 5px 12px; opacity: 1; }
+        .delete-all-clear-btn.show { width: 60px; padding: 5px 10px; opacity: 1; }
 
         .portal-container {
-            max-width: 800px; margin: 70px auto 40px auto; background: rgba(255, 255, 255, 0.35);
+            max-width: 800px; margin: 70px auto 90px auto; background: rgba(255, 255, 255, 0.35);
             backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: var(--radius-md); padding: 30px; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            border-radius: var(--radius-md); padding: 30px 20px; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
         }
 
-        .header-section { margin-bottom: 25px; }
-        .header-title { font-size: 26px; font-weight: 600; margin-bottom: 5px; color: #111827; }
-        .header-subtitle { color: var(--text-muted); font-size: 14px; }
-
-        .user-setup { margin-bottom: 25px; }
-        .user-setup input[type="text"] {
-            padding: 10px 15px; background: rgba(255, 255, 255, 0.5); border: 1px solid var(--border-color);
-            border-radius: var(--radius-sm); outline: none; font-size: 14px; width: 100%; max-width: 300px;
-        }
-
-        .comment-input-area { display: flex; gap: 10px; margin-bottom: 40px; }
+        .header-section { margin-bottom: 25px; text-align: center; }
+        .header-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; color: #111827; }
+        .header-subtitle { color: var(--text-muted); font-size: 13px; line-height: 1.5; }
 
         .avatar {
             width: 35px; height: 35px; border-radius: 50%; background: rgba(255, 255, 255, 0.8);
@@ -96,33 +109,6 @@
             flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
         .reply-avatar { width: 28px !important; height: 28px !important; font-size: 13px !important; }
-
-        .input-wrapper { flex-grow: 1; display: flex; flex-direction: column; }
-        textarea {
-            width: 100%; min-height: 80px; padding: 12px; background: rgba(255, 255, 255, 0.5);
-            border: 1px solid var(--border-color); border-radius: var(--radius-sm); resize: vertical;
-            outline: none; font-size: 14px;
-        }
-
-        /* Image Upload UI Tools */
-        .action-buttons-wrapper {
-            display: flex; justify-content: space-between; align-items: center; margin-top: 10px;
-        }
-        
-        .upload-section { display: flex; align-items: center; gap: 8px; }
-        
-        .image-upload-btn {
-            background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(0,0,0,0.1);
-            padding: 6px 12px; border-radius: var(--radius-sm); font-size: 14px; cursor: pointer;
-            transition: all 0.2s; display: flex; align-items: center; justify-content: center;
-        }
-        .image-upload-btn:hover { background: rgba(255, 255, 255, 0.9); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .image-status { font-size: 12px; color: #059669; font-weight: 600; display: none; }
-
-        .submit-btn {
-            background: var(--primary-color); color: white; border: none;
-            padding: 8px 20px; border-radius: var(--radius-sm); font-size: 14px; cursor: pointer; font-weight: 600;
-        }
 
         /* Image Display inside Comments */
         .comment-image {
@@ -164,9 +150,6 @@
         .message-top-right { position: absolute; top: 8px; right: 12px; display: flex; align-items: center; }
         .time-ago-text { font-size: 11px; color: var(--text-muted); background: rgba(255, 255, 255, 0.5); padding: 2px 6px; border-radius: 4px; }
         
-        .pin-wrapper { width: 0; opacity: 0; overflow: hidden; transition: all 0.4s; display: flex; }
-        .admin-mode .pin-wrapper { width: 60px; opacity: 1; margin-left: 6px; }
-        .pin-btn { background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(0,0,0,0.1); border-radius: 4px; font-size: 10px; cursor: pointer; padding: 2px 6px;}
         .pinned-badge { background: rgba(37, 99, 235, 0.1); color: #2563eb; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
 
         .comment-header { display: flex; align-items: center; margin-bottom: 6px; }
@@ -213,6 +196,12 @@
 
         .reply-input-wrapper { display: none; margin-top: 10px; }
         .reply-input-wrapper.active { display: block; }
+        .reply-input-wrapper textarea {
+            width: 100%; min-height: 50px; padding: 10px; background: rgba(255, 255, 255, 0.5);
+            border: 1px solid var(--border-color); border-radius: var(--radius-sm); resize: vertical;
+            outline: none; font-size: 13px; margin-bottom: 5px;
+        }
+        .reply-input-wrapper .submit-btn { padding: 6px 15px; font-size: 13px; }
 
         /* Modal Styles */
         .modal-overlay {
@@ -234,43 +223,137 @@
         .btn-ok { background: var(--primary-color); color: white; }
         .btn-ok-danger { background: #dc2626; color: white; }
 
+        .admin-action-dock {
+            display: none; width: 100%; margin-top: 12px;
+            justify-content: center; gap: 15px; align-items: center;
+        }
+        .admin-mode .admin-action-dock {
+            display: flex; animation: fadeIn 0.3s;
+        }
+        .admin-dock-btn {
+            background: #fff; border: 1px solid rgba(0, 0, 0, 0.15);
+            padding: 6px 15px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600;
+            cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .admin-dock-btn:hover { background: #f9fafb; }
+        .admin-dock-btn.pin { color: #2563eb; }
+        .admin-dock-btn.delete { color: #dc2626; }
+
+        /* --- NEW Bottom Dock Message Box --- */
+        .bottom-dock {
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%;
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-top: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.05);
+            display: flex; 
+            align-items: flex-end; 
+            padding: 10px 15px; 
+            padding-bottom: calc(10px + env(safe-area-inset-bottom));
+            gap: 10px; 
+            z-index: 99999;
+        }
+
+        .upload-section-bottom { 
+            display: flex; 
+            align-items: center; 
+            position: relative; 
+            margin-bottom: 2px;
+        }
+        
+        .image-upload-btn-bottom {
+            background: rgba(255, 255, 255, 0.8); 
+            border: 1px solid var(--border-color);
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            font-size: 18px; 
+            cursor: pointer;
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            flex-shrink: 0;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .image-status-bottom {
+            position: absolute; 
+            top: -12px; 
+            left: 20px; 
+            font-size: 10px; 
+            color: #059669; 
+            font-weight: bold; 
+            background: white; 
+            padding: 2px 5px; 
+            border-radius: 10px; 
+            display: none; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        #mainCommentInput {
+            flex-grow: 1; 
+            background: rgba(255, 255, 255, 0.8); 
+            border: 1px solid var(--border-color);
+            border-radius: 20px; 
+            padding: 10px 15px; 
+            font-size: 15px; 
+            outline: none;
+            resize: none; 
+            height: 42px; 
+            max-height: 100px; /* Max 4 lines expansion */
+            line-height: 20px;
+            overflow-y: hidden; 
+            box-sizing: border-box; 
+            font-family: 'Inter', sans-serif;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            margin-bottom: 1px;
+        }
+
+        .send-btn-bottom {
+            background: var(--primary-color); 
+            color: white; 
+            border: none;
+            width: 42px; 
+            height: 42px; 
+            border-radius: 50%; 
+            font-size: 20px; 
+            cursor: pointer;
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            flex-shrink: 0;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+            margin-bottom: 1px;
+        }
+
+        .submit-btn {
+            background: var(--primary-color); color: white; border: none;
+            padding: 8px 20px; border-radius: var(--radius-sm); font-size: 14px; cursor: pointer; font-weight: 600;
+        }
+
     </style>
 </head>
 <body>
 
     <div class="top-dock">
-        <div class="dock-logo">RAINBOW CLASSES</div>
+        <div class="dock-logo" id="dockLogoText">RAINBOW CLASSES</div>
         <div class="admin-dock-controls">
-            <input type="password" id="adminPinInput" class="admin-pin-input" placeholder="ADMIN PIN 🔐">
+            <input type="text" id="userNameInput" class="user-id-input" placeholder="ID">
+            <input type="password" id="adminPinInput" class="admin-pin-input" placeholder="ADMIN 🔐">
             <div id="deleteAllDockBtn" class="delete-all-clear-btn">Clear</div>
         </div>
     </div>
 
     <div class="portal-container">
         <div class="header-section">
-            <h1 class="header-title">Teachers 👨‍🏫 & Students 👨‍👩‍👧‍👦 Community </h1>
-            <p class="header-subtitle"> अभी यह सभी क्षात्रों के लिए उपलब्ध नहीं है। संतोष सर के द्वारा जिन बच्चो को इसमें जोड़ा जायेगा वे बच्चे यहाँ आपस में संपर्क मे रहेंगे, ये एक-दूसरे के साथ संपर्क मे रहेंगे। पढ़ाई से संबंधित बाते कर सकेंगे। </p>
-        </div>
-
-        <div class="user-setup">
-            <input type="text" id="userNameInput" placeholder="अपना User ID दर्ज करें 🔐">
-        </div>
-
-        <div class="comment-input-area">
-            <div class="avatar" id="mainAvatar">S</div> 
-            <div class="input-wrapper">
-                <textarea id="mainCommentInput" placeholder="अपना सवाल या विचार यहाँ लिखें..."></textarea>
-                
-                <!-- NEW: Action Buttons (Upload Image + Send) -->
-                <div class="action-buttons-wrapper">
-                    <div class="upload-section">
-                        <input type="file" id="imageInput" accept="image/*" style="display: none;">
-                        <label for="imageInput" class="image-upload-btn" title="कोई फोटो चुनें">➕ फोटो</label>
-                        <span id="imageStatusText" class="image-status">✔️ Selected</span>
-                    </div>
-                    <button class="submit-btn" id="postMainBtn">Send 📨</button>
-                </div>
-            </div>
+            <h1 class="header-title">Teachers & Students Community</h1>
+            <p class="header-subtitle">अभी यह सभी छात्रों के लिए उपलब्ध नहीं है। संतोष सर के द्वारा जिन बच्चो को इसमें जोड़ा जायेगा वे बच्चे यहाँ आपस में संपर्क मे रहेंगे, ये एक-दूसरे के साथ संपर्क मे रहेंगे। पढ़ाई से संबंधित बाते कर सकेंगे।</p>
         </div>
 
         <div class="comments-list" id="commentsList">
@@ -278,7 +361,17 @@
         </div>
     </div>
 
-    <!-- NEW: Fullscreen Image Modal -->
+    <!-- NEW BOTTOM FIXED DOCK (WhatsApp Style) -->
+    <div class="bottom-dock">
+        <div class="upload-section-bottom">
+            <input type="file" id="imageInput" accept="image/*" style="display: none;">
+            <label for="imageInput" class="image-upload-btn-bottom" title="कोई फोटो चुनें">➕</label>
+            <span id="imageStatusText" class="image-status-bottom">✔️</span>
+        </div>
+        <textarea id="mainCommentInput" placeholder="Type..." rows="1"></textarea>
+        <button class="send-btn-bottom" id="postMainBtn">📨</button>
+    </div>
+
     <div id="fullScreenImageModal" class="fullscreen-image-modal">
         <span class="close-fullscreen" onclick="closeFullscreen()">&times;</span>
         <img class="fullscreen-content" id="expandedImg">
@@ -315,7 +408,8 @@
 
         const studentData = {
             "cm2007": "Chandramani", "omi2009": "Munna Kumar", "pk2010": "Priyanshu kumar", 
-            "234051190003": "PRIYE RANJAN KUMAR", "skroy": "Santosh sir", "harry": "Kishan Raj"
+            "234051190003": "PRIYE RANJAN KUMAR", "skroy": "Santosh sir", "harry": "Kishan Raj",
+            "nroy99991": "Nisha Kumari", "sak123": "Sakshi Kumari"
         };
 
         function normalizeID(id) { return id.toLowerCase().replace(/\s+/g, ''); }
@@ -324,11 +418,10 @@
         const postMainBtn = document.getElementById('postMainBtn');
         const mainInput = document.getElementById('mainCommentInput');
         const nameInput = document.getElementById('userNameInput');
-        const mainAvatar = document.getElementById('mainAvatar');
+        const dockLogoText = document.getElementById('dockLogoText');
         const adminPinInput = document.getElementById('adminPinInput');
         const deleteAllDockBtn = document.getElementById('deleteAllDockBtn');
         
-        // Image Upload Elements
         const imageInput = document.getElementById('imageInput');
         const imageStatusText = document.getElementById('imageStatusText');
         let selectedBase64Image = null;
@@ -344,16 +437,45 @@
         const modalOkBtn = document.getElementById('modalOkBtn');
         let modalConfirmCallback = null;
 
-        // Fullscreen Modal functions
+        let isPopupActive = false;
+
+        // Auto-expanding text box logic
+        mainInput.addEventListener('input', function() {
+            this.style.height = '42px';
+            const newHeight = this.scrollHeight;
+            if (newHeight > 100) { 
+                this.style.height = '100px';
+                this.style.overflowY = 'auto';
+            } else {
+                this.style.height = newHeight + 'px';
+                this.style.overflowY = 'hidden';
+            }
+        });
+
+        window.addEventListener('popstate', function(e) {
+            if (isPopupActive) {
+                document.getElementById('fullScreenImageModal').classList.remove('show');
+                modal.classList.remove('show');
+                modalEditInput.style.display = 'none';
+                isPopupActive = false;
+            }
+        });
+
         window.openFullscreen = function(imageSrc) {
             const fsModal = document.getElementById('fullScreenImageModal');
             const fsImg = document.getElementById('expandedImg');
             fsImg.src = imageSrc;
             fsModal.classList.add('show');
+            isPopupActive = true;
+            history.pushState({ popup: true }, '');
         };
 
         window.closeFullscreen = function() {
             document.getElementById('fullScreenImageModal').classList.remove('show');
+            if (isPopupActive) {
+                isPopupActive = false;
+                history.back(); 
+            }
         };
 
         function showModal(title, message, type, onConfirm = null) {
@@ -380,16 +502,43 @@
 
             modal.classList.add('show');
             modalConfirmCallback = onConfirm;
+            isPopupActive = true;
+            history.pushState({ popup: true }, '');
         }
 
-        modalCancelBtn.onclick = () => { modal.classList.remove('show'); modalEditInput.style.display = 'none'; };
-        modalOkBtn.onclick = () => { modal.classList.remove('show'); if(modalConfirmCallback) modalConfirmCallback(); };
+        function closeMyModal() {
+            modal.classList.remove('show'); 
+            modalEditInput.style.display = 'none';
+            if (isPopupActive) {
+                isPopupActive = false;
+                history.back();
+            }
+        }
 
+        modalCancelBtn.onclick = () => { closeMyModal(); };
+        modalOkBtn.onclick = () => { closeMyModal(); if(modalConfirmCallback) modalConfirmCallback(); };
+
+        // Animate Header Name on ID Input
         nameInput.addEventListener('input', () => {
             const rawId = nameInput.value.trim();
             const normalized = normalizeID(rawId);
-            if (studentData[normalized]) { mainAvatar.innerText = studentData[normalized].charAt(0).toUpperCase(); } 
-            else { mainAvatar.innerText = rawId ? rawId.charAt(0).toUpperCase() : 'S'; }
+            let displayName = "RAINBOW CLASSES";
+
+            if (studentData[normalized]) {
+                displayName = studentData[normalized];
+            } else if (rawId && isAdminLoggedIn) {
+                displayName = rawId; 
+            }
+
+            if (dockLogoText.innerText !== displayName) {
+                dockLogoText.style.opacity = '0';
+                dockLogoText.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    dockLogoText.innerText = displayName;
+                    dockLogoText.style.opacity = '1';
+                    dockLogoText.style.transform = 'scale(1)';
+                }, 200);
+            }
             renderComments(); 
         });
 
@@ -416,7 +565,6 @@
             });
         });
 
-        // Smart Image Compression Logic
         imageInput.addEventListener('change', function(event) {
             const file = event.target.files[0];
             if (file) {
@@ -425,7 +573,7 @@
                     const img = new Image();
                     img.onload = function() {
                         const canvas = document.createElement('canvas');
-                        const MAX_WIDTH = 800; // Resizing so Firebase limit isn't hit
+                        const MAX_WIDTH = 800; 
                         const MAX_HEIGHT = 800;
                         let width = img.width;
                         let height = img.height;
@@ -440,9 +588,8 @@
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
                         
-                        // Convert to compressed Base64
                         selectedBase64Image = canvas.toDataURL('image/jpeg', 0.7); 
-                        imageStatusText.style.display = 'inline-block';
+                        imageStatusText.style.display = 'block';
                     }
                     img.src = e.target.result;
                 }
@@ -461,7 +608,7 @@
             if (!isAdminLoggedIn && !rawUserIdInput.trim()) { showModal("जानकारी", "कृपया अपना User ID दर्ज करें!", "alert"); return; }
             if (!text && !selectedBase64Image) { showModal("जानकारी", "कृपया कुछ लिखें या कोई फोटो चुनें!", "alert"); return; }
 
-            postMainBtn.innerText = "Sending...⏳";
+            postMainBtn.innerText = "⏳";
             postMainBtn.disabled = true;
 
             let displayName = "";
@@ -473,7 +620,7 @@
                 if (studentData[normalizedInput]) displayName = studentData[normalizedInput]; 
                 else { 
                     showModal("एक्सेस मना है 🚫", "आपका User ID गलत है या सूची में पंजीकृत नहीं है।", "alert"); 
-                    postMainBtn.innerText = "Send 📨"; postMainBtn.disabled = false;
+                    postMainBtn.innerText = "📨"; postMainBtn.disabled = false;
                     return; 
                 }
             }
@@ -481,20 +628,21 @@
             try {
                 await addDoc(collection(db, "portal_comments"), {
                     userName: displayName, text: text, 
-                    imageUrl: selectedBase64Image || null, // Image saved here
+                    imageUrl: selectedBase64Image || null,
                     role: isAdminLoggedIn ? 'admin' : 'student',
                     parentId: null, likes: 0, pinned: false, timestamp: serverTimestamp()
                 });
                 
-                // Reset Fields after success
                 mainInput.value = ''; 
+                mainInput.style.height = '42px';
+                mainInput.style.overflowY = 'hidden';
                 imageInput.value = '';
                 selectedBase64Image = null;
                 imageStatusText.style.display = 'none';
             } catch (error) { 
                 showModal("सर्वर त्रुटि", "मैसेज नहीं गया! शायद इमेज बहुत बड़ी है।", "alert"); 
             } finally {
-                postMainBtn.innerText = "Send 📨";
+                postMainBtn.innerText = "📨";
                 postMainBtn.disabled = false;
             }
         });
@@ -680,7 +828,7 @@
                 const timeString = getTimeString(comment.timestamp);
                 const isPinned = comment.pinned || false;
                 const pinnedBadgeHTML = isPinned ? `<span class="pinned-badge">📍</span>` : '';
-                const pinBtnText = isPinned ? '📍 Unpin' : '📌 Pin';
+                const pinBtnText = isPinned ? '📍Unpin' : '📌Pin';
 
                 let viewRepliesBtnHTML = '';
                 if(replyCount > 0) {
@@ -692,11 +840,17 @@
                     `;
                 }
 
-                // NEW: Attach Shared Image HTML if it exists in Firebase Document
                 let sharedImageHTML = '';
                 if (comment.imageUrl) {
                     sharedImageHTML = `<img src="${comment.imageUrl}" class="comment-image" onclick="openFullscreen(this.src)" title="Click to view full screen">`;
                 }
+
+                const adminDockHTML = `
+                    <div class="admin-action-dock">
+                        <button class="admin-dock-btn pin" onclick="togglePin('${comment.id}', ${isPinned})">${pinBtnText}</button>
+                        <button class="admin-dock-btn delete" onclick="deleteComment('${comment.id}')">🗑️delete(Admin)</button>
+                    </div>
+                `;
 
                 const commentElement = document.createElement('div');
                 commentElement.className = 'comment-box';
@@ -706,34 +860,30 @@
                         
                         <div class="message-top-right">
                             <div class="time-ago-text">${timeString}</div>
-                            <div class="pin-wrapper">
-                                <button class="pin-btn" onclick="togglePin('${comment.id}', ${isPinned})">${pinBtnText}</button>
-                            </div>
                         </div>
 
                         <div class="comment-header">
                             <span class="user-name">${comment.userName} ${badgeHTML} ${pinnedBadgeHTML}</span>
                         </div>
                         
-                        <!-- Text -->
                         <div class="comment-text">${comment.text}</div>
                         
-                        <!-- Display Image If Attached -->
                         ${sharedImageHTML}
                         
                         <div class="comment-actions-container">
                             <div class="left-actions">
                                 <button class="action-btn" onclick="toggleReplyBox('replyBox_${comment.id}')">Reply</button>
                                 ${viewRepliesBtnHTML}
-                                <button class="delete-btn admin-delete-btn" style="${adminDelStyle}" onclick="deleteComment('${comment.id}')">Del (Admin)</button>
                                 ${userMainActions}
                             </div>
                             ${likeHTML}
                         </div>
 
+                        ${adminDockHTML}
+
                         <div class="reply-input-wrapper" id="replyBox_${comment.id}">
-                            <textarea id="replyInput_${comment.id}" placeholder="Type your reply..." style="min-height: 50px; margin-bottom: 5px; padding: 10px;"></textarea>
-                            <button class="submit-btn" style="padding: 6px 15px; font-size: 13px;" onclick="postReply('${comment.id}', 'replyInput_${comment.id}')">Send 📨</button>
+                            <textarea id="replyInput_${comment.id}" placeholder="Type your reply..."></textarea>
+                            <button class="submit-btn" onclick="postReply('${comment.id}', 'replyInput_${comment.id}')">Send 📨</button>
                             <div style="clear: both;"></div>
                         </div>
 
