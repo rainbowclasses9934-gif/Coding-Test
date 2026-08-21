@@ -155,6 +155,14 @@
         .close-fullscreen:hover { color: #ef4444; }
 
         .comments-list { display: flex; flex-direction: column; gap: 20px; clear: both; }
+        
+        .thread-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
         .comment-box { display: flex; gap: 10px; width: 100%; }
 
         .comment-content {
@@ -185,17 +193,9 @@
 
         .action-btn { background: none; border: none; color: var(--text-muted); font-size: 12px; font-weight: 600; cursor: pointer; }
         .action-btn:hover { color: #2563eb; }
-        
-        .view-reply-wrapper { position: relative; display: inline-block; }
-        .view-reply-btn { background: none; border: none; color: #2563eb; font-size: 12px; font-weight: 600; cursor: pointer; transition: color 0.2s; }
-        .view-reply-btn:hover { color: #1d4ed8; text-decoration: underline; }
-        .reply-count-badge {
-            position: absolute; top: -10px; right: -15px; background: #ef4444; color: white;
-            font-size: 10px; font-weight: bold; padding: 2px 5px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
 
         .reply-owner-delete {
-            position: absolute; top: 6px; right: 8px; background: rgba(239, 68, 68, 0.1); color: #ef4444;
+            background: rgba(239, 68, 68, 0.1); color: #ef4444;
             border: none; border-radius: 4px; width: 20px; height: 20px; font-size: 11px; font-weight: bold;
             cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;
         }
@@ -211,15 +211,16 @@
         }
 
         .replies-container {
-            margin-top: 12px; margin-left: 5px; border-left: 2px solid rgba(37, 99, 235, 0.2);
-            padding-left: 12px; display: none; flex-direction: column; gap: 12px;
-            animation: fadeIn 0.3s ease-in-out;
+            margin-left: 45px; /* Offset for avatars */
+            display: flex; 
+            flex-direction: column; 
+            gap: 8px;
         }
-        .replies-container.show { display: flex; }
+        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
-        .reply-input-wrapper { display: none; margin-top: 10px; }
-        .reply-input-wrapper.active { display: block; }
+        .reply-input-wrapper { display: none; margin-top: 5px; margin-left: 45px; }
+        .reply-input-wrapper.active { display: block; animation: fadeIn 0.3s; }
         .reply-input-wrapper textarea {
             width: 100%; min-height: 50px; padding: 10px; background: rgba(255, 255, 255, 0.5);
             border: 1px solid var(--border-color); border-radius: var(--radius-sm); resize: vertical;
@@ -331,14 +332,12 @@
         .close-profile-btn { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
         .close-profile-btn:hover { background: #ef4444; color: white; }
         
-        /* 4x4 Grid System */
         .app-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; justify-items: center; }
         .grid-item { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; cursor: pointer; transition: transform 0.2s; }
         .grid-item:hover { transform: translateY(-3px); }
         .grid-icon { width: 50px; height: 50px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .grid-text { font-size: 11px; font-weight: 600; color: #374151; text-align: center; }
         
-        /* Specific Button Colors */
         .bg-all-msg { background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%); color: white; }
         .bg-empty { background: rgba(243, 244, 246, 0.8); border: 1px dashed #d1d5db; }
         
@@ -355,57 +354,6 @@
         }
         .filter-status-text { font-size: 12px; color: #4b5563; margin-top: 8px; font-weight: 500; }
 
-        /* --- NEW: Green Dot Indicator CSS --- */
-        .green-dot {
-            width: 9px;
-            height: 9px;
-            background-color: #10b981;
-            border-radius: 50%;
-            display: inline-block;
-            box-shadow: 0 0 8px #10b981;
-            margin-right: 6px;
-            flex-shrink: 0;
-            transition: opacity 0.4s ease, transform 0.4s ease, margin-right 0.4s ease;
-        }
-        .green-dot.hidden {
-            opacity: 0 !important;
-            transform: scale(0) !important;
-            margin-right: 0 !important;
-            pointer-events: none;
-        }
-
-        /* --- NEW: Floating New Messages Scroll Pill --- */
-        .new-messages-pill {
-            position: fixed;
-            bottom: 75px;
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            padding: 8px 18px;
-            border-radius: 25px;
-            font-size: 12px;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
-            cursor: pointer;
-            z-index: 99990;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .new-messages-pill.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
-        }
-        .new-messages-pill:hover {
-            transform: translateX(-50%) translateY(-2px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
-        }
-
     </style>
 </head>
 <body>
@@ -421,7 +369,6 @@
 
     <div class="portal-container">
         
-        <!-- Filter Banner (Hidden by default) -->
         <div class="back-to-home-banner" id="backToHomeBanner">
             <button class="back-btn-action" onclick="goBackToHome()">⬅ Back to Home Screen</button>
             <div class="filter-status-text">आप सिर्फ अपने मैसेज देख रहे हैं।</div>
@@ -437,12 +384,6 @@
         </div>
     </div>
 
-    <!-- NEW: Floating Button for Unread Messages -->
-    <div id="newMsgPill" class="new-messages-pill" onclick="scrollToFirstUnread()">
-        <span id="newMsgPillText">0 New Messages 👇</span>
-    </div>
-
-    <!-- BOTTOM FIXED DOCK -->
     <div class="bottom-dock">
         <div class="upload-section-bottom">
             <input type="file" id="imageInput" accept="image/*" style="display: none;">
@@ -463,7 +404,6 @@
         <img class="fullscreen-content" id="expandedImg">
     </div>
 
-    <!-- General Message Modal -->
     <div class="modal-overlay" id="customModal">
         <div class="modal-box">
             <h3 class="modal-title" id="modalTitle">संदेश</h3>
@@ -476,7 +416,6 @@
         </div>
     </div>
 
-    <!-- User Profile 4x4 Grid Modal -->
     <div class="modal-overlay" id="userProfileModal">
         <div class="modal-box profile-modal-box">
             <div class="profile-header-top">
@@ -485,13 +424,11 @@
             </div>
             
             <div class="app-grid">
-                <!-- Slot 1: All Messages Button -->
                 <div class="grid-item" onclick="activateMyMessagesFilter()">
                     <div class="grid-icon bg-all-msg">📁</div>
                     <div class="grid-text">All<br>Message</div>
                 </div>
                 
-                <!-- Slots 2 to 16: Empty placeholders for 4x4 grid -->
                 <div class="grid-item"><div class="grid-icon bg-empty"></div></div>
                 <div class="grid-item"><div class="grid-icon bg-empty"></div></div>
                 <div class="grid-item"><div class="grid-icon bg-empty"></div></div>
@@ -585,12 +522,6 @@
         const viewedMessages = new Set();
         let viewObserver = null;
 
-        // --- NEW: Unread Messages State Tracking ---
-        let currentUserLastSeen = 0;
-        const activeUnreadSet = new Set();
-        const readInThisSessionSet = new Set();
-        let unreadDwellObserver = null;
-
         function setupViewObserver() {
             if (viewObserver) viewObserver.disconnect();
 
@@ -631,100 +562,6 @@
                 viewObserver.observe(el);
             });
         }
-
-        // --- NEW: Unread Dwell Observer (0.75 Second Green Dot Removal) ---
-        function setupUnreadDwellObserver() {
-            if (unreadDwellObserver) unreadDwellObserver.disconnect();
-
-            unreadDwellObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    const elem = entry.target;
-                    const commentId = elem.getAttribute('data-comment-id');
-                    const msgTimestamp = parseInt(elem.getAttribute('data-timestamp') || '0');
-
-                    if (!commentId || !activeUnreadSet.has(commentId)) return;
-
-                    if (entry.isIntersecting) {
-                        elem.dataset.isUnreadIntersecting = 'true';
-                        const timer = setTimeout(() => {
-                            if (elem.dataset.isUnreadIntersecting === 'true' && activeUnreadSet.has(commentId)) {
-                                markMessageAsRead(commentId, msgTimestamp);
-                            }
-                        }, 750); // 0.75 Second Dwell Duration
-
-                        elem.dataset.unreadTimerId = timer;
-                    } else {
-                        elem.dataset.isUnreadIntersecting = 'false';
-                        if (elem.dataset.unreadTimerId) {
-                            clearTimeout(parseInt(elem.dataset.unreadTimerId));
-                        }
-                    }
-                });
-            }, { threshold: 0.6 });
-
-            document.querySelectorAll('.comment-box[data-unread="true"]').forEach(el => {
-                unreadDwellObserver.observe(el);
-            });
-        }
-
-        function markMessageAsRead(commentId, msgTimestamp) {
-            const dot = document.getElementById('greenDot_' + commentId);
-            if (dot) {
-                dot.classList.add('hidden');
-            }
-
-            activeUnreadSet.delete(commentId);
-            readInThisSessionSet.add(commentId);
-
-            const commentElem = document.querySelector(`.comment-box[data-comment-id="${commentId}"]`);
-            if (commentElem) {
-                commentElem.setAttribute('data-unread', 'false');
-            }
-
-            // Save new Last Seen timestamp to browser memory for this ID
-            const rawUserIdInput = nameInput.value.trim();
-            const normalized = normalizeID(rawUserIdInput);
-            if (normalized && (studentData[normalized] || isAdminLoggedIn)) {
-                const key = 'lastSeenTimestamp_' + normalized;
-                const currentSaved = parseInt(localStorage.getItem(key) || '0');
-                if (msgTimestamp > currentSaved) {
-                    localStorage.setItem(key, msgTimestamp.toString());
-                    currentUserLastSeen = msgTimestamp;
-                }
-            }
-
-            updateUnreadPill();
-        }
-
-        function updateUnreadPill() {
-            const pill = document.getElementById('newMsgPill');
-            const pillText = document.getElementById('newMsgPillText');
-            if (!pill || !pillText) return;
-
-            const count = activeUnreadSet.size;
-            const rawUserIdInput = nameInput.value.trim();
-            const normalized = normalizeID(rawUserIdInput);
-
-            if (count > 0 && normalized && (studentData[normalized] || isAdminLoggedIn)) {
-                pillText.innerText = `${count} New Message${count > 1 ? 's' : ''} 👇`;
-                pill.classList.add('show');
-            } else {
-                pill.classList.remove('show');
-            }
-        }
-
-        window.scrollToFirstUnread = function() {
-            if (activeUnreadSet.size === 0) return;
-
-            const unreadElems = Array.from(document.querySelectorAll('.comment-box[data-unread="true"]'));
-            for (let el of unreadElems) {
-                const cId = el.getAttribute('data-comment-id');
-                if (activeUnreadSet.has(cId)) {
-                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    break;
-                }
-            }
-        };
 
         mainInput.addEventListener('input', function() {
             this.style.height = '42px';
@@ -922,21 +759,6 @@
             const rawId = nameInput.value.trim();
             const normalized = normalizeID(rawId);
             let displayName = "RAINBOW CLASSES";
-
-            // Load last seen timestamp for this specific ID
-            readInThisSessionSet.clear();
-            activeUnreadSet.clear();
-
-            if (normalized && (studentData[normalized] || isAdminLoggedIn)) {
-                const storedLastSeen = localStorage.getItem('lastSeenTimestamp_' + normalized);
-                if (storedLastSeen) {
-                    currentUserLastSeen = parseInt(storedLastSeen) || 0;
-                } else {
-                    currentUserLastSeen = 0;
-                }
-            } else {
-                currentUserLastSeen = 0;
-            }
 
             if (studentData[normalized]) {
                 displayName = studentData[normalized];
@@ -1138,11 +960,6 @@
         };
 
         window.toggleReplyBox = function(boxId) { const box = document.getElementById(boxId); if(box) box.classList.toggle('active'); };
-        
-        window.toggleReplies = function(commentId) {
-            const box = document.getElementById('repliesBox_' + commentId);
-            if(box) box.classList.toggle('show');
-        };
 
         window.togglePin = async function(commentId, currentPinStatus) {
             if (!isAdminLoggedIn) return;
@@ -1171,15 +988,10 @@
         });
 
         function renderComments() {
-            activeUnreadSet.clear();
-
             let mainComments = globalDocs.filter(d => !d.parentId);
             const replies = globalDocs.filter(d => d.parentId);
             
-            const rawUserIdInput = nameInput.value.trim();
-            const normalizedUser = normalizeID(rawUserIdInput);
-            const currentUserDisplayName = studentData[normalizedUser] || (isAdminLoggedIn ? rawUserIdInput : null);
-            const hasValidUser = !!(normalizedUser && (studentData[normalizedUser] || isAdminLoggedIn));
+            const currentUserDisplayName = studentData[normalizeID(nameInput.value.trim())] || (isAdminLoggedIn ? nameInput.value.trim() : null);
 
             if (isViewingMyMessagesOnly && currentUserDisplayName) {
                 mainComments = mainComments.filter(c => c.userName === currentUserDisplayName);
@@ -1191,7 +1003,6 @@
                 } else {
                     commentsListEl.innerHTML = '<p style="text-align: center; color: var(--text-muted); font-weight: 500;">अभी कोई चर्चा नहीं हुई है। अपना पहला मैसेज भेजें!</p>';
                 }
-                updateUnreadPill();
                 return;
             }
 
@@ -1207,9 +1018,7 @@
                 const commentReplies = replies.filter(r => r.parentId === comment.id);
                 commentReplies.sort((a, b) => (a.timestamp?.toMillis() || 0) - (b.timestamp?.toMillis() || 0));
                 
-                const replyCount = commentReplies.length;
                 const isMainOwner = currentUserDisplayName && comment.userName === currentUserDisplayName;
-                let hasUserReplied = false;
 
                 let repliesHTML = '';
                 commentReplies.forEach(reply => {
@@ -1219,20 +1028,26 @@
                     const rContentClass = isReplyAdmin ? `comment-content admin-comment` : `comment-content`;
 
                     const isReplyOwner = currentUserDisplayName && reply.userName === currentUserDisplayName;
-                    if(isReplyOwner) hasUserReplied = true; 
+                    const replyTimeString = getTimeString(reply.timestamp);
 
                     const userReplyActions = isReplyOwner ? `
                         <button class="user-action-btn edit" onclick="editUserComment('${reply.id}')">Edit</button>
                         <button class="user-action-btn delete" onclick="deleteUserComment('${reply.id}')">Del</button>
                     ` : '';
 
+                    // Delete button is placed together with timestamp dynamically to avoid overlap
                     const ownerDeleteHTML = isMainOwner ? `<button class="reply-owner-delete" onclick="deleteUserComment('${reply.id}')" title="Delete this reply">✕</button>` : '';
 
                     repliesHTML += `
                         <div class="comment-box">
                             <div class="${rAvatarClass}">${reply.userName.charAt(0).toUpperCase()}</div>
-                            <div class="${rContentClass}" style="position:relative; padding-top:14px;">
-                                ${ownerDeleteHTML}
+                            <div class="${rContentClass}" style="position:relative;">
+                                
+                                <div class="message-top-right">
+                                    ${ownerDeleteHTML}
+                                    <span class="time-ago-text">${replyTimeString}</span>
+                                </div>
+
                                 <div class="comment-header">
                                     <span class="user-name">${reply.userName} ${rBadgeHTML}</span>
                                 </div>
@@ -1248,25 +1063,10 @@
                     `;
                 });
 
-                const repliesContainerClass = hasUserReplied ? 'replies-container show' : 'replies-container';
-
                 const isAdmin = comment.role === 'admin';
                 const badgeHTML = isAdmin ? `<span class="admin-badge">Admin</span>` : '';
                 const avatarClass = isAdmin ? `avatar admin-avatar` : `avatar`;
                 const contentClass = isAdmin ? `comment-content admin-comment` : `comment-content`;
-
-                // --- Unread Message & Green Dot Determination ---
-                const msgTimestamp = comment.timestamp ? comment.timestamp.toMillis() : Date.now();
-                let isUnread = false;
-
-                if (hasValidUser && msgTimestamp > currentUserLastSeen && !readInThisSessionSet.has(comment.id)) {
-                    isUnread = true;
-                    activeUnreadSet.add(comment.id);
-                }
-
-                const greenDotHTML = isUnread 
-                    ? `<span class="green-dot" id="greenDot_${comment.id}"></span>` 
-                    : `<span class="green-dot hidden" id="greenDot_${comment.id}"></span>`;
 
                 const userMainActions = isMainOwner ? `
                     <button class="user-action-btn edit" onclick="editUserComment('${comment.id}')">Edit</button>
@@ -1287,16 +1087,6 @@
                 const isPinned = comment.pinned || false;
                 const pinnedBadgeHTML = isPinned ? `<span class="pinned-badge">📍</span>` : '';
                 const pinBtnText = isPinned ? '📍Unpin' : '📌Pin';
-
-                let viewRepliesBtnHTML = '';
-                if(replyCount > 0) {
-                    viewRepliesBtnHTML = `
-                        <div class="view-reply-wrapper">
-                            <button class="view-reply-btn" onclick="toggleReplies('${comment.id}')">View Replies</button>
-                            <span class="reply-count-badge">${replyCount}</span>
-                        </div>
-                    `;
-                }
 
                 let sharedImageHTML = '';
                 if (comment.imageUrl) {
@@ -1324,59 +1114,54 @@
                     </div>
                 `;
 
+                // Wrapper that groups main message + input box + replies together like WhatsApp
                 const commentElement = document.createElement('div');
-                commentElement.className = 'comment-box';
-                commentElement.setAttribute('data-comment-id', comment.id);
-                commentElement.setAttribute('data-unread', isUnread ? 'true' : 'false');
-                commentElement.setAttribute('data-timestamp', msgTimestamp.toString());
-
+                commentElement.className = 'thread-wrapper';
                 commentElement.innerHTML = `
-                    <div class="${avatarClass}">${comment.userName.charAt(0).toUpperCase()}</div>
-                    <div class="${contentClass}">
-                        
-                        <div class="message-top-right">
-                            <span class="time-ago-text">${timeString}</span>
-                            <span class="view-count-text">view ${viewsCount}</span>
-                        </div>
-
-                        <div class="comment-header">
-                            ${greenDotHTML}
-                            <span class="user-name">${comment.userName} ${badgeHTML} ${pinnedBadgeHTML}</span>
-                        </div>
-                        
-                        <div class="comment-text">${comment.text || ''}</div>
-                        
-                        ${sharedAudioHTML}
-                        ${sharedImageHTML}
-                        
-                        <div class="comment-actions-container">
-                            <div class="left-actions">
-                                <button class="action-btn" onclick="toggleReplyBox('replyBox_${comment.id}')">Reply</button>
-                                ${viewRepliesBtnHTML}
-                                ${userMainActions}
+                    <div class="comment-box" data-comment-id="${comment.id}">
+                        <div class="${avatarClass}">${comment.userName.charAt(0).toUpperCase()}</div>
+                        <div class="${contentClass}">
+                            
+                            <div class="message-top-right">
+                                <span class="time-ago-text">${timeString}</span>
+                                <span class="view-count-text">view ${viewsCount}</span>
                             </div>
-                            ${likeHTML}
-                        </div>
 
-                        ${adminDockHTML}
-
-                        <div class="reply-input-wrapper" id="replyBox_${comment.id}">
-                            <textarea id="replyInput_${comment.id}" placeholder="Type your reply..."></textarea>
-                            <button class="submit-btn" onclick="postReply('${comment.id}', 'replyInput_${comment.id}')">Send 📨</button>
-                            <div style="clear: both;"></div>
+                            <div class="comment-header">
+                                <span class="user-name">${comment.userName} ${badgeHTML} ${pinnedBadgeHTML}</span>
+                            </div>
+                            
+                            <div class="comment-text">${comment.text || ''}</div>
+                            
+                            ${sharedAudioHTML}
+                            ${sharedImageHTML}
+                            
+                            <div class="comment-actions-container">
+                                <div class="left-actions">
+                                    <button class="action-btn" onclick="toggleReplyBox('replyBox_${comment.id}')">Reply</button>
+                                    ${userMainActions}
+                                </div>
+                                ${likeHTML}
+                            </div>
+                            ${adminDockHTML}
                         </div>
+                    </div>
 
-                        <div class="${repliesContainerClass}" id="repliesBox_${comment.id}">
-                            ${repliesHTML}
-                        </div>
+                    <div class="reply-input-wrapper" id="replyBox_${comment.id}">
+                        <textarea id="replyInput_${comment.id}" placeholder="Type your reply..."></textarea>
+                        <button class="submit-btn" onclick="postReply('${comment.id}', 'replyInput_${comment.id}')">Send 📨</button>
+                        <div style="clear: both;"></div>
+                    </div>
+
+                    <!-- Replies moved outside main bubble -->
+                    <div class="replies-container" id="repliesBox_${comment.id}">
+                        ${repliesHTML}
                     </div>
                 `;
                 commentsListEl.appendChild(commentElement);
             });
 
-            updateUnreadPill();
             setupViewObserver();
-            setupUnreadDwellObserver();
         }
     </script>
 </body>
