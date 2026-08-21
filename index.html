@@ -117,6 +117,25 @@
             object-fit: cover;
         }
 
+        /* Audio Player Styling */
+        .audio-player-box {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(255, 255, 255, 0.75);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            padding: 6px 12px; border-radius: 20px; margin-top: 10px;
+            max-width: 260px; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .audio-play-btn {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: #2563eb; color: white; border: none;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 13px; flex-shrink: 0; transition: all 0.2s;
+        }
+        .audio-play-btn:hover { background: #1d4ed8; transform: scale(1.05); }
+        .audio-info { display: flex; flex-direction: column; justify-content: center; }
+        .audio-label { font-size: 11px; font-weight: 600; color: #1f2937; }
+        .audio-time-status { font-size: 10px; color: var(--text-muted); }
+
         /* Fullscreen Image Modal */
         .fullscreen-image-modal {
             display: none; position: fixed; z-index: 9999999; top: 0; left: 0;
@@ -147,9 +166,10 @@
             border-radius: 4px; margin-left: 6px; display: inline-block;
         }
 
-        .message-top-right { position: absolute; top: 8px; right: 12px; display: flex; align-items: center; }
+        .message-top-right { position: absolute; top: 8px; right: 12px; display: flex; align-items: center; gap: 6px; }
         .time-ago-text { font-size: 11px; color: var(--text-muted); background: rgba(255, 255, 255, 0.5); padding: 2px 6px; border-radius: 4px; }
-        
+        .view-count-text { font-size: 11px; color: #6b7280; font-weight: 500; font-family: 'Inter', sans-serif; }
+
         .pinned-badge { background: rgba(37, 99, 235, 0.1); color: #2563eb; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
 
         .comment-header { display: flex; align-items: center; margin-bottom: 6px; }
@@ -239,7 +259,7 @@
         .admin-dock-btn.pin { color: #2563eb; }
         .admin-dock-btn.delete { color: #dc2626; }
 
-        /* --- NEW Bottom Dock Message Box --- */
+        /* --- Bottom Dock Message Box --- */
         .bottom-dock {
             position: fixed; 
             bottom: 0; 
@@ -295,23 +315,59 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
+        .input-wrapper-bottom {
+            flex-grow: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
         #mainCommentInput {
-            flex-grow: 1; 
+            width: 100%; 
             background: rgba(255, 255, 255, 0.8); 
             border: 1px solid var(--border-color);
             border-radius: 20px; 
-            padding: 10px 15px; 
+            padding: 10px 40px 10px 15px; /* Right padding for mic button */
             font-size: 15px; 
             outline: none;
             resize: none; 
             height: 42px; 
-            max-height: 100px; /* Max 4 lines expansion */
+            max-height: 100px; 
             line-height: 20px;
             overflow-y: hidden; 
             box-sizing: border-box; 
             font-family: 'Inter', sans-serif;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
             margin-bottom: 1px;
+        }
+
+        .mic-btn-bottom {
+            position: absolute;
+            right: 8px;
+            bottom: 6px;
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .mic-btn-bottom.recording {
+            animation: pulse-red 1.2s infinite;
+            background: rgba(239, 68, 68, 0.15);
+        }
+
+        @keyframes pulse-red {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
         }
 
         .send-btn-bottom {
@@ -361,14 +417,19 @@
         </div>
     </div>
 
-    <!-- NEW BOTTOM FIXED DOCK (WhatsApp Style) -->
+    <!-- BOTTOM FIXED DOCK -->
     <div class="bottom-dock">
         <div class="upload-section-bottom">
             <input type="file" id="imageInput" accept="image/*" style="display: none;">
             <label for="imageInput" class="image-upload-btn-bottom" title="कोई फोटो चुनें">➕</label>
             <span id="imageStatusText" class="image-status-bottom">✔️</span>
         </div>
-        <textarea id="mainCommentInput" placeholder="Type..." rows="1"></textarea>
+        
+        <div class="input-wrapper-bottom">
+            <textarea id="mainCommentInput" placeholder="Type..." rows="1"></textarea>
+            <button type="button" id="micBtn" class="mic-btn-bottom" title="ऑडियो रिकॉर्ड करें">🎤</button>
+        </div>
+
         <button class="send-btn-bottom" id="postMainBtn">📨</button>
     </div>
 
@@ -391,7 +452,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, deleteDoc, doc, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, deleteDoc, doc, getDocs, updateDoc, increment } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCpbl_PZ6veAe1Wvg1vJCYzBM3sqaH-Pss",
@@ -421,10 +482,17 @@
         const dockLogoText = document.getElementById('dockLogoText');
         const adminPinInput = document.getElementById('adminPinInput');
         const deleteAllDockBtn = document.getElementById('deleteAllDockBtn');
+        const micBtn = document.getElementById('micBtn');
         
         const imageInput = document.getElementById('imageInput');
         const imageStatusText = document.getElementById('imageStatusText');
         let selectedBase64Image = null;
+
+        // Audio Recording Variables
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let selectedBase64Audio = null;
+        let audioState = 'idle'; // 'idle' | 'recording' | 'recorded'
 
         let isAdminLoggedIn = false;
         let globalDocs = []; 
@@ -439,6 +507,52 @@
 
         let isPopupActive = false;
 
+        // Scroll View Counting Logic
+        const viewedMessages = new Set();
+        let viewObserver = null;
+
+        function setupViewObserver() {
+            if (viewObserver) viewObserver.disconnect();
+
+            viewObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const elem = entry.target;
+                        const commentId = elem.getAttribute('data-comment-id');
+                        if (!commentId || viewedMessages.has(commentId)) return;
+
+                        elem.dataset.isIntersecting = 'true';
+                        
+                        // Timer for 1 second read requirement
+                        const timer = setTimeout(async () => {
+                            if (elem.dataset.isIntersecting === 'true' && !viewedMessages.has(commentId)) {
+                                viewedMessages.add(commentId);
+                                try {
+                                    await updateDoc(doc(db, "portal_comments", commentId), {
+                                        views: increment(1)
+                                    });
+                                } catch (e) {
+                                    console.error("View count error:", e);
+                                }
+                            }
+                        }, 1000);
+
+                        elem.dataset.timerId = timer;
+                    } else {
+                        const elem = entry.target;
+                        elem.dataset.isIntersecting = 'false';
+                        if (elem.dataset.timerId) {
+                            clearTimeout(parseInt(elem.dataset.timerId));
+                        }
+                    }
+                });
+            }, { threshold: 0.6 });
+
+            document.querySelectorAll('.comment-box[data-comment-id]').forEach(el => {
+                viewObserver.observe(el);
+            });
+        }
+
         // Auto-expanding text box logic
         mainInput.addEventListener('input', function() {
             this.style.height = '42px';
@@ -451,6 +565,85 @@
                 this.style.overflowY = 'hidden';
             }
         });
+
+        // Audio Recording Handler
+        micBtn.addEventListener('click', async () => {
+            if (audioState === 'idle') {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+
+                    mediaRecorder.ondataavailable = (event) => {
+                        if (event.data.size > 0) audioChunks.push(event.data);
+                    };
+
+                    mediaRecorder.onstop = () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                            selectedBase64Audio = reader.result;
+                            audioState = 'recorded';
+                            micBtn.innerText = '✔️';
+                            micBtn.classList.remove('recording');
+                            micBtn.title = 'ऑडियो रिकॉर्ड हो गया! (री-रिकॉर्ड करने के लिए दोबारा क्लिक करें)';
+                        };
+                        reader.readAsDataURL(audioBlob);
+                        stream.getTracks().forEach(track => track.stop());
+                    };
+
+                    mediaRecorder.start();
+                    audioState = 'recording';
+                    micBtn.innerText = '🔴';
+                    micBtn.classList.add('recording');
+                    micBtn.title = 'रिकॉर्डिंग हो रही है... बंद करने के लिए क्लिक करें';
+                } catch (err) {
+                    showModal("माइक एक्सेस", "माइक की अनुमति नहीं मिली या डिवाइस सपोर्ट नहीं करता।", "alert");
+                }
+            } else if (audioState === 'recording') {
+                if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                    mediaRecorder.stop();
+                }
+            } else if (audioState === 'recorded') {
+                selectedBase64Audio = null;
+                audioState = 'idle';
+                micBtn.innerText = '🎤';
+                micBtn.title = 'ऑडियो रिकॉर्ड करें';
+            }
+        });
+
+        window.toggleAudioPlay = function(commentId) {
+            const audio = document.getElementById('audio_' + commentId);
+            const btn = document.getElementById('playBtn_' + commentId);
+            const status = document.getElementById('audioStatus_' + commentId);
+            if (!audio || !btn) return;
+
+            document.querySelectorAll('audio').forEach(a => {
+                if (a.id !== 'audio_' + commentId && !a.paused) {
+                    a.pause();
+                    const otherId = a.id.replace('audio_', '');
+                    const otherBtn = document.getElementById('playBtn_' + otherId);
+                    const otherStatus = document.getElementById('audioStatus_' + otherId);
+                    if (otherBtn) otherBtn.innerText = '▶';
+                    if (otherStatus) otherStatus.innerText = 'Click to play';
+                }
+            });
+
+            if (audio.paused) {
+                audio.play();
+                btn.innerText = '⏸';
+                if(status) status.innerText = 'Playing...';
+            } else {
+                audio.pause();
+                btn.innerText = '▶';
+                if(status) status.innerText = 'Paused';
+            }
+
+            audio.onended = () => {
+                btn.innerText = '▶';
+                if(status) status.innerText = 'Click to play';
+            };
+        };
 
         window.addEventListener('popstate', function(e) {
             if (isPopupActive) {
@@ -606,7 +799,7 @@
             const normalizedInput = normalizeID(rawUserIdInput);
 
             if (!isAdminLoggedIn && !rawUserIdInput.trim()) { showModal("जानकारी", "कृपया अपना User ID दर्ज करें!", "alert"); return; }
-            if (!text && !selectedBase64Image) { showModal("जानकारी", "कृपया कुछ लिखें या कोई फोटो चुनें!", "alert"); return; }
+            if (!text && !selectedBase64Image && !selectedBase64Audio) { showModal("जानकारी", "कृपया कुछ लिखें, फोटो चुनें या ऑडियो रिकॉर्ड करें!", "alert"); return; }
 
             postMainBtn.innerText = "⏳";
             postMainBtn.disabled = true;
@@ -629,6 +822,8 @@
                 await addDoc(collection(db, "portal_comments"), {
                     userName: displayName, text: text, 
                     imageUrl: selectedBase64Image || null,
+                    audioUrl: selectedBase64Audio || null,
+                    views: 0,
                     role: isAdminLoggedIn ? 'admin' : 'student',
                     parentId: null, likes: 0, pinned: false, timestamp: serverTimestamp()
                 });
@@ -639,8 +834,16 @@
                 imageInput.value = '';
                 selectedBase64Image = null;
                 imageStatusText.style.display = 'none';
+
+                // Reset Audio Recording State
+                selectedBase64Audio = null;
+                audioState = 'idle';
+                micBtn.innerText = '🎤';
+                micBtn.classList.remove('recording');
+                micBtn.title = 'ऑडियो रिकॉर्ड करें';
+
             } catch (error) { 
-                showModal("सर्वर त्रुटि", "मैसेज नहीं गया! शायद इमेज बहुत बड़ी है।", "alert"); 
+                showModal("सर्वर त्रुटि", "मैसेज नहीं गया! शायद फाइल बहुत बड़ी है।", "alert"); 
             } finally {
                 postMainBtn.innerText = "📨";
                 postMainBtn.disabled = false;
@@ -826,6 +1029,7 @@
                 `;
 
                 const timeString = getTimeString(comment.timestamp);
+                const viewsCount = comment.views || 0;
                 const isPinned = comment.pinned || false;
                 const pinnedBadgeHTML = isPinned ? `<span class="pinned-badge">📍</span>` : '';
                 const pinBtnText = isPinned ? '📍Unpin' : '📌Pin';
@@ -845,6 +1049,20 @@
                     sharedImageHTML = `<img src="${comment.imageUrl}" class="comment-image" onclick="openFullscreen(this.src)" title="Click to view full screen">`;
                 }
 
+                let sharedAudioHTML = '';
+                if (comment.audioUrl) {
+                    sharedAudioHTML = `
+                        <div class="audio-player-box">
+                            <button class="audio-play-btn" id="playBtn_${comment.id}" onclick="toggleAudioPlay('${comment.id}')" title="Listen Voice Note">▶</button>
+                            <div class="audio-info">
+                                <span class="audio-label">Voice Message 🎵</span>
+                                <span class="audio-time-status" id="audioStatus_${comment.id}">Click to play</span>
+                            </div>
+                            <audio id="audio_${comment.id}" src="${comment.audioUrl}" preload="metadata"></audio>
+                        </div>
+                    `;
+                }
+
                 const adminDockHTML = `
                     <div class="admin-action-dock">
                         <button class="admin-dock-btn pin" onclick="togglePin('${comment.id}', ${isPinned})">${pinBtnText}</button>
@@ -854,20 +1072,23 @@
 
                 const commentElement = document.createElement('div');
                 commentElement.className = 'comment-box';
+                commentElement.setAttribute('data-comment-id', comment.id);
                 commentElement.innerHTML = `
                     <div class="${avatarClass}">${comment.userName.charAt(0).toUpperCase()}</div>
                     <div class="${contentClass}">
                         
                         <div class="message-top-right">
-                            <div class="time-ago-text">${timeString}</div>
+                            <span class="time-ago-text">${timeString}</span>
+                            <span class="view-count-text">view ${viewsCount}</span>
                         </div>
 
                         <div class="comment-header">
                             <span class="user-name">${comment.userName} ${badgeHTML} ${pinnedBadgeHTML}</span>
                         </div>
                         
-                        <div class="comment-text">${comment.text}</div>
+                        <div class="comment-text">${comment.text || ''}</div>
                         
+                        ${sharedAudioHTML}
                         ${sharedImageHTML}
                         
                         <div class="comment-actions-container">
@@ -894,6 +1115,9 @@
                 `;
                 commentsListEl.appendChild(commentElement);
             });
+
+            // Initialize intersection observer for scroll-based view tracking
+            setupViewObserver();
         }
     </script>
 </body>
