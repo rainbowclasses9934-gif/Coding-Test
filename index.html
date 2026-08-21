@@ -57,7 +57,6 @@
             z-index: 99999;
         }
 
-        /* Update: Added cursor pointer and hover effect for the name */
         .dock-logo { 
             font-size: 14px; 
             font-weight: 700; 
@@ -325,7 +324,7 @@
 
         .submit-btn { background: var(--primary-color); color: white; border: none; padding: 8px 20px; border-radius: var(--radius-sm); font-size: 14px; cursor: pointer; font-weight: 600; }
 
-        /* --- New CSS For User Profile Grid Panel --- */
+        /* --- User Profile Grid Panel --- */
         .profile-modal-box { padding: 20px; text-align: left; background: rgba(255, 255, 255, 0.95); }
         .profile-header-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 15px; margin-bottom: 20px; }
         .profile-name-title { font-size: 16px; font-weight: 700; color: #111827; }
@@ -356,6 +355,57 @@
         }
         .filter-status-text { font-size: 12px; color: #4b5563; margin-top: 8px; font-weight: 500; }
 
+        /* --- NEW: Green Dot Indicator CSS --- */
+        .green-dot {
+            width: 9px;
+            height: 9px;
+            background-color: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px #10b981;
+            margin-right: 6px;
+            flex-shrink: 0;
+            transition: opacity 0.4s ease, transform 0.4s ease, margin-right 0.4s ease;
+        }
+        .green-dot.hidden {
+            opacity: 0 !important;
+            transform: scale(0) !important;
+            margin-right: 0 !important;
+            pointer-events: none;
+        }
+
+        /* --- NEW: Floating New Messages Scroll Pill --- */
+        .new-messages-pill {
+            position: fixed;
+            bottom: 75px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+            cursor: pointer;
+            z-index: 99990;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .new-messages-pill.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        .new-messages-pill:hover {
+            transform: translateX(-50%) translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+        }
+
     </style>
 </head>
 <body>
@@ -385,6 +435,11 @@
         <div class="comments-list" id="commentsList">
             <p style="text-align: center; color: var(--text-muted);">Loading Comments ⏳...</p>
         </div>
+    </div>
+
+    <!-- NEW: Floating Button for Unread Messages -->
+    <div id="newMsgPill" class="new-messages-pill" onclick="scrollToFirstUnread()">
+        <span id="newMsgPillText">0 New Messages 👇</span>
     </div>
 
     <!-- BOTTOM FIXED DOCK -->
@@ -421,7 +476,7 @@
         </div>
     </div>
 
-    <!-- NEW: User Profile 4x4 Grid Modal -->
+    <!-- User Profile 4x4 Grid Modal -->
     <div class="modal-overlay" id="userProfileModal">
         <div class="modal-box profile-modal-box">
             <div class="profile-header-top">
@@ -525,11 +580,16 @@
 
         let isPopupActive = false;
         
-        // NEW: Filter State Variable
         let isViewingMyMessagesOnly = false;
 
         const viewedMessages = new Set();
         let viewObserver = null;
+
+        // --- NEW: Unread Messages State Tracking ---
+        let currentUserLastSeen = 0;
+        const activeUnreadSet = new Set();
+        const readInThisSessionSet = new Set();
+        let unreadDwellObserver = null;
 
         function setupViewObserver() {
             if (viewObserver) viewObserver.disconnect();
@@ -571,6 +631,100 @@
                 viewObserver.observe(el);
             });
         }
+
+        // --- NEW: Unread Dwell Observer (0.75 Second Green Dot Removal) ---
+        function setupUnreadDwellObserver() {
+            if (unreadDwellObserver) unreadDwellObserver.disconnect();
+
+            unreadDwellObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const elem = entry.target;
+                    const commentId = elem.getAttribute('data-comment-id');
+                    const msgTimestamp = parseInt(elem.getAttribute('data-timestamp') || '0');
+
+                    if (!commentId || !activeUnreadSet.has(commentId)) return;
+
+                    if (entry.isIntersecting) {
+                        elem.dataset.isUnreadIntersecting = 'true';
+                        const timer = setTimeout(() => {
+                            if (elem.dataset.isUnreadIntersecting === 'true' && activeUnreadSet.has(commentId)) {
+                                markMessageAsRead(commentId, msgTimestamp);
+                            }
+                        }, 750); // 0.75 Second Dwell Duration
+
+                        elem.dataset.unreadTimerId = timer;
+                    } else {
+                        elem.dataset.isUnreadIntersecting = 'false';
+                        if (elem.dataset.unreadTimerId) {
+                            clearTimeout(parseInt(elem.dataset.unreadTimerId));
+                        }
+                    }
+                });
+            }, { threshold: 0.6 });
+
+            document.querySelectorAll('.comment-box[data-unread="true"]').forEach(el => {
+                unreadDwellObserver.observe(el);
+            });
+        }
+
+        function markMessageAsRead(commentId, msgTimestamp) {
+            const dot = document.getElementById('greenDot_' + commentId);
+            if (dot) {
+                dot.classList.add('hidden');
+            }
+
+            activeUnreadSet.delete(commentId);
+            readInThisSessionSet.add(commentId);
+
+            const commentElem = document.querySelector(`.comment-box[data-comment-id="${commentId}"]`);
+            if (commentElem) {
+                commentElem.setAttribute('data-unread', 'false');
+            }
+
+            // Save new Last Seen timestamp to browser memory for this ID
+            const rawUserIdInput = nameInput.value.trim();
+            const normalized = normalizeID(rawUserIdInput);
+            if (normalized && (studentData[normalized] || isAdminLoggedIn)) {
+                const key = 'lastSeenTimestamp_' + normalized;
+                const currentSaved = parseInt(localStorage.getItem(key) || '0');
+                if (msgTimestamp > currentSaved) {
+                    localStorage.setItem(key, msgTimestamp.toString());
+                    currentUserLastSeen = msgTimestamp;
+                }
+            }
+
+            updateUnreadPill();
+        }
+
+        function updateUnreadPill() {
+            const pill = document.getElementById('newMsgPill');
+            const pillText = document.getElementById('newMsgPillText');
+            if (!pill || !pillText) return;
+
+            const count = activeUnreadSet.size;
+            const rawUserIdInput = nameInput.value.trim();
+            const normalized = normalizeID(rawUserIdInput);
+
+            if (count > 0 && normalized && (studentData[normalized] || isAdminLoggedIn)) {
+                pillText.innerText = `${count} New Message${count > 1 ? 's' : ''} 👇`;
+                pill.classList.add('show');
+            } else {
+                pill.classList.remove('show');
+            }
+        }
+
+        window.scrollToFirstUnread = function() {
+            if (activeUnreadSet.size === 0) return;
+
+            const unreadElems = Array.from(document.querySelectorAll('.comment-box[data-unread="true"]'));
+            for (let el of unreadElems) {
+                const cId = el.getAttribute('data-comment-id');
+                if (activeUnreadSet.has(cId)) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    break;
+                }
+            }
+        };
 
         mainInput.addEventListener('input', function() {
             this.style.height = '42px';
@@ -729,7 +883,6 @@
         modalCancelBtn.onclick = () => { closeMyModal(); };
         modalOkBtn.onclick = () => { closeMyModal(); if(modalConfirmCallback) modalConfirmCallback(); };
 
-        // --- NEW: User Profile Grid logic ---
         dockLogoText.addEventListener('click', () => {
             const currentName = dockLogoText.innerText;
             if (currentName !== "RAINBOW CLASSES" && currentName.trim() !== "") {
@@ -755,21 +908,35 @@
             closeProfileModal();
             document.getElementById('backToHomeBanner').style.display = 'block';
             document.getElementById('mainHeaderSection').style.display = 'none';
-            renderComments(); // Refresh UI to show only their messages
+            renderComments(); 
         };
 
         window.goBackToHome = function() {
             isViewingMyMessagesOnly = false;
             document.getElementById('backToHomeBanner').style.display = 'none';
             document.getElementById('mainHeaderSection').style.display = 'block';
-            renderComments(); // Refresh UI to show all messages
+            renderComments(); 
         };
-        // ------------------------------------
 
         nameInput.addEventListener('input', () => {
             const rawId = nameInput.value.trim();
             const normalized = normalizeID(rawId);
             let displayName = "RAINBOW CLASSES";
+
+            // Load last seen timestamp for this specific ID
+            readInThisSessionSet.clear();
+            activeUnreadSet.clear();
+
+            if (normalized && (studentData[normalized] || isAdminLoggedIn)) {
+                const storedLastSeen = localStorage.getItem('lastSeenTimestamp_' + normalized);
+                if (storedLastSeen) {
+                    currentUserLastSeen = parseInt(storedLastSeen) || 0;
+                } else {
+                    currentUserLastSeen = 0;
+                }
+            } else {
+                currentUserLastSeen = 0;
+            }
 
             if (studentData[normalized]) {
                 displayName = studentData[normalized];
@@ -787,7 +954,6 @@
                 }, 200);
             }
             
-            // If they change ID while viewing filtered messages, reset to home
             if(isViewingMyMessagesOnly) {
                 goBackToHome();
             } else {
@@ -1005,12 +1171,16 @@
         });
 
         function renderComments() {
+            activeUnreadSet.clear();
+
             let mainComments = globalDocs.filter(d => !d.parentId);
             const replies = globalDocs.filter(d => d.parentId);
             
-            const currentUserDisplayName = studentData[normalizeID(nameInput.value.trim())] || (isAdminLoggedIn ? nameInput.value.trim() : null);
+            const rawUserIdInput = nameInput.value.trim();
+            const normalizedUser = normalizeID(rawUserIdInput);
+            const currentUserDisplayName = studentData[normalizedUser] || (isAdminLoggedIn ? rawUserIdInput : null);
+            const hasValidUser = !!(normalizedUser && (studentData[normalizedUser] || isAdminLoggedIn));
 
-            // NEW: Filter logic if "All Messages" is clicked
             if (isViewingMyMessagesOnly && currentUserDisplayName) {
                 mainComments = mainComments.filter(c => c.userName === currentUserDisplayName);
             }
@@ -1021,6 +1191,7 @@
                 } else {
                     commentsListEl.innerHTML = '<p style="text-align: center; color: var(--text-muted); font-weight: 500;">अभी कोई चर्चा नहीं हुई है। अपना पहला मैसेज भेजें!</p>';
                 }
+                updateUnreadPill();
                 return;
             }
 
@@ -1084,6 +1255,19 @@
                 const avatarClass = isAdmin ? `avatar admin-avatar` : `avatar`;
                 const contentClass = isAdmin ? `comment-content admin-comment` : `comment-content`;
 
+                // --- Unread Message & Green Dot Determination ---
+                const msgTimestamp = comment.timestamp ? comment.timestamp.toMillis() : Date.now();
+                let isUnread = false;
+
+                if (hasValidUser && msgTimestamp > currentUserLastSeen && !readInThisSessionSet.has(comment.id)) {
+                    isUnread = true;
+                    activeUnreadSet.add(comment.id);
+                }
+
+                const greenDotHTML = isUnread 
+                    ? `<span class="green-dot" id="greenDot_${comment.id}"></span>` 
+                    : `<span class="green-dot hidden" id="greenDot_${comment.id}"></span>`;
+
                 const userMainActions = isMainOwner ? `
                     <button class="user-action-btn edit" onclick="editUserComment('${comment.id}')">Edit</button>
                     <button class="user-action-btn delete" onclick="deleteUserComment('${comment.id}')">Del</button>
@@ -1143,6 +1327,9 @@
                 const commentElement = document.createElement('div');
                 commentElement.className = 'comment-box';
                 commentElement.setAttribute('data-comment-id', comment.id);
+                commentElement.setAttribute('data-unread', isUnread ? 'true' : 'false');
+                commentElement.setAttribute('data-timestamp', msgTimestamp.toString());
+
                 commentElement.innerHTML = `
                     <div class="${avatarClass}">${comment.userName.charAt(0).toUpperCase()}</div>
                     <div class="${contentClass}">
@@ -1153,6 +1340,7 @@
                         </div>
 
                         <div class="comment-header">
+                            ${greenDotHTML}
                             <span class="user-name">${comment.userName} ${badgeHTML} ${pinnedBadgeHTML}</span>
                         </div>
                         
@@ -1186,7 +1374,9 @@
                 commentsListEl.appendChild(commentElement);
             });
 
+            updateUnreadPill();
             setupViewObserver();
+            setupUnreadDwellObserver();
         }
     </script>
 </body>
