@@ -342,14 +342,21 @@
     
     <!-- MODALS SECTION -->
     
-    <!-- ID Entry Modal -->
+    <!-- ID Entry Modal (Updated) -->
     <div id="id-modal" class="modal-overlay hidden">
         <div class="modal-glass">
             <h3 style="margin-bottom: 20px; color: #111111; font-size: 1.3rem; font-weight: 700;">Student Verification</h3>
             <div class="input-group" style="text-align: left;">
                 <label>कृपया अपनी ID दर्ज करें:</label>
-                <input type="text" id="enter-student-id" placeholder="Ex: cm1217" style="margin-bottom: 15px;">
+                <input type="text" id="enter-student-id" placeholder="Ex: cm1217" style="margin-bottom: 15px;" oninput="autoFillName()">
             </div>
+            
+            <!-- नया नाम का बॉक्स जोड़ा गया -->
+            <div class="input-group" style="text-align: left;">
+                <label>छात्र का नाम (Name):</label>
+                <input type="text" id="student-name-display" placeholder="ID दर्ज करते ही नाम यहाँ आ जाएगा" readonly onclick="checkIdFirst()" style="margin-bottom: 15px; background: rgba(220, 220, 220, 0.5); cursor: not-allowed; color: #222; font-weight: bold;">
+            </div>
+
             <button class="btn btn-success" onclick="verifyId()">Verify & Save</button>
             <button class="btn btn-secondary" style="margin-top: 10px;" onclick="closeIdModal()">Cancel</button>
         </div>
@@ -409,7 +416,7 @@
         let timeLeft = 1800; 
         window.currentQuizFinished = false;
         
-        // नए वेरिएबल्स 
+        // वेरिएबल्स 
         window.verifiedStudentId = null;
         window.verifiedStudentName = null;
 
@@ -475,7 +482,7 @@
             document.getElementById("dock-container").classList.add("hidden");
             document.getElementById("quiz-dock-container").classList.add("hidden");
             
-            // टॉप बार लॉजिक (सिर्फ instruction स्क्रीन को छोड़कर बाकी सब जगह दिखेगा)
+            // टॉप बार लॉजिक 
             if(screenId !== 'instruction-screen') {
                 document.getElementById("top-bar").classList.remove("hidden");
             } else {
@@ -493,9 +500,37 @@
             showScreen('selection-screen'); 
         }
 
-        // --- ID Modal Logic ---
-        function openIdModal() { document.getElementById("id-modal").classList.remove("hidden"); }
+        // --- ID Modal Logic Updated ---
+        function openIdModal() { 
+            // अगर पहले से ID वेरीफाई नहीं है, तो बॉक्स को रिसेट करें
+            if(!window.verifiedStudentId) {
+                document.getElementById("enter-student-id").value = "";
+                document.getElementById("student-name-display").value = "";
+            }
+            document.getElementById("id-modal").classList.remove("hidden"); 
+        }
+        
         function closeIdModal() { document.getElementById("id-modal").classList.add("hidden"); }
+
+        // नया फंक्शन: टाइप करते ही नाम भर देगा
+        function autoFillName() {
+            let inputId = document.getElementById("enter-student-id").value.trim().toLowerCase().replace(/\s+/g, '');
+            let nameBox = document.getElementById("student-name-display");
+            
+            if (inputId && window.studentData && window.studentData[inputId]) {
+                nameBox.value = window.studentData[inputId]; // ID मैच होने पर नाम फिल
+            } else {
+                nameBox.value = ""; // मैच न होने पर खाली कर देगा
+            }
+        }
+
+        // नया फंक्शन: अगर बिना ID डाले नाम पर क्लिक किया तो अलर्ट देगा
+        function checkIdFirst() {
+            let nameBox = document.getElementById("student-name-display");
+            if (!nameBox.value) {
+                showModal("कृपया पहले अपनी ID दर्ज करें!");
+            }
+        }
 
         function verifyId() {
             let inputId = document.getElementById("enter-student-id").value.trim().toLowerCase().replace(/\s+/g, '');
