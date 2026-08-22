@@ -22,7 +22,8 @@ window.studentData = {
 
 // 👇👇👇👇👇नया फीचर: पर्सनल मैसेज लिस्ट 👇👇👇👇👇
 window.studentMessages = {
-    "cm010" : " Hello "
+    "cm010" : " Hello ",
+    "omi100" : " msg dekha raha hai 👋 "
     // जिसके सामने कुछ नहीं लिखना है, उसकी ID यहाँ डालने की जरूरत नहीं है।
 };
 
