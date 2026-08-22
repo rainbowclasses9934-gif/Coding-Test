@@ -29,13 +29,15 @@
             overscroll-behavior-y: none;
         }
 
+        /* --- Updated Professional Light Theme --- */
         body {
-            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
             color: var(--text-main);
             padding: 20px;
             min-height: 100vh;
             background-attachment: fixed;
             -webkit-tap-highlight-color: transparent;
+            transition: background 0.3s, color 0.3s;
         }
 
         /* --- Top Fixed Dock --- */
@@ -55,6 +57,7 @@
             align-items: center;
             padding: 0 15px;
             z-index: 99999;
+            transition: background 0.3s;
         }
 
         .dock-logo { 
@@ -103,6 +106,7 @@
             max-width: 800px; margin: 70px auto 90px auto; background: rgba(255, 255, 255, 0.35);
             backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: var(--radius-md); padding: 30px 20px; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            transition: background 0.3s;
         }
 
         .header-section { margin-bottom: 25px; text-align: center; }
@@ -149,7 +153,6 @@
         .comments-list { display: flex; flex-direction: column; gap: 20px; clear: both; }
         .comment-box { display: flex; gap: 10px; width: 100%; }
 
-        /* --- Date Divider Styles --- */
         .date-divider {
             text-align: center;
             margin: 15px 0 5px 0;
@@ -170,12 +173,12 @@
         }
 
         .comment-content {
-            background: rgba(255, 255, 255, 0.55); backdrop-filter: blur(10px);
-            padding: 12px 15px; border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.6);
-            flex-grow: 1; position: relative; width: 100%;
+            background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(10px);
+            padding: 12px 15px; border-radius: var(--radius-md); border: 1px solid rgba(255, 255, 255, 0.8);
+            flex-grow: 1; position: relative; width: 100%; transition: background 0.3s;
         }
 
-        .admin-comment { background: rgba(254, 242, 242, 0.65) !important; }
+        .admin-comment { background: rgba(254, 242, 242, 0.85) !important; }
         .admin-badge {
             background: rgba(239, 68, 68, 0.9); color: white; font-size: 10px; padding: 2px 6px;
             border-radius: 4px; margin-left: 6px; display: inline-block;
@@ -190,6 +193,9 @@
         .comment-header { display: flex; align-items: center; margin-bottom: 6px; }
         .user-name { font-weight: 600; font-size: 14px; }
         .comment-text { font-size: 14px; line-height: 1.5; color: #374151; white-space: pre-wrap; word-wrap: break-word;}
+        
+        /* Clickable links CSS */
+        .chat-link { color: #2563eb; text-decoration: underline; word-break: break-word; font-weight: 500; }
 
         .comment-actions-container { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; flex-wrap: wrap; gap: 8px; }
         .left-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
@@ -229,16 +235,8 @@
         .replies-container.show { display: flex; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- Reply Time Style --- */
-        .reply-bottom-right {
-            text-align: right;
-            margin-top: 4px;
-        }
-        .reply-time-text {
-            font-size: 10px;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
+        .reply-bottom-right { text-align: right; margin-top: 4px; }
+        .reply-time-text { font-size: 10px; color: var(--text-muted); font-weight: 500; }
 
         .reply-input-wrapper { display: none; margin-top: 10px; }
         .reply-input-wrapper.active { display: block; }
@@ -377,6 +375,54 @@
         }
         .filter-status-text { font-size: 12px; color: #4b5563; margin-top: 8px; font-weight: 500; }
 
+        /* Pagination Load More Button */
+        .load-more-btn {
+            display: block; width: 100%; padding: 12px; margin-top: 10px;
+            background: rgba(255, 255, 255, 0.6); border: 1px solid var(--border-color);
+            border-radius: var(--radius-md); color: #2563eb; font-weight: 600;
+            cursor: pointer; transition: all 0.2s; backdrop-filter: blur(5px);
+        }
+        .load-more-btn:hover { background: rgba(255, 255, 255, 0.9); }
+
+        /* ========================================= */
+        /* --------- DARK MODE STYLES -------------- */
+        /* ========================================= */
+        body.dark-mode {
+            background: linear-gradient(135deg, #1e1e2f 0%, #121212 100%);
+            color: #e5e7eb;
+        }
+        body.dark-mode .top-dock, body.dark-mode .bottom-dock, body.dark-mode .portal-container {
+            background: rgba(30, 30, 40, 0.85); border-color: rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode .dock-logo, body.dark-mode .header-title { color: #f3f4f6; }
+        body.dark-mode .header-subtitle { color: #9ca3af; }
+        body.dark-mode .comment-content { background: rgba(45, 45, 55, 0.7); border-color: rgba(255, 255, 255, 0.1); }
+        body.dark-mode .admin-comment { background: rgba(127, 29, 29, 0.3) !important; border-color: rgba(239, 68, 68, 0.2); }
+        body.dark-mode .comment-text { color: #d1d5db; }
+        body.dark-mode .user-name { color: #f3f4f6; }
+        body.dark-mode .date-divider span { background: rgba(40, 40, 50, 0.8); color: #d1d5db; border-color: rgba(255,255,255,0.1); }
+        body.dark-mode .time-ago-text, body.dark-mode .view-count-text, body.dark-mode .reply-time-text { color: #9ca3af; }
+        body.dark-mode .time-ago-text { background: rgba(0, 0, 0, 0.3); }
+        body.dark-mode .user-id-input, body.dark-mode .admin-pin-input, body.dark-mode #mainCommentInput, body.dark-mode .reply-input-wrapper textarea, body.dark-mode #modalEditInput {
+            background: rgba(20, 20, 25, 0.8); color: #f3f4f6; border-color: rgba(255,255,255,0.15);
+        }
+        body.dark-mode .image-upload-btn-bottom, body.dark-mode .like-btn, body.dark-mode .admin-dock-btn {
+            background: rgba(45, 45, 55, 0.8); border-color: rgba(255,255,255,0.1); color: #d1d5db;
+        }
+        body.dark-mode .audio-player-box { background: rgba(45, 45, 55, 0.8); border-color: rgba(37, 99, 235, 0.3); }
+        body.dark-mode .audio-label { color: #f3f4f6; }
+        body.dark-mode .audio-time-status { color: #9ca3af; }
+        body.dark-mode .modal-box, body.dark-mode .profile-modal-box { background: rgba(30, 30, 40, 0.98); color: #f3f4f6; }
+        body.dark-mode .modal-title, body.dark-mode .profile-name-title { color: #f3f4f6; }
+        body.dark-mode .modal-message { color: #d1d5db; }
+        body.dark-mode .grid-text { color: #9ca3af; }
+        body.dark-mode .bg-empty { background: rgba(45, 45, 55, 0.6); border-color: #4b5563; }
+        body.dark-mode .profile-header-top { border-bottom-color: rgba(255,255,255,0.1); }
+        body.dark-mode .back-to-home-banner { background: rgba(30, 30, 40, 0.85); border-color: rgba(37, 99, 235, 0.4); }
+        body.dark-mode .filter-status-text { color: #d1d5db; }
+        body.dark-mode .chat-link { color: #60a5fa; }
+        body.dark-mode .load-more-btn { background: rgba(45, 45, 55, 0.8); color: #60a5fa; border-color: rgba(255,255,255,0.1); }
+
     </style>
 </head>
 <body>
@@ -385,7 +431,7 @@
         <div class="dock-logo" id="dockLogoText" title="Click to open profile panel">RAINBOW CLASSES</div>
         <div class="admin-dock-controls">
             <input type="text" id="userNameInput" class="user-id-input" placeholder="ID">
-            <input type="password" id="adminPinInput" class="admin-pin-input" placeholder="ADMIN 🔐">
+            <input type="password" id="adminPinInput" class="admin-pin-input" placeholder="🧑‍💻Admin">
             <div id="deleteAllDockBtn" class="delete-all-clear-btn">Clear</div>
         </div>
     </div>
@@ -395,16 +441,16 @@
         <!-- Filter Banner -->
         <div class="back-to-home-banner" id="backToHomeBanner">
             <button class="back-btn-action" onclick="goBackToHome()">⬅ Back to Home Screen</button>
-            <div class="filter-status-text">आप सिर्फ अपने मैसेज देख रहे हैं।</div>
+            <div class="filter-status-text">यह केवल आपका संदेश है।</div>
         </div>
 
         <div class="header-section" id="mainHeaderSection">
             <h1 class="header-title">Teachers & Students Community</h1>
-            <p class="header-subtitle">अभी यह सभी छात्रों के लिए उपलब्ध नहीं है। संतोष सर के द्वारा जिन बच्चो को इसमें जोड़ा जायेगा वे बच्चे यहाँ आपस में संपर्क मे रहेंगे, ये एक-दूसरे के साथ संपर्क मे रहेंगे। पढ़ाई से संबंधित बाते कर सकेंगे।</p>
+            <p class="header-subtitle">Welcome To All Of You 👋.</p>
         </div>
 
         <div class="comments-list" id="commentsList">
-            <p style="text-align: center; color: var(--text-muted);">Loading Comments ⏳...</p>
+            <p style="text-align: center; color: var(--text-muted);">Loading Messages ⏳...</p>
         </div>
     </div>
 
@@ -417,11 +463,11 @@
         </div>
         
         <div class="input-wrapper-bottom">
-            <textarea id="mainCommentInput" placeholder="Type..." rows="1"></textarea>
-            <button type="button" id="micBtn" class="mic-btn-bottom" title="ऑडियो रिकॉर्ड करें">🎤</button>
+            <textarea id="mainCommentInput" placeholder="Type or paste Document Link..." rows="1"></textarea>
+            <button type="button" id="micBtn" class="mic-btn-bottom" title="ऑडियो रिकॉर्ड करें">🎙️</button>
         </div>
 
-        <button class="send-btn-bottom" id="postMainBtn">📨</button>
+        <button class="send-btn-bottom" id="postMainBtn">➤</button>
     </div>
 
     <div id="fullScreenImageModal" class="fullscreen-image-modal">
@@ -453,12 +499,17 @@
             <div class="app-grid">
                 <!-- Slot 1: All Messages Button -->
                 <div class="grid-item" onclick="activateMyMessagesFilter()">
-                    <div class="grid-icon bg-all-msg">📁</div>
-                    <div class="grid-text">All<br>Message</div>
+                    <div class="grid-icon bg-all-msg">💬</div>
+                    <div class="grid-text">My<br>Message</div>
                 </div>
                 
-                <!-- Slots 2 to 16: Placeholders -->
-                <div class="grid-item"><div class="grid-icon bg-empty"></div></div>
+                <!-- Slot 2: Dark Mode Toggle -->
+                <div class="grid-item" onclick="toggleDarkMode()">
+                    <div class="grid-icon" id="dmGridIcon" style="background: linear-gradient(135deg, #374151 0%, #111827 100%); color: white;">🌙</div>
+                    <div class="grid-text" id="dmGridText">Dark<br>Mode</div>
+                </div>
+
+                <!-- Slots 3 to 16: Placeholders -->
                 <div class="grid-item"><div class="grid-icon bg-empty"></div></div>
                 <div class="grid-item"><div class="grid-icon bg-empty"></div></div>
                 <div class="grid-item"><div class="grid-icon bg-empty"></div></div>
@@ -479,7 +530,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, deleteDoc, doc, getDocs, updateDoc, increment } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+        // Added 'limit' to the imports for pagination
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, deleteDoc, doc, getDocs, updateDoc, increment, limit } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCpbl_PZ6veAe1Wvg1vJCYzBM3sqaH-Pss",
@@ -495,22 +547,22 @@
         const db = getFirestore(app);
 
         const studentData = {
-            "cm010": "🧑‍💻 Chandramani", "omi100": "👦 Munna Kumar", "pk121": "👦 Priyanshu kumar", 
-            "prk30": "👨‍🏫 PRIYE RANJAN KUMAR", "sk100": "👨‍🏫 Santosh sir", "harry": "👨‍💼 Kishan Raj",
-            "sk180": "👨‍🏫 Shambhu Sir", "sk450": "👨‍🏫 Sanjiv Sir", "rk120": "👨‍🏫 Raushan Sir", 
-            "185428": "👦 Satyam Kumar", "629748": "👦 Shivam Kumar - 1", "952863": "👦 Niraj Kumar", 
-            "952853": "👦 Shivam Kumar - 2", "597426": "👦 Sachin Kumar", "975795": "👦 Sunny Kumar", 
-            "119621": "👦 Aayush Kumar - 1 (DM)", "442073": "👦 Utkarsh Kumar", "448521": "👦 Avinash Kumar", 
-            "951074": "👦 Sushant Kumar", "700636": "👦 Aayush Kumar - 2 (MP)", "274170": "👦 Deepak Kumar", 
-            "273806": "👦 Nishant Kumar", "374260": "👦 Ritesh Kumar", "269632": "👦 Bablu Kumar", "328537": "👦 Prince Kumar", 
-            "375269": "👧 Kajal Kumari - 2 (MO)", "386436": "👧 Anjali Kumari", "537964": "👧 Pushpanjali Kumari", 
-            "182528": "👧 Sadhna Kumari", "100636": "👧 Neha Kumari - 1 (MO)", "274279": "👧 Saloni Kumari", 
-            "972332": "👧 Sapna Kumari", "207112": "👧 Chandni Kumari - 1", "260416": "👧 Priyanshu Kumari - 1", 
-            "241724": "👧 Nisha Kumari - 1", "842875": "👧 Prity (simple)", "651157": "👧 Chandni Kumari - 2", 
-            "771852": "👧 Chandni Kumari - 3", "577698": "👧 Nisha Kumari - 2", "650095": "👧 Sakshi Kumari", 
-            "855048": "👧 Niharika Kumari", "658046": "👧 Tanya Kumari", "665802": "👧 Prity Kumari", 
-            "485285": "👧 Kajal Kumari - 1", "875875": "👧 Khushbu Kumari", "735483": "👧 Priti Sharma", 
-            "883484": "👧 Jaya Kumari", "358624": "👧 Nikku Kumari", "648150": "👧 Komal Kumari", "678138": "👧 Neha Kumari"
+            "cm010": "🧑🏻‍💻 Chandramani", "omi100": "🤵🏻 Munna Kumar", "pk121": "🤵🏻 Priyanshu kumar", 
+            "prk30": "👨🏻‍🏫 PRIYE RANJAN KUMAR", "sk100": "👨🏻‍🏫 Santosh sir", "harry": "👨🏻‍🏭 Kishan Raj",
+            "sk180": "👨🏻‍🏫 Shambhu Sir", "sk450": "👨🏻‍🏫 Sanjiv Sir", "rk120": "👨🏻‍🏫 Raushan Sir", 
+            "185428": "🤵🏻 Satyam Kumar", "629748": "🤵🏻 Shivam Kumar - 1", "952863": "🤵🏻 Niraj Kumar", 
+            "952853": "🤵🏻 Shivam Kumar - 2", "597426": "🤵🏻 Sachin Kumar", "975795": "🤵🏻 Sunny Kumar", 
+            "119621": "🤵🏻 Aayush Kumar - 1 (DM)", "442073": "🤵🏻 Utkarsh Kumar", "448521": "🤵🏻 Avinash Kumar", 
+            "951074": "🤵🏻 Sushant Kumar", "700636": "🤵🏻 Aayush Kumar - 2 (MP)", "274170": "🤵🏻 Deepak Kumar", 
+            "273806": "🤵🏻 Nishant Kumar", "374260": "🤵🏻 Ritesh Kumar", "269632": "🤵🏻 Bablu Kumar", "328537": "🤵🏻 Prince Kumar", 
+            "375269": "🤵🏻‍♀️ Kajal Kumari - 2 (MO)", "386436": "🤵🏻‍♀️ Anjali Kumari", "537964": "🤵🏻‍♀️ Pushpanjali Kumari", 
+            "182528": "🤵🏻‍♀️ Sadhna Kumari", "100636": "🤵🏻‍♀️ Neha Kumari - 1 (MO)", "274279": "🤵🏻‍♀️ Saloni Kumari", 
+            "972332": "🤵🏻‍♀️ Sapna Kumari", "207112": "🤵🏻‍♀️ Chandni Kumari - 1", "260416": "🤵🏻‍♀️ Priyanshu Kumari - 1", 
+            "241724": "🤵🏻‍♀️ Nisha Kumari - 1", "842875": "🤵🏻‍♀️ Prity (simple)", "651157": "🤵🏻‍♀️ Chandni Kumari - 2", 
+            "771852": "🤵🏻‍♀️ Chandni Kumari - 3", "577698": "🤵🏻‍♀️ Nisha Kumari - 2", "650095": "🤵🏻‍♀️ Sakshi Kumari", 
+            "855048": "🤵🏻‍♀️ Niharika Kumari", "658046": "🤵🏻‍♀️ Tanya Kumari", "665802": "🤵🏻‍♀️ Prity Kumari", 
+            "485285": "🤵🏻‍♀️ Kajal Kumari - 1", "875875": "🤵🏻‍♀️ Khushbu Kumari", "735483": "🤵🏻‍♀️ Priti Sharma", 
+            "883484": "🤵🏻‍♀️ Jaya Kumari", "358624": "🤵🏻‍♀️ Nikku Kumari", "648150": "🤵🏻‍♀️ Komal Kumari", "678138": "🤵🏻‍♀️ Neha Kumari"
         };
 
         function normalizeID(id) { return id.toLowerCase().replace(/\s+/g, ''); }
@@ -546,6 +598,56 @@
 
         let isPopupActive = false;
         let isViewingMyMessagesOnly = false;
+
+        // Pagination Variables
+        let messageLimit = 20; 
+        let unsubscribeSnapshot = null;
+
+        // --- Dark Mode Logic ---
+        window.toggleDarkMode = function() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark ? 'true' : 'false');
+            
+            const dmIcon = document.getElementById('dmGridIcon');
+            const dmText = document.getElementById('dmGridText');
+            if(isDark) {
+                dmIcon.innerText = '☀️';
+                dmIcon.style.background = 'linear-gradient(135deg, #fca5a5 0%, #ef4444 100%)';
+                dmText.innerText = 'Light\nMode';
+            } else {
+                dmIcon.innerText = '🌙';
+                dmIcon.style.background = 'linear-gradient(135deg, #374151 0%, #111827 100%)';
+                dmText.innerText = 'Dark\nMode';
+            }
+            closeProfileModal();
+        };
+
+        function initTheme() {
+            const isDark = localStorage.getItem('darkMode') === 'true';
+            if(isDark) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('dmGridIcon').innerText = '☀️';
+                document.getElementById('dmGridIcon').style.background = 'linear-gradient(135deg, #fca5a5 0%, #ef4444 100%)';
+                document.getElementById('dmGridText').innerText = 'Light\nMode';
+            }
+        }
+        initTheme(); // Load theme right away
+
+        // --- URL Linkify Logic for Document Sharing ---
+        function linkifyAndEscape(text) {
+            if(!text) return '';
+            // HTML Escape to protect from XSS
+            const div = document.createElement('div');
+            div.textContent = text;
+            let escapedText = div.innerHTML;
+            
+            // Regex to find links and convert them into clickable anchor tags
+            const urlRegex = /(https?:\/\/[^\s]+)/g;
+            return escapedText.replace(urlRegex, function(url) {
+                return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="chat-link">${url}</a>`;
+            });
+        }
 
         const viewedMessages = new Set();
         let viewObserver = null;
@@ -643,7 +745,7 @@
             } else if (audioState === 'recorded') {
                 selectedBase64Audio = null;
                 audioState = 'idle';
-                micBtn.innerText = '🎤';
+                micBtn.innerText = '🎙️';
                 micBtn.title = 'ऑडियो रिकॉर्ड करें';
             }
         });
@@ -660,7 +762,7 @@
                     const otherId = a.id.replace('audio_', '');
                     const otherBtn = document.getElementById('playBtn_' + otherId);
                     const otherStatus = document.getElementById('audioStatus_' + otherId);
-                    if (otherBtn) otherBtn.innerText = '▶';
+                    if (otherBtn) otherBtn.innerText = '▶️';
                     if (otherStatus) otherStatus.innerText = 'Click to play';
                 }
             });
@@ -671,12 +773,12 @@
                 if(status) status.innerText = 'Playing...';
             } else {
                 audio.pause();
-                btn.innerText = '▶';
+                btn.innerText = '▶️';
                 if(status) status.innerText = 'Paused';
             }
 
             audio.onended = () => {
-                btn.innerText = '▶';
+                btn.innerText = '▶️';
                 if(status) status.innerText = 'Click to play';
             };
         };
@@ -913,7 +1015,7 @@
 
                 selectedBase64Audio = null;
                 audioState = 'idle';
-                micBtn.innerText = '🎤';
+                micBtn.innerText = '🎙️';
                 micBtn.classList.remove('recording');
                 micBtn.title = 'ऑडियो रिकॉर्ड करें';
 
@@ -999,15 +1101,14 @@
             try { await updateDoc(doc(db, "portal_comments", commentId), { pinned: !currentPinStatus }); } catch (error) { console.error("Pinning error", error); }
         };
 
-        /* --- NEW TIME FORMATTING FUNCTIONS --- */
+        /* --- TIME FORMATTING FUNCTIONS --- */
         function formatExactTime(timestamp) {
-            // If just sent, use current time instead of waiting for server sync
             const date = timestamp ? timestamp.toDate() : new Date();
             let hours = date.getHours();
             let minutes = date.getMinutes();
             const ampm = hours >= 12 ? 'PM' : 'AM';
             hours = hours % 12;
-            hours = hours ? hours : 12; // 0 को 12 में बदलें
+            hours = hours ? hours : 12; 
             minutes = minutes < 10 ? '0' + minutes : minutes;
             return hours + ':' + minutes + ' ' + ampm;
         }
@@ -1016,24 +1117,30 @@
             const date = timestamp ? timestamp.toDate() : new Date();
             const today = new Date();
             
-            // Check if it's today
             if (date.getDate() === today.getDate() &&
                 date.getMonth() === today.getMonth() &&
                 date.getFullYear() === today.getFullYear()) {
                 return 'Today';
             }
             
-            // Return formatted date like "20 August 2026"
             const options = { day: 'numeric', month: 'long', year: 'numeric' };
             return date.toLocaleDateString('en-IN', options);
         }
 
-        const q = query(collection(db, "portal_comments"), orderBy("timestamp", "desc"));
-        onSnapshot(q, (snapshot) => {
-            globalDocs = [];
-            snapshot.forEach(doc => { globalDocs.push({ id: doc.id, ...doc.data() }); });
-            renderComments();
-        });
+        // --- NEW PAGINATION LISTENER ---
+        function subscribeToComments() {
+            if(unsubscribeSnapshot) unsubscribeSnapshot();
+            
+            const q = query(collection(db, "portal_comments"), orderBy("timestamp", "desc"), limit(messageLimit));
+            unsubscribeSnapshot = onSnapshot(q, (snapshot) => {
+                globalDocs = [];
+                snapshot.forEach(doc => { globalDocs.push({ id: doc.id, ...doc.data() }); });
+                renderComments();
+            });
+        }
+        
+        // Start fetching data with limit
+        subscribeToComments();
 
         function renderComments() {
             let mainComments = globalDocs.filter(d => !d.parentId);
@@ -1062,7 +1169,7 @@
             
             const adminDelStyle = isAdminLoggedIn ? 'display: inline-block;' : 'display: none;';
 
-            let lastDateHeader = ""; // Track date headers to show dividers
+            let lastDateHeader = ""; 
 
             mainComments.forEach(comment => {
                 const commentReplies = replies.filter(r => r.parentId === comment.id);
@@ -1088,7 +1195,6 @@
 
                     const ownerDeleteHTML = isMainOwner ? `<button class="reply-owner-delete" onclick="deleteUserComment('${reply.id}')" title="Delete this reply">✕</button>` : '';
 
-                    // Reply Time Format
                     const replyExactTime = formatExactTime(reply.timestamp);
 
                     repliesHTML += `
@@ -1098,7 +1204,7 @@
                                 <div class="comment-header">
                                     <span class="user-name">${reply.userName} ${rBadgeHTML}</span>
                                 </div>
-                                <div class="comment-text">${reply.text}</div>
+                                <div class="comment-text">${linkifyAndEscape(reply.text || '')}</div>
                                 <div class="comment-actions-container">
                                     <div class="left-actions">
                                         <button class="delete-btn admin-delete-btn" style="${adminDelStyle}" onclick="deleteComment('${reply.id}')">Del (Admin)</button>
@@ -1133,7 +1239,6 @@
                     </div>
                 `;
 
-                // Main Comment Formatting Options
                 const exactTimeString = formatExactTime(comment.timestamp);
                 const currentHeader = formatDateHeader(comment.timestamp);
 
@@ -1178,8 +1283,6 @@
                     </div>
                 `;
 
-                // --- Insert Date Divider Logic ---
-                // Pinned messages and unpinned messages might trigger a new date block
                 if (currentHeader !== lastDateHeader) {
                     const dividerDiv = document.createElement('div');
                     dividerDiv.className = 'date-divider';
@@ -1203,7 +1306,8 @@
                             <span class="user-name">${comment.userName} ${badgeHTML} ${pinnedBadgeHTML}</span>
                         </div>
                         
-                        <div class="comment-text">${comment.text || ''}</div>
+                        <!-- Added linkifyAndEscape to make links clickable securely -->
+                        <div class="comment-text">${linkifyAndEscape(comment.text || '')}</div>
                         
                         ${sharedAudioHTML}
                         ${sharedImageHTML}
@@ -1232,6 +1336,19 @@
                 `;
                 commentsListEl.appendChild(commentElement);
             });
+
+            // "Load More" Button System for Pagination
+            if (globalDocs.length >= messageLimit) {
+                const loadMoreBtn = document.createElement('button');
+                loadMoreBtn.innerText = "और मैसेज लोड करें ⬇️";
+                loadMoreBtn.className = "load-more-btn";
+                loadMoreBtn.onclick = () => {
+                    messageLimit += 20; // 20-20 मैसेज बढ़ाएंगे
+                    loadMoreBtn.innerText = "लोड हो रहा है ⏳...";
+                    subscribeToComments();
+                };
+                commentsListEl.appendChild(loadMoreBtn);
+            }
 
             setupViewObserver();
         }
